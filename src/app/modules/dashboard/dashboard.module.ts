@@ -6,6 +6,8 @@ import { DashboardHomeComponent } from './components/dashboard-home/dashboard-ho
 import { DashboardReportsComponent } from './components/dashboard-reports/dashboard-reports.component';
 import { DashboardStatusComponent } from './components/dashboard-status/dashboard-status.component';
 import { SharedModule } from '../../shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { dashboardReducer } from './state/dashboard.reducer';
 
 @NgModule({
   declarations: [
@@ -13,6 +15,11 @@ import { SharedModule } from '../../shared/shared.module';
     DashboardReportsComponent,
     DashboardStatusComponent,
   ],
-  imports: [CommonModule, DashboardRoutingModule, SharedModule],
+  imports: [
+    CommonModule,
+    DashboardRoutingModule,
+    SharedModule,
+    StoreModule.forFeature('dashboard', dashboardReducer),
+  ],
 })
 export class DashboardModule {}
