@@ -1,0 +1,50 @@
+<div class="login-page-container">
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-content>
+      <div class="login-form-container">
+        <img
+          mat-card-image
+          src="assets/images/login_pic.JPG"
+          alt="Photo of a Shiba Inu"
+        />
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmit()"
+          class="login-form"
+        >
+          <div class="login-form-title">
+            <p>
+              Welcome Back
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Example home icon"
+                fontIcon="waving_hand"
+              ></mat-icon>
+            </p>
+            <p class="sub-title">Please login to your account.</p>
+          </div>
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-label>User ID</mat-label>
+              <input matInput formControlName="userId" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-label>Password</mat-label>
+              <input type="password" matInput formControlName="password" />
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="errorMessage" class="error">
+            {{ errorMessage }}
+          </div>
+
+          <button mat-flat-button type="submit" [disabled]="loginForm.invalid">
+            Login
+          </button>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

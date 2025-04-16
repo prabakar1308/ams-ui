@@ -1,8 +1,42 @@
-<mat-toolbar color="primary">
-  <span>---App Logo with Name Here---</span>
-  <div class="spacer"></div>
-  <a mat-button routerLink="/">Dashboard</a>
-  <a mat-button routerLink="/worksheet">Worksheet</a>
-  <a mat-button routerLink="/master">Master</a>
-  <a mat-button routerLink="/reports">Reports</a>
-</mat-toolbar>
+<div class="desktop-navbar">
+  <mat-toolbar color="primary" role="navigation">
+    <div class="navbar-container">
+      <ng-container *ngIf="false; else logoContainer"></ng-container>
+      <ng-container *ngIf="false; else routerLinks"></ng-container>
+    </div>
+  </mat-toolbar>
+</div>
+
+<div class="mobile-navbar">
+  <mat-toolbar>
+    <div class="navbar-container">
+      <ng-container *ngIf="false; else logoContainer"></ng-container>
+    </div>
+  </mat-toolbar>
+
+  <mat-toolbar>
+    <div class="navbar-container">
+      <ng-container *ngIf="false; else routerLinks"></ng-container>
+    </div>
+  </mat-toolbar>
+</div>
+
+<ng-template #logoContainer>
+  <div class="logo-container">
+    <img src="assets/images/gmh_logo.jpg" />
+    <div class="app-name">AMS</div>
+  </div>
+</ng-template>
+
+<ng-template #routerLinks>
+  <div class="router-links">
+    @for (item of navbarItems; track item.name;) {
+    <a
+      routerLinkActive="active"
+      [ngClass]="{ highlight: activeUrl.includes(item.route) }"
+      [routerLink]="item.route"
+      >{{ item.name }}</a
+    >
+    }
+  </div>
+</ng-template>

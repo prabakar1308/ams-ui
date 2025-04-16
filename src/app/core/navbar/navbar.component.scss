@@ -1,12 +1,83 @@
 .mat-toolbar {
-    background-color: #d7e3ff;
-    color: #005cbb;
+    background-color: white;
+    box-shadow: 0px 5px 5px #bdbbbb;
+    height: auto;
+    padding: 0;
+
+    .navbar-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .logo-container {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            img {
+                height: 100%;
+                min-width: 90px;
+                max-height: 70px;
+            }
+
+            .app-name {
+                font-weight: 700;
+                color: #1aa3a0;
+                padding-right: 20px;
+                font-family: "Roboto", sans-serif;
+            }
+        }
+
+        .router-links {
+            width: 100%;
+            display: flex;
+
+            a {
+                text-decoration: none;
+                color: inherit;
+                font-size: 16px;
+                padding: 22px;
+
+                &.highlight {
+                    border-bottom: 4px solid #1aa3a0;
+                    color: #1aa3a0;
+                }
+            }
+        }
+    }
+
+
 }
 
-.mat-button {
-    color: #005cbb;
+
+@media only screen and (min-width: 1024px) {
+    .desktop-navbar {
+        display: block;
+    }
+
+    .mobile-navbar {
+        display: none;
+    }
 }
 
-.spacer {
-    // flex: 1 1 auto;
+@media only screen and (max-width: 1024px) {
+    .desktop-navbar {
+        display: none;
+    }
+
+    .mobile-navbar {
+        display: block;
+    }
+
+    .router-links {
+        display: flex;
+        justify-content: space-between;
+
+        a {
+            padding: 22px 10px !important;
+        }
+    }
 }
