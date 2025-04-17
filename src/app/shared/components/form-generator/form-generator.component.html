@@ -1,1 +1,59 @@
-<p>form-generator works!</p>
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <mat-grid-list [cols]="formLayoutCols" rowHeight="80px">
+                    <div *ngFor="let control of formStructure" class="col-3">
+                        <!-- Text, Textarea & Number -->
+                        @if (textInputTypes.includes(control.type)) {
+                        <mat-form-field>
+                            <mat-label>{{ control.label }}</mat-label>
+                            @if (control.type === inputTypes.TEXT) {
+                            <input matInput [formControlName]="control.name" [type]="control.type" />
+                            }
+                            @if(control.type === inputTypes.TEXTAREA) {
+                            <textarea matInput [formControlName]="control.name"></textarea>
+                            }
+                            @if (dynamicForm.controls[control.name].invalid &&
+                            dynamicForm.controls[control.name].touched) {
+                            <mat-error>
+                                {{ getErrorMessage(control) }}
+                            </mat-error>
+                            }
+                        </mat-form-field>
+                        } @else if (control.type === inputTypes.RADIO) {
+                        <label>{{ control.label }}</label>
+                        <mat-radio-group aria-label="Select an option" [formControlName]="control.name">
+                            @for (item of control.options; track item.label) {
+                            <mat-radio-button [value]="item.value">{{item.label}}</mat-radio-button>
+                            }
+                        </mat-radio-group>
+                        }
+
+                        <!-- Select  -->
+                        <div class="mb-3" *ngIf="['select'].includes(control.type)">
+                            <label for="exampleFormControlInput1" class="form-label">
+                                {{ control.label }}
+                            </label>
+                            <select class="form-select" aria-label="Default select example"
+                                [formControlName]="control.name">
+                                <option selected>-Select-</option>
+                                <option *ngFor="let option of control.options" [value]="option.value">
+                                    {{ option.label }}
+                                </option>
+                            </select>
+                            <span class="error" *ngIf="
+                        dynamicForm.controls[control.name]?.invalid &&
+                        dynamicForm.controls[control.name]?.touched
+                      ">
+                                {{ getErrorMessage(control) }}
+                            </span>
+                        </div>
+                    </div>
+                </mat-grid-list>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </mat-card-content>
+</mat-card>
