@@ -53,7 +53,7 @@
 }
 
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 768px) {
     .desktop-navbar {
         display: block;
     }
@@ -63,7 +63,7 @@
     }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 768px) {
     .desktop-navbar {
         display: none;
     }

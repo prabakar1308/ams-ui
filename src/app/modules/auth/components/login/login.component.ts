@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: false,
@@ -11,7 +12,11 @@ export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       userId: ['', [Validators.required]],
       password: ['', Validators.required],
@@ -25,6 +30,7 @@ export class LoginComponent {
         next: (res) => {
           console.log('Login successful!', res);
           // Navigate or store token
+          this.router.navigate(['/master']);
         },
         error: (err) => {
           this.errorMessage = err.error.message || 'Login failed';

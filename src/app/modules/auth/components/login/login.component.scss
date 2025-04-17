@@ -1,3 +1,5 @@
+@use 'styles/scss/variables' as *;
+
 .login-page-container {
     display: flex;
     justify-content: center;
@@ -7,6 +9,8 @@
 
     mat-card {
         overflow: hidden;
+        background: $white;
+        box-shadow: 0px 0px 10px 0px $grey-1;
     }
 
     mat-card-content {
@@ -27,21 +31,20 @@
 
             .login-form-title {
                 p {
-                    font-family: sans-serif;
                     font-size: 28px;
                     line-height: 0;
                     font-weight: 700;
-                    color: #0A3D64FF;
+                    color: $blue-1;
 
                     mat-icon {
-                        color: #e4d71f;
+                        color: $yellow-1;
                     }
                 }
 
                 .sub-title {
                     font-size: 12px;
                     padding-left: 5px;
-                    padding-bottom: 20px;
+                    padding-bottom: 40px;
                     font-weight: 100;
                     margin-top: -10px;
                 }
@@ -59,10 +62,18 @@
         }
     }
 
-    @media only screen and (max-width: 1024px) {
+    @media only screen and (max-width: 768px) {
+        mat-card {
+            margin: 10px 20px;
+        }
+
         .login-form-container {
             img {
                 display: none;
+            }
+
+            .login-form {
+                padding: 2rem 3rem;
             }
         }
     }

@@ -48,6 +48,9 @@
               "src/styles.scss",
               "src/assets/styles/app.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/assets"]
+            },
             "scripts": []
           },
           "configurations": {
