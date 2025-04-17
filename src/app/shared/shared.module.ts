@@ -4,10 +4,8 @@ import { MaterialModule } from './material/material.module';
 import { FormGeneratorComponent } from './components/form-generator/form-generator.component';
 
 @NgModule({
-  declarations: [
-    FormGeneratorComponent
-  ],
+  declarations: [FormGeneratorComponent],
   imports: [CommonModule, MaterialModule],
-  exports: [MaterialModule],
+  exports: [MaterialModule, FormGeneratorComponent],
 })
 export class SharedModule {}
