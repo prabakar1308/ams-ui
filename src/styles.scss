@@ -1,4 +1,42 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* You can add global styles to this file, and also import other style files */
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+mat-form-field.small {
+    .mat-mdc-form-field-infix {
+        padding: 8px 0;
+
+        .mat-mdc-input-element {
+            font-size: 14px;
+        }
+    }
+
+    .mat-mdc-text-field-wrapper {
+        height: 40px;
+
+        .mat-mdc-form-field-flex .mat-mdc-floating-label {
+            top: 50%;
+            font-size: 14px;
+
+            &.mdc-floating-label--float-above {
+                top: 70%;
+            }
+        }
+    }
+}
+
+
+
+:root {
+    @include mat.progress-spinner-overrides((active-indicator-color: #eeece9, active-indicator-width: '1px'));
+}

@@ -1,0 +1,80 @@
+@use 'styles/scss/variables' as *;
+
+.login-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: 8%;
+
+    mat-card {
+        overflow: hidden;
+        background: $white;
+        box-shadow: 0px 0px 10px 0px $grey-1;
+    }
+
+    mat-card-content {
+        padding: 0;
+    }
+
+    .login-form-container {
+        display: flex;
+        padding: 0;
+
+        .login-form {
+            width: 100%;
+            padding: 3rem 6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .login-form-title {
+                p {
+                    font-size: 28px;
+                    line-height: 0;
+                    font-weight: 700;
+                    color: $blue-1;
+
+                    mat-icon {
+                        color: $yellow-1;
+                    }
+                }
+
+                .sub-title {
+                    font-size: 12px;
+                    padding-left: 5px;
+                    padding-bottom: 40px;
+                    font-weight: 100;
+                    margin-top: -10px;
+                }
+            }
+
+            mat-form-field {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            button {
+                width: 90%;
+                margin-top: 1rem;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        mat-card {
+            margin: 10px 20px;
+        }
+
+        .login-form-container {
+            img {
+                display: none;
+            }
+
+            .login-form {
+                padding: 2rem 3rem;
+            }
+        }
+    }
+}
