@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
 
@@ -9,6 +9,8 @@ import { filter, Subject, takeUntil } from 'rxjs';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
+  @Input() loggedIn = false;
+  @Output() logout = new EventEmitter<unknown>();
   private unSubscribe = new Subject<void>();
   activeUrl = '';
   // TODO: move this to a common place
@@ -32,6 +34,10 @@ export class NavbarComponent {
 
   ngOnInit(): void {
     this.activeUrl = this.router.url;
+  }
+
+  logoutButton(): void {
+    this.logout.emit(true);
   }
 
   ngOnDestroy(): void {
