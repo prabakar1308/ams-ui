@@ -1,0 +1,57 @@
+import { inject, Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { map, catchError, tap, exhaustMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { userLoginSuccess, userLoginFailure } from '../state/auth.actions';
+import { AuthService } from '../services/auth.service';
+import { Response } from '@shared/models/response';
+import { AuthResponse } from '../models/auth-response';
+import { Router } from '@angular/router';
+import { AuthFacadeService } from '../services/auth-facade.service';
+
+@Injectable()
+export class AuthEffects {
+  private actions$ = inject(Actions);
+  private authService = inject(AuthService);
+  private authFacadeService = inject(AuthFacadeService);
+  private router = inject(Router);
+
+  login$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[Auth] User Login'),
+      exhaustMap(({ payload: { userId, password } }) =>
+        this.authService.login(userId, password).pipe(
+          map((res: Response<AuthResponse>) => {
+            if (res.status !== 200) {
+              return userLoginFailure({ error: res.message || 'Login failed' });
+            }
+            const userData = res.data;
+            if (userData) {
+              if (userData) {
+                localStorage.setItem('userData', JSON.stringify(userData));
+                this.authFacadeService.userSubject.next(userData);
+              }
+              return userLoginSuccess(userData);
+            }
+            return userLoginFailure({ error: 'Login failed' });
+          }),
+          // TODO: this is not working, handled in component
+          tap(() => this.router.navigate(['/master'])),
+          catchError((error) => of(userLoginFailure({ error })))
+        )
+      )
+    )
+  );
+
+  //   loginSuccess$ = createEffect(
+  //     () =>
+  //       this.actions$.pipe(
+  //         ofType('[Auth] User Login Success'),
+  //         tap(() => {
+  //           console.log('Login successful!');
+  //           this.router.navigate(['/master']);
+  //         })
+  //       ),
+  //     { dispatch: false }
+  //   );
+}

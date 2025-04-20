@@ -16,6 +16,7 @@ import {
 } from '@angular/common/http';
 import { LoaderInterceptor } from './core/interceptors/loader.interceptor';
 import { TokenInterceptor } from './modules/auth/interceptors/token.interceptor';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { TokenInterceptor } from './modules/auth/interceptors/token.interceptor'
     AppRoutingModule,
     CoreModule,
     StoreModule.forRoot(reducer),
+    EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [

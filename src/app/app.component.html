@@ -1,5 +1,5 @@
 <div class="app-container">
   <app-loader></app-loader>
-  <app-navbar></app-navbar>
+  <app-navbar [loggedIn]="userLoggedIn" (logout)="onLogout()"></app-navbar>
   <div class="app-body-content"><router-outlet></router-outlet></div>
 </div>

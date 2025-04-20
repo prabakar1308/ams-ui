@@ -1,0 +1,11 @@
+export interface AuthState {
+  isAuthenticated: boolean;
+  userRole: string;
+  userId: string;
+  accessToken: string;
+  refreshToken: string;
+  meta: {
+    isLoading: boolean;
+    error: string;
+  };
+}

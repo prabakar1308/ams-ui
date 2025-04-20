@@ -9,6 +9,9 @@ import {
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, filter, take, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { AuthFacadeService } from '../services/auth-facade.service';
+import { AuthResponse } from '../models/auth-response';
+import { Response } from '@shared/models/response';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -18,15 +21,18 @@ export class TokenInterceptor implements HttpInterceptor {
     null
   );
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private authFacadeService: AuthFacadeService
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    let currentToken = this.authService.currentTokenValues;
-    if (currentToken && currentToken.accessToken) {
-      request = this.addToken(request, currentToken.accessToken);
+    let userData = this.authFacadeService.currentUserData;
+    if (userData && userData.accessToken) {
+      request = this.addToken(request, userData.accessToken);
     }
 
     return next.handle(request).pipe(
@@ -53,15 +59,24 @@ export class TokenInterceptor implements HttpInterceptor {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
 
-      return this.authService.refreshToken().pipe(
-        switchMap((user: any) => {
+      let userData = this.authFacadeService.currentUserData;
+      return this.authService.refreshToken(userData.refreshToken).pipe(
+        switchMap((response: Response<AuthResponse>) => {
           this.isRefreshing = false;
+          if (response.status !== 200) {
+            return throwError(() => response.message || 'Refresh token failed');
+          }
+          const user = response.data;
+
+          localStorage.setItem('userData', JSON.stringify(user));
+          this.authFacadeService.userSubject.next(user);
+
           this.refreshTokenSubject.next(user.accessToken);
           return next.handle(this.addToken(request, user.accessToken));
         }),
         catchError((err) => {
           this.isRefreshing = false;
-          this.authService.logout();
+          this.authFacadeService.logout();
           return throwError(() => err);
         })
       );
