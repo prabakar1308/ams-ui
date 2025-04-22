@@ -8,6 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SharedModule } from '../../shared/shared.module';
 import { authReducer } from './state/auth.reducer';
 import { AuthEffects } from './state/auth.effects';
+import { CoreModule } from '@core/core.module';
 
 @NgModule({
   declarations: [LoginComponent],
@@ -15,6 +16,7 @@ import { AuthEffects } from './state/auth.effects';
     CommonModule,
     AuthRoutingModule,
     SharedModule,
+    CoreModule,
     StoreModule.forFeature('auth', authReducer),
     EffectsModule.forFeature([AuthEffects]),
   ],

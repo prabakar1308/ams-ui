@@ -6,6 +6,7 @@ import { MetaState } from '@shared/models/meta-state';
 import * as fromStore from '../state';
 import * as authActions from '../state/auth.actions';
 import { AuthResponse } from '../models/auth-response';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,10 @@ export class AuthFacadeService {
   public userSubject: BehaviorSubject<any>;
   public userData: Observable<any>;
 
-  constructor(private store: Store<fromStore.AppState>) {
+  constructor(
+    private store: Store<fromStore.AppState>,
+    private router: Router
+  ) {
     this.userData$ = this.store.select(fromStore.getUserData);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
 
@@ -40,6 +44,7 @@ export class AuthFacadeService {
   logout() {
     localStorage.removeItem('userData');
     this.userSubject.next(null);
+    this.router.navigate(['/login']);
   }
 
   public get currentUserData() {
