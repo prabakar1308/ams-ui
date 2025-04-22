@@ -11,12 +11,13 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 
+import { CoreModule } from '@app/core/core.module';
+import { LoaderInterceptor } from '@app/core/interceptors/loader.interceptor';
+import { TokenInterceptor } from '@app/auth/interceptors/token.interceptor';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
 import { reducer } from './state';
-import { LoaderInterceptor } from './core/interceptors/loader.interceptor';
-import { TokenInterceptor } from './modules/auth/interceptors/token.interceptor';
 @NgModule({
   declarations: [AppComponent],
   imports: [

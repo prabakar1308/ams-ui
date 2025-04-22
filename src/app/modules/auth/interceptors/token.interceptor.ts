@@ -7,13 +7,15 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, filter, take, switchMap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
+
+import { Response } from '@app/shared/models/response';
+import { NotificationService } from '@app/core/services/notification.service';
+import { SEVERITY } from '@app/core/core.contants';
+
 import { AuthService } from '../services/auth.service';
 import { AuthFacadeService } from '../services/auth-facade.service';
 import { AuthResponse } from '../models/auth-response';
-import { Response } from '@shared/models/response';
-import { NotificationService } from '@core/services/notification.service';
-import { SEVERITY } from '@core/core.contants';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {

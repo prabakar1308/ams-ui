@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CORE_CONSTANTS, SEVERITY } from '@core/core.contants';
+import { CORE_CONSTANTS, SEVERITY } from '@app/core/core.contants';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({

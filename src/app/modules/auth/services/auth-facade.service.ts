@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { MetaState } from '@shared/models/meta-state';
+import { MetaState } from '@app/shared/models/meta-state';
 import * as fromStore from '../state';
 import * as authActions from '../state/auth.actions';
 import { AuthResponse } from '../models/auth-response';

@@ -4,12 +4,12 @@ import { map, catchError, tap, exhaustMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { userLoginSuccess, userLoginFailure } from '../state/auth.actions';
 import { AuthService } from '../services/auth.service';
-import { Response } from '@shared/models/response';
+import { Response } from '@app/shared/models/response';
 import { AuthResponse } from '../models/auth-response';
 import { Router } from '@angular/router';
 import { AuthFacadeService } from '../services/auth-facade.service';
-import { NotificationService } from '@core/services/notification.service';
-import { SEVERITY } from '@core/core.contants';
+import { NotificationService } from '@app/core/services/notification.service';
+import { SEVERITY } from '@app/core/core.contants';
 
 @Injectable()
 export class AuthEffects {
