@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use 'styles/scss/variables' as *;
 
 /* You can add global styles to this file, and also import other style files */
 html,
@@ -39,4 +40,15 @@ mat-form-field.small {
 
 :root {
     @include mat.progress-spinner-overrides((active-indicator-color: #eeece9, active-indicator-width: '1px'));
+    @include mat.select-overrides((
+    panel-background-color: $white,
+    enabled-trigger-text-color: #5e67e3,
+    container-elevation-shadow: none,
+    trigger-text-weight: 500,
+  ));
+  
+}
+
+.head{
+    color: $dark-green;
 }

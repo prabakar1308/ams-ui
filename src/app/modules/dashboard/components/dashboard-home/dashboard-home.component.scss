@@ -1,6 +1,14 @@
+@use 'styles/scss/variables' as *;
+@use '@angular/material' as mat;
+
 .tank-container {
     margin: 20px;
-    padding: 10px;
+    padding-left: 75px;
+    padding-right: 75px;
+}
+
+.title-table{
+    width: 100%;
 }
 
 .table-header {
@@ -10,7 +18,7 @@
 
 .table-header td {
     width: 20%;
-    
+    text-align: center;
 }
 
 .table-header td:first-child {
@@ -19,7 +27,7 @@
 
 .mat-detail-card {
     margin-top: 10px;
-    background-color: white;
+    background-color: $white;
 }
 
 .user-img {
@@ -27,10 +35,77 @@
 }
 
 .head{
-    color: #1aa3a0;
+    color: $dark-green;
 }
 
 .tbl-header{
-    color: #1aa3a0;
+    color: #5f6269;
     font-weight: bold;
 }
+
+.grey{
+    color: $grey;
+}
+
+.image{
+    text-align: left !important;;
+    padding-left: 5%;
+}
+
+.pagination{
+    margin-top: 12px;
+}
+
+.status{
+    color: #23a9f3;
+    font-weight: 500;
+}
+
+.img-user{
+    margin-left: 40px;
+    margin-top: -25px;
+}
+
+
+.ml15{
+    padding-left: $m15;
+}
+
+.mat-button-toggle-group{
+    border-radius: 8px;
+    background-color: #5e67e3;
+}
+
+.mat-button-toggle-appearance-standard{
+    color: white;
+}
+.mat-button-toggle-appearance-standard.mat-button-toggle-checked{
+    background-color: #e0e0ff !important;
+    color: #5e67e3 !important;
+}
+
+.user-box{
+    padding-left: 15px;
+    padding-top: 10px;
+}
+.mat-mdc-form-field{
+    height: 75px;
+}
+
+// .mat-mdc-form-field-type-mat-select:not(.mat-form-field-disabled){
+//     background-color: $white !important;
+//     padding-top: 10px;
+// }
+
+.refresh-btn{
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+    color: #5e67e3;
+    font-size: 18px;
+    border: 1px solid;
+    font-family: math;
+}
+//mat-mdc-text-field-wrapper mdc-text-field mdc-text-field--filled
+

@@ -1,0 +1,40 @@
+@use 'styles/scss/variables' as *;
+
+.head{
+    color: $dark-green;
+}
+.ams-prod-table {
+    width: 100%;
+    padding-left: 2%;
+}
+
+.ams-prod-table td {
+    width: 20%;
+    
+}
+
+.ams-prod-table mat-card {
+    margin-left: 10px;
+    height: 150px;
+    margin-right: 10px;
+    background-color: white;
+    text-align: center;
+    padding-top: 15px;
+    width: 85%;
+}
+
+.ams-prod-table mat-icon {
+    color: $dark-green;
+    margin-bottom: 15px;
+}
+
+.card-footer{
+    margin-top: $mt10;
+    color: $grey;
+}
+
+.card-body span{
+    font-weight: 500;
+    font-size: 18px;
+    color: #279ceb;
+}
