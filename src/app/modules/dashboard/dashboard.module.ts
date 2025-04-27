@@ -8,18 +8,23 @@ import { DashboardStatusComponent } from './components/dashboard-status/dashboar
 import { SharedModule } from '../../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { dashboardReducer } from './state/dashboard.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { DashboardEffects } from './state/dashboard.effects';
+import { DashboardFilterComponent } from './components/dashboard-filter/dashboard-filter.component';
 
 @NgModule({
   declarations: [
     DashboardHomeComponent,
     DashboardReportsComponent,
     DashboardStatusComponent,
+    DashboardFilterComponent,
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     SharedModule,
     StoreModule.forFeature('dashboard', dashboardReducer),
+    EffectsModule.forFeature([DashboardEffects]),
   ],
 })
 export class DashboardModule {}

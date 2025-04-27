@@ -7,9 +7,7 @@
     padding-right: 75px;
 }
 
-.title-table{
-    width: 100%;
-}
+
 
 .table-header {
     width: 100%;
@@ -17,7 +15,7 @@
 }
 
 .table-header td {
-    width: 20%;
+    width: 15%;
     text-align: center;
 }
 
@@ -31,7 +29,8 @@
 }
 
 .user-img {
-    width: 12%;
+    width: 18%;
+    display: block;
 }
 
 .head{
@@ -43,14 +42,17 @@
     font-weight: bold;
 }
 
+.tbl-header td:first-child {
+    width: 5%;
+}
+.tbl-header td {
+    width: 15%;
+    text-align: center;
+}
 .grey{
     color: $grey;
 }
 
-.image{
-    text-align: left !important;;
-    padding-left: 5%;
-}
 
 .pagination{
     margin-top: 12px;
@@ -62,50 +64,15 @@
 }
 
 .img-user{
-    margin-left: 40px;
-    margin-top: -25px;
-}
-
-
-.ml15{
-    padding-left: $m15;
-}
-
-.mat-button-toggle-group{
-    border-radius: 8px;
-    background-color: #5e67e3;
-}
-
-.mat-button-toggle-appearance-standard{
-    color: white;
-}
-.mat-button-toggle-appearance-standard.mat-button-toggle-checked{
-    background-color: #e0e0ff !important;
-    color: #5e67e3 !important;
+    margin-left: 20px;
+    margin-top: -30px;
 }
 
 .user-box{
     padding-left: 15px;
     padding-top: 10px;
 }
-.mat-mdc-form-field{
-    height: 75px;
-}
 
-// .mat-mdc-form-field-type-mat-select:not(.mat-form-field-disabled){
-//     background-color: $white !important;
-//     padding-top: 10px;
-// }
 
-.refresh-btn{
-    cursor: pointer;
-    border-radius: 10px;
-    padding: 10px;
-    background-color: white;
-    color: #5e67e3;
-    font-size: 18px;
-    border: 1px solid;
-    font-family: math;
-}
 //mat-mdc-text-field-wrapper mdc-text-field mdc-text-field--filled
 

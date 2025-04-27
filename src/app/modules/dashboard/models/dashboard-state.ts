@@ -1,4 +1,10 @@
+import { WorksheetDetails } from "@modules/worksheet/models/worksheet-detaills";
+
 export interface DashboardState {
-  tankDetails: any;
-  meta: any;
+  tankNumber: number;
+  worksheet: WorksheetDetails;
+  meta: {
+    isLoading: boolean;
+    error: string;
+  };
 }

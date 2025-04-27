@@ -1,0 +1,31 @@
+.title-table{
+    width: 100%;
+}
+
+
+.mat-button-toggle-group{
+    border-radius: 8px;
+    background-color: #5e67e3;
+}
+
+.mat-button-toggle-appearance-standard{
+    color: white;
+}
+.mat-button-toggle-appearance-standard.mat-button-toggle-checked{
+    background-color: #e0e0ff;
+    color: #5e67e3;
+}
+
+.mt15{
+    margin-top: 15px;
+}
+.refresh-btn{
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+    color: #5e67e3;
+    font-size: 18px;
+    border: 1px solid;
+    font-family: math;
+}
