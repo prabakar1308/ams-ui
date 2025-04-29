@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MetaState } from '@shared/models/meta-state';
-import { StatusDetails } from '@shared/models/status-details';
+import { WorksheetStatus } from '@shared/models/worksheet-status';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as fromStore from '../state';
 import { Store } from '@ngrx/store';
@@ -8,42 +8,32 @@ import * as sharedAction from '../state/shared-actions';
 import { UserDetails } from '@shared/models/user-details';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SharedFacadeService {
-statusData$: Observable<StatusDetails>;
-userData$: Observable<UserDetails>;
+  worksheetStatus$: Observable<WorksheetStatus[]>;
+  userData$: Observable<UserDetails[]>;
   meta$: Observable<MetaState>;
-  public statusSubject: BehaviorSubject<any>;
-  public statusData: Observable<any>;
-  public userSubject: BehaviorSubject<any>;
-  public userDerails: Observable<any>;
+
   constructor(private store: Store<fromStore.AppState>) {
-      this.statusData$ = this.store.select(fromStore.getStatusData);
-      this.userData$ = this.store.select(fromStore.getUserData);
-      this.meta$ = this.store.select(fromStore.getMetaInfo);
-  
-      const statusList = localStorage.getItem('statusData');
-      const userList = localStorage.getItem('userDerails');
-      this.userSubject = new BehaviorSubject<any>(userList ? JSON.parse(userList) : null);
-      this.statusSubject = new BehaviorSubject<any>(statusList ? JSON.parse(statusList) : null);
-      this.statusData = this.statusSubject.asObservable();
-      this.userDerails = this.userSubject.asObservable();
-    }
+    this.worksheetStatus$ = this.store.select(fromStore.getWorksheetStatus);
+    this.userData$ = this.store.select(fromStore.getUserData);
+    this.meta$ = this.store.select(fromStore.getMetaInfo);
+  }
 
-    getStatusData() {
-        this.store.dispatch(sharedAction.getStatusData());
-      }
+  getWorksheetStatus() {
+    this.store.dispatch(sharedAction.getWorksheetStatus());
+  }
 
-    getStatusDataSuccess(response: StatusDetails) {
-        this.store.dispatch(sharedAction.getStatusSuccess(response));
-      }
+  getWorksheetStatusSuccess(response: WorksheetStatus[]) {
+    this.store.dispatch(sharedAction.getWorksheetStatusSuccess(response));
+  }
 
-      getUserDetails() {
-        this.store.dispatch(sharedAction.getUserDetails());
-      }
+  getUsersList() {
+    this.store.dispatch(sharedAction.getUsersList());
+  }
 
-    getUserDataSuccess(response: UserDetails) {
-        this.store.dispatch(sharedAction.getUserSuccess(response));
-      }
+  getUserDetailsSuccess(response: UserDetails[]) {
+    this.store.dispatch(sharedAction.getUsersListSuccess(response));
+  }
 }

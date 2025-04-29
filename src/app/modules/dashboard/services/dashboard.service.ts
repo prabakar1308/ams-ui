@@ -1,25 +1,35 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DashboardResponse } from '../models/dashboard-response';
-import { Response } from '../../../shared/models/response';
+
+import { Response } from '@shared/models/response';
+import { DashboardResponse, TankWiseStatus } from '../models/dashboard-response';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DashboardService {
   private API_URL = 'http://localhost:3000/api/dashboard';
-  //private httpHeaders = { Authorization : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTc0NTE2NTQ1MiwiZXhwIjoxNzQ1MjUxODUyLCJhdWQiOiJsb2NhbGhvc3Q6MzAwMCIsImlzcyI6ImxvY2FsaG9zdDozMDAwIn0.hHYJndm01bFo_OZ9K5rmVRl9kr7Un5no9BzBUR9pRBI'};
-  
-    //'Authorization': `Bearer ${localStorage.getItem('token')}`
-  
-    constructor(private http: HttpClient) {}
-  
-    getActiveWorksheets(userId: number, tankTypeId: number, statusId: number) {
-      console.log('userId', userId);
-      return this.http.post<Response<DashboardResponse>>(`${this.API_URL}/active-worksheets`, {
-        userId,
-        tankTypeId,
-        statusId
-      });
-    }
+
+  constructor(private http: HttpClient) {}
+
+  getActiveWorksheets(userId: number, tankTypeId: number, statusId: number) {
+    return this.http.post<Response<DashboardResponse>>(`${this.API_URL}/active-worksheets`, {
+      userId,
+      tankTypeId,
+      statusId,
+    });
+  }
+
+  getTankWiseStatus(tankTypeId: number): Observable<Response<TankWiseStatus[]>> {
+    return this.http.get<Response<TankWiseStatus[]>>(
+      `${this.API_URL}/tank-wise-statuses/${tankTypeId}`,
+    );
+  }
+
+  getUsersByTankWise(tankTypeId: number): Observable<Response<TankWiseStatus[]>> {
+    return this.http.get<Response<TankWiseStatus[]>>(
+      `${this.API_URL}/tank-wise-users/${tankTypeId}`,
+    );
+  }
 }

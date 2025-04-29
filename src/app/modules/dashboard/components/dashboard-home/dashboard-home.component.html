@@ -1,81 +1,29 @@
-<div class="tank-container">
-    <div>
-        <app-dashboard-status></app-dashboard-status>
-    </div>
-    <div>
-       <app-dashboard-filter (changeStatus)="onStatusChange($event)" (changeUser)="onUserChange($event)"
-       (changeTankType)="onTankTypeChange($event)" (refresh)="loadAllData()"></app-dashboard-filter>
-<div>
-<mat-card appearance="outlined">
-    <mat-card-content>
-        <table class="table-header">
-            <tr>
-                <td> <mat-checkbox></mat-checkbox></td>
-                <td class="tbl-header">Tank Number</td>
-                <td class="tbl-header">Harvest Type</td>
-                <td class="tbl-header">Input</td>
-                <td class="tbl-header">Assigned User</td>
-                <td class="tbl-header">Status</td>
-                <td class="tbl-header">Action</td>
-            </tr>
-        </table>
-    </mat-card-content>
-  </mat-card>
-</div>
-<div>
-    @for (data of dashboardData; track data) {
-    <mat-card appearance="outlined" class="mat-detail-card">
-        <mat-card-content>
-            <table class="table-header">
-                    <tr>
-                        <td> <mat-checkbox></mat-checkbox></td>
-                        <td>Tank {{data.tankNumber}}</td>
-                        <td class="grey">
-                            @if (data.worksheet && data.worksheet.harvestType) {
-                                <span>{{data.worksheet.harvestType.value}}</span>
-                              } @else {
-                                <span>-</span>
-                              }
-                          </td>
-                          <td>
-                            @if (data.worksheet) {
-                                <span>{{data.worksheet.inputCount}}&nbsp;{{data.worksheet.inputSource}}</span>
-                              } @else {
-                                <span>-</span>
-                              }
-                          </td>
-                        <td>
-                            @if (data.worksheet && data.worksheet.user) {
-                                <img src="assets/images/user.png" alt="User" class="user-img"><div class="img-user">
-                                    {{data.worksheet.user.firstName}} {{data.worksheet.user.lastName}}
-                                </div>
-                            } @else {
-                                <span>-</span>
-                              }
-                           
-                        </td>
-                        <td class="status">
-                            @if (data.worksheet && data.worksheet.status) {
-                                <span>{{data.worksheet.status.value}}</span>
-                            } @else {
-                                <span>-</span>
-                              }
-                            </td>
-                        <td><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="preview"></mat-icon></td>
-                    </tr>
-                  
-                
-            </table>
-        </mat-card-content>
-      </mat-card>
-    }
-    </div>
-    <!-- <div class="pagination">
-        <mat-paginator [length]="100"
-              [pageSize]="10"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              aria-label="Select page">
-</mat-paginator>
-    </div> -->
-</div>
+<div class="dashboard-container">
+  <div>
+    <app-dashboard-status></app-dashboard-status>
+  </div>
+  <div class="chart-section">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <div class="card-header">
+          <mat-card-title>Tank Status</mat-card-title>
+          <mat-button-toggle-group
+            [value]="tankTypeId"
+            (change)="toggleChange($event)"
+            name="tankType"
+            aria-label="Tank Type"
+          >
+            <mat-button-toggle [value]="1">Machinery</mat-button-toggle>
+            <mat-button-toggle [value]="2">Conventional</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="flex flex-row w-full">
+          <div #chartContainer class="chart-container-cl w-auto" id="chart-container"></div>
+          <div #userChartContainer class="chart-container-cl" id="user-chart-container"></div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
-// import { StatusDetails } from '@shared/models/worksheet-status';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { WorksheetStatus } from '@shared/models/worksheet-status';
 import { SharedFacadeService } from '@shared/service/shared-facade.service';
 import { Output, EventEmitter } from '@angular/core';
 import { UserDetails } from '@shared/models/user-details';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-dashboard-filter',
+  selector: 'app-worksheet-filter',
   standalone: false,
-  templateUrl: './dashboard-filter.component.html',
-  styleUrl: './dashboard-filter.component.scss',
+  templateUrl: './worksheet-filter.component.html',
+  styleUrl: './worksheet-filter.component.scss',
 })
-export class DashboardFilterComponent {
+export class WorksheetFilterComponent implements OnInit, OnDestroy {
+  private unSubscribe = new Subject<void>();
   @Output() changeStatus = new EventEmitter<number>();
   @Output() changeUser = new EventEmitter<number>();
   @Output() changeTankType = new EventEmitter<string>();
@@ -20,40 +22,36 @@ export class DashboardFilterComponent {
   userDetails: UserDetails[] | null = null;
 
   selectedStatus: number = 0;
-  statusDetails = [];
+  statusDetails: WorksheetStatus[] | null = null;
   constructor(
     private sharedFacade: SharedFacadeService,
     private router: Router,
   ) {}
   ngOnInit() {
     this.sharedFacade.getWorksheetStatus();
+    this.sharedFacade.getUsersList();
 
-    // this.sharedFacade.statusData.subscribe((data) => {
-    //   this.statusDetails = data;
-    //   console.log('statusDetails', this.statusDetails);
-    // });
+    // subscriptions
+    this.sharedFacade.worksheetStatus$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
+      this.statusDetails = data;
+    });
 
-    // this.sharedFacade.getUsersList();
-    // this.sharedFacade.userDerails.subscribe((data) => {
-    //   this.userDetails = data;
-    //   console.log('userDetails', this.userDetails);
-    // });
+    this.sharedFacade.userData$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
+      this.userDetails = data;
+    });
   }
 
   onStatusChange(event: any) {
     this.selectedStatus = event;
     this.changeStatus.emit(this.selectedStatus);
-    console.log('Selected status:', this.selectedStatus);
   }
   onUserChange(event: any) {
     this.selectedUser = event;
     this.changeUser.emit(this.selectedUser);
-    console.log('Selected user:', this.selectedUser);
   }
 
   onTankTypeChange(event: any) {
     this.changeTankType.emit(event);
-    console.log('Selected tank type:', event);
   }
 
   onRefresh() {
@@ -61,6 +59,11 @@ export class DashboardFilterComponent {
   }
 
   onCreateWorksheet() {
-    this.router.navigate(['/worksheet']);
+    this.router.navigate(['/worksheet/create']);
+  }
+
+  ngOnDestroy(): void {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 }

@@ -1,4 +1,4 @@
-import { WorksheetDetails } from "@modules/worksheet/models/worksheet-detaills";
+import { WorksheetDetails } from '@modules/worksheet/models/worksheet-details';
 
 export interface DashboardState {
   tankNumber: number;

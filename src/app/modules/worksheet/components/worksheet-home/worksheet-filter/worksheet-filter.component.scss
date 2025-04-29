@@ -1,0 +1,18 @@
+.worksheet-filter-container {
+
+    padding-top: 25px;
+    width: 100%;
+
+    .filter-section {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .dropdown-items {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+    }
+}

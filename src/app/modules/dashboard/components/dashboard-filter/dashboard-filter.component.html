@@ -1,51 +1,55 @@
 <table class="title-table">
-    <tr>
-        <td>
-            <h4 class="head">Tank Details</h4> 
-        </td>
-        <td>
-            <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="onTankTypeChange($event.value)">
-                <mat-button-toggle value="Machinery">Machinery</mat-button-toggle>
-                <mat-button-toggle value="Conventional">Conventional</mat-button-toggle>
-                <mat-button-toggle value="All">All</mat-button-toggle>
-              </mat-button-toggle-group>
-        </td>
-        <td>
-            <mat-form-field appearance="outline" class="small mt15">
-                <mat-label>User</mat-label>
-                    <mat-select [(ngModel)]="selectedUser" (selectionChange)="onUserChange($event.value)">
-                        @for (user of userDetails; track user) {
-                          <mat-option [value]="user.id">{{user.firstName}}&nbsp;{{user.lastName}}</mat-option>
-                        }
-                </mat-select>
-              </mat-form-field>
-        </td>
-        <td>
-            <mat-form-field appearance="outline" class="small mt15">
-                <mat-label>Status</mat-label>
-               
-                    <mat-select [(ngModel)]="selectedStatus" (selectionChange)="onStatusChange($event.value)">
+  <tr>
+    <td>
+      <h4 class="head">Tank Details</h4>
+    </td>
+    <td>
+      <mat-button-toggle-group
+        name="fontStyle"
+        aria-label="Font Style"
+        (change)="onTankTypeChange($event.value)"
+      >
+        <mat-button-toggle value="Machinery">Machinery</mat-button-toggle>
+        <mat-button-toggle value="Conventional">Conventional</mat-button-toggle>
+        <mat-button-toggle value="All">All</mat-button-toggle>
+      </mat-button-toggle-group>
+    </td>
+    <td>
+      <mat-form-field appearance="outline" class="ams-small mt15">
+        <mat-label>User</mat-label>
+        <mat-select [(ngModel)]="selectedUser" (selectionChange)="onUserChange($event.value)">
+          @for (user of userDetails; track user) {
+            <mat-option [value]="user.id">{{ user.firstName }}&nbsp;{{ user.lastName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </td>
+    <td>
+      <mat-form-field appearance="outline" class="ams-small mt15">
+        <mat-label>Status</mat-label>
+
+        <!-- <mat-select [(ngModel)]="selectedStatus" (selectionChange)="onStatusChange($event.value)">
                         @for (option of statusDetails; track option) {
                           <mat-option [value]="option.id">{{option.value}}</mat-option>
                         }
-                </mat-select>
-              </mat-form-field>
-        </td>
-        <td>
-            <div>
-              <button mat-raised-button color="primary" (click)="onRefresh()">
-                Refresh
-                <mat-icon>sync</mat-icon>
-              </button>
-            </div>
-        </td>
-        <td>
-            <div>
-              <button mat-raised-button color="primary" (click)="onCreateWorksheet()">
-                Create workflow
-                <mat-icon>add_circle</mat-icon>
-              </button>
-            </div>
-        </td>
-    </tr>
+                </mat-select> -->
+      </mat-form-field>
+    </td>
+    <td>
+      <div>
+        <button mat-raised-button color="primary" (click)="onRefresh()">
+          Refresh
+          <mat-icon>sync</mat-icon>
+        </button>
+      </div>
+    </td>
+    <td>
+      <div>
+        <button mat-raised-button color="primary" (click)="onCreateWorksheet()">
+          Create workflow
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+    </td>
+  </tr>
 </table>

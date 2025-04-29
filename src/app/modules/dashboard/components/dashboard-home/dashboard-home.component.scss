@@ -1,78 +1,24 @@
 @use 'styles/scss/variables' as *;
 @use '@angular/material' as mat;
 
-.tank-container {
-    margin: 20px;
-    padding-left: 75px;
-    padding-right: 75px;
+
+.dashboard-container {
+
+    margin-top: 30px;
+
+    .chart-section {
+        margin-top: 30px;
+
+        .card-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .chart-container-cl {
+            width: 50%;
+            height: 32rem;
+        }
+    }
 }
-
-
-
-.table-header {
-    width: 100%;
-    padding-left: 2%;
-}
-
-.table-header td {
-    width: 15%;
-    text-align: center;
-}
-
-.table-header td:first-child {
-    width: 5%;
-}
-
-.mat-detail-card {
-    margin-top: 10px;
-    background-color: $white;
-}
-
-.user-img {
-    width: 18%;
-    display: block;
-}
-
-.head{
-    color: $dark-green;
-}
-
-.tbl-header{
-    color: #5f6269;
-    font-weight: bold;
-}
-
-.tbl-header td:first-child {
-    width: 5%;
-}
-.tbl-header td {
-    width: 15%;
-    text-align: center;
-}
-.grey{
-    color: $grey;
-}
-
-
-.pagination{
-    margin-top: 12px;
-}
-
-.status{
-    color: #23a9f3;
-    font-weight: 500;
-}
-
-.img-user{
-    margin-left: 20px;
-    margin-top: -30px;
-}
-
-.user-box{
-    padding-left: 15px;
-    padding-top: 10px;
-}
-
-
-//mat-mdc-text-field-wrapper mdc-text-field mdc-text-field--filled
-

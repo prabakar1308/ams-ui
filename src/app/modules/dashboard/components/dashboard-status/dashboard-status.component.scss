@@ -1,17 +1,6 @@
 @use 'styles/scss/variables' as *;
 
-.head{
-    color: $dark-green;
-}
-.ams-prod-table {
-    width: 100%;
-    padding-left: 2%;
-}
 
-.ams-prod-table td {
-    width: 20%;
-    
-}
 
 .ams-prod-table mat-card {
     margin-left: 10px;
@@ -28,12 +17,12 @@
     margin-bottom: 15px;
 }
 
-.card-footer{
+.card-footer {
     margin-top: $mt10;
     color: $grey;
 }
 
-.card-body span{
+.card-body span {
     font-weight: 500;
     font-size: 18px;
     color: #279ceb;

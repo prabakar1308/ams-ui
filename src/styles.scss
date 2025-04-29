@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use 'styles/scss/variables' as *;
+@use "tailwindcss";
 
 /* You can add global styles to this file, and also import other style files */
 html,
@@ -13,7 +14,7 @@ body {
 }
 
 
-mat-form-field.small {
+mat-form-field.ams-small {
     .mat-mdc-form-field-infix {
         padding: 8px 0;
 
@@ -40,8 +41,26 @@ mat-form-field.small {
 
 :root {
     @include mat.progress-spinner-overrides((active-indicator-color: #eeece9, active-indicator-width: '1px'));
+
+    @include mat.select-overrides((trigger-text-size: 10px,
+        ));
+
+    @include mat.button-toggle-overrides((height: '30px',
+        ));
+
+    @include mat.card-overrides((outlined-container-color: #ffffff,
+            outlined-container-elevation: 1px 1px 10px 1px gray));
+
 }
 
-.head{
+mat-card {
+    margin: 10px 2px;
+}
+
+.head {
     color: $dark-green;
+}
+
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
+    border-right-style: hidden;
 }

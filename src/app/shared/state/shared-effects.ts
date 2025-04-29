@@ -2,43 +2,65 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, tap, exhaustMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { Router } from "@angular/router";
-import { SharedFacadeService } from "@shared/service/shared-facade.service";
-import { SharedService } from "@shared/service/shared-service";
-import { getStatusFailure, getStatusSuccess, getUserFailure, getUserSuccess } from "./shared-actions";
+import { SharedService } from '@shared/service/shared-service';
+import {
+  getWorksheetStatusSuccess,
+  getWorksheetStatusFailure,
+  getUsersListFailure,
+  getUsersListSuccess,
+} from './shared-actions';
+import { Response } from '@shared/models/response';
+import { WorksheetStatus } from '@shared/models/worksheet-status';
+import { UserDetails } from '@shared/models/user-details';
 
 @Injectable()
 export class SharedEffects {
   private actions$ = inject(Actions);
   private sharedService = inject(SharedService);
-  private sharedFacadeService = inject(SharedFacadeService);
 
-  getStatusData$ = createEffect(() =>
-      this.actions$.pipe(
-        ofType('[Dashboard] Load Status Details'), // Replace with the actual action type
-        exhaustMap(() =>
-          this.sharedService.getStatusData().pipe(
-            map((res: any) => {
-              console.log('res', res);
-              if (res.status !== 200) {
-                return getStatusFailure({ error: res.message || 'Get status details failed' });
-              }
-              const statusData = res.data;
-              if (statusData) {
-               // if (statusData) {
-                  localStorage.setItem('statusData', JSON.stringify(statusData));
-                  this.sharedFacadeService.statusSubject.next(statusData);
-               // }
-                return getStatusSuccess(statusData);
-              }
-              return getStatusFailure({ error: res.message || 'Get status details failed' });
-            }),
-            // TODO: this is not working, handled in component
-           // tap(() => this.router.navigate(['/master'])),
-            catchError((error) => of(getStatusFailure({ error })))
-          )
-        )
-      )
-    );
+  getWorksheetStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[Shared] Get Worksheet Status'),
+      exhaustMap(() =>
+        this.sharedService.getWorksheetStatus().pipe(
+          map((res: Response<WorksheetStatus[]>) => {
+            if (res.status !== 200) {
+              return getWorksheetStatusFailure({
+                error: res.message || 'Get status details failed',
+              });
+            }
 
-  }
+            if (res.data) {
+              return getWorksheetStatusSuccess(res.data);
+            }
+            return getWorksheetStatusFailure({
+              error: res.message || 'Get worksheet status details failed',
+            });
+          }),
+          catchError((error) => of(getWorksheetStatusFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getUserData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[Shared] Get Users List'), // Replace with the actual action type
+      exhaustMap(() =>
+        this.sharedService.getUserData().pipe(
+          map((res: Response<{ data: UserDetails[] }>) => {
+            console.log('user res', res);
+            if (res.status !== 200) {
+              return getUsersListFailure({ error: res.message || 'Get User Details failed' });
+            }
+            if (res.data.data) {
+              return getUsersListSuccess(res.data.data);
+            }
+            return getUsersListFailure({ error: res.message || 'Get user details failed' });
+          }),
+          catchError((error) => of(getUsersListFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+}

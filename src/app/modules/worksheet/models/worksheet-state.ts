@@ -1,4 +1,10 @@
+import { ActiveWorksheet } from './active-worksheet';
+import { WorksheetDetails } from './worksheet-details';
+
 export interface WorksheetState {
-  worksheet: any;
-  meta: any;
+  activeWorksheets: ActiveWorksheet[];
+  meta: {
+    isLoading: boolean;
+    error: string;
+  };
 }

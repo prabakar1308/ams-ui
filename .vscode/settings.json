@@ -1,0 +1,22 @@
+{    
+    "editor.formatOnSave": true,
+    "vscode-color-picker.languages": [
+        "python",
+        "javascript",
+        "typescript"
+    ],
+    "tailwindCSS.includeLanguages": {
+        "html": "html",
+        "javascript": "javascript",
+        "css": "css",
+        "typescript": "typescript",
+        "typescriptreact": "html"
+    },
+    "tailwindCSS.emmetCompletions": true, // Enable Emmet completions for Tailwind
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "css.validate": false, // Disable CSS validation to avoid conflicts with Tailwind
+    "scss.validate": false, // Disable SCSS validation for Tailwind
+    "less.validate": false // Disable LESS validation for Tailwind
+}

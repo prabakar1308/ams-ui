@@ -1,1 +1,88 @@
-<app-form-generator />
+<div class="tank-container">
+  <div>
+    <app-worksheet-filter
+      (changeStatus)="onStatusChange($event)"
+      (changeUser)="onUserChange($event)"
+      (changeTankType)="onTankTypeChange($event)"
+      (refresh)="loadAllData()"
+    ></app-worksheet-filter>
+    <div>
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <table class="table-header">
+            <tr>
+              <td><mat-checkbox></mat-checkbox></td>
+              <td class="tbl-header">Tank Number</td>
+              <td class="tbl-header">Harvest Type</td>
+              <td class="tbl-header">Input</td>
+              <td class="tbl-header">Assigned User</td>
+              <td class="tbl-header">Status</td>
+              <td class="tbl-header">Action</td>
+            </tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div>
+      @for (data of activeWorksheets; track data) {
+        <mat-card appearance="outlined" class="mat-detail-card">
+          <mat-card-content>
+            <table class="table-header">
+              <tr>
+                <td><mat-checkbox></mat-checkbox></td>
+                <td>Tank {{ data.tankNumber }}</td>
+                <td class="grey">
+                  @if (data.worksheet && data.worksheet.harvestType) {
+                    <span>{{ data.worksheet.harvestType.value }}</span>
+                  } @else {
+                    <span>-</span>
+                  }
+                </td>
+                <td>
+                  @if (data.worksheet) {
+                    <span
+                      >{{ data.worksheet.inputCount }}&nbsp;{{ data.worksheet.inputSource }}</span
+                    >
+                  } @else {
+                    <span>-</span>
+                  }
+                </td>
+                <td>
+                  @if (data.worksheet && data.worksheet.user) {
+                    <img src="assets/images/user.png" alt="User" class="user-img" />
+                    <div class="img-user">
+                      {{ data.worksheet.user.firstName }} {{ data.worksheet.user.lastName }}
+                    </div>
+                  } @else {
+                    <span>-</span>
+                  }
+                </td>
+                <td class="status">
+                  @if (data.worksheet && data.worksheet.status) {
+                    <span>{{ data.worksheet.status.value }}</span>
+                  } @else {
+                    <span>-</span>
+                  }
+                </td>
+                <td>
+                  <mat-icon
+                    aria-hidden="false"
+                    aria-label="Example home icon"
+                    fontIcon="preview"
+                  ></mat-icon>
+                </td>
+              </tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+    <!-- <div class="pagination">
+          <mat-paginator [length]="100"
+                [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]"
+                aria-label="Select page">
+  </mat-paginator>
+      </div> -->
+  </div>
+</div>
