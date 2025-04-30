@@ -1,11 +1,18 @@
 import { createAction } from '@ngrx/store';
+import { DashboardResponse } from '../models/dashboard-response';
+import { DashboardRequest } from '../models/dashboard-request';
 
-export const loadTankDetails = createAction(
-  '[Dashboard] Load Tank Details',
-  (payload: { tankTypeId: number }) => ({ payload })
+export const getDashboardData = createAction(
+  '[Dashboard] Get Production Data',
+  (payload: DashboardRequest) => ({ payload }),
 );
 
-export const loadTankDetailsSuccess = createAction(
-  '[Dashboard] Load Tank Details Success',
-  (payload: { tankDetails: any[] }) => ({ payload })
+export const getDashboardDataSuccess = createAction(
+  '[Dashboard] Get Production Data Success',
+  (payload: DashboardResponse) => ({ payload }),
+);
+
+export const getDashboardDataFailure = createAction(
+  '[Dashboard] Get Production Data Failure',
+  (payload: { error: string }) => ({ payload }),
 );

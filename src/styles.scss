@@ -1,4 +1,6 @@
 @use '@angular/material' as mat;
+@use 'styles/scss/variables' as *;
+@use "tailwindcss";
 @import url('../node_modules/ngx-toastr/toastr.css');
 
 /* You can add global styles to this file, and also import other style files */
@@ -9,17 +11,21 @@ body {
 
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 
-mat-form-field.small {
+mat-form-field.ams-small {
     .mat-mdc-form-field-infix {
         padding: 8px 0;
 
         .mat-mdc-input-element {
             font-size: 14px;
         }
+    }
+
+    .mat-mdc-form-field-icon-suffix {
+        margin-top: -15px;
     }
 
     .mat-mdc-text-field-wrapper {
@@ -30,7 +36,7 @@ mat-form-field.small {
             font-size: 14px;
 
             &.mdc-floating-label--float-above {
-                top: 70%;
+                top: 75%;
             }
         }
     }
@@ -39,5 +45,51 @@ mat-form-field.small {
 
 
 :root {
+
+    // core
+    @include mat.core-overrides((option-label-text-size: 14px,
+        ));
+
     @include mat.progress-spinner-overrides((active-indicator-color: #eeece9, active-indicator-width: '1px'));
+
+    @include mat.select-overrides((trigger-text-size: 14px,
+        ));
+
+
+
+    @include mat.button-toggle-overrides((height: '30px',
+        ));
+
+    @include mat.card-overrides((outlined-container-color: #ffffff,
+            outlined-container-elevation: 1px 1px 10px 1px gray));
+
+    @include mat.datepicker-overrides((calendar-container-background-color: white,
+        ));
+
+    // table
+    @include mat.table-overrides((background-color: rgb(255, 255, 255),
+        ));
+
+    //button
+    // @include mat.button-overrides((filled-container-color: rgb(20, 202, 193),
+    //         filled-label-text-color: rgb(241, 238, 238),
+    //     ));
+
+}
+
+mat-card {
+    margin: 10px 2px;
+}
+
+.head {
+    color: $dark-green;
+}
+
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
+    border-right-style: hidden;
+}
+
+.mat-datepicker-content {
+    // added this as there is no override option available for box shadow
+    box-shadow: -2px 2px 5px #888 !important;
 }

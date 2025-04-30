@@ -7,15 +7,11 @@ export interface AppState extends fromRoot.AppState {
   worksheet: WorksheetState;
 }
 
-const getWorksheetFeatureState =
-  createFeatureSelector<WorksheetState>('worksheet');
+const getWorksheetFeatureState = createFeatureSelector<WorksheetState>('worksheet');
 
-export const getWorksheet = createSelector(
+export const getActiveWorksheets = createSelector(
   getWorksheetFeatureState,
-  (state) => state.worksheet
+  (state: WorksheetState) => state.activeWorksheets,
 );
 
-export const getMetaInfo = createSelector(
-  getWorksheetFeatureState,
-  (state) => state.meta
-);
+export const getMetaInfo = createSelector(getWorksheetFeatureState, (state) => state.meta);

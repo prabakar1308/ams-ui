@@ -24,3 +24,16 @@ export const USER_ROLES = {
   USER: 'user',
   FM_USER: 'fm_user',
 };
+
+export const CUSTOM_PRESETS = [
+  'Today',
+  'Yesterday and today',
+  'Yesterday',
+  'Last 7 days',
+  'Last 30 days',
+  'This month',
+  'Previous month',
+  'Custom',
+];
+
+export const DEFAULT_TANK_TYPE = 1; // MACHINERY

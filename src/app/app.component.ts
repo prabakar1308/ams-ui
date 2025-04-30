@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
 import { APP_DEFAULT_ROUTE } from './app.constants';
@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authFacadeService: AuthFacadeService
+    private authFacadeService: AuthFacadeService,
   ) {
     const userData = localStorage.getItem('userData');
     if (userData) {
@@ -38,6 +38,12 @@ export class AppComponent implements OnInit {
       this.authFacadeService.userSubject.next(JSON.parse(userData));
       this.router.navigate([APP_DEFAULT_ROUTE]);
     }
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  clearLocalStorage(event: any) {
+    alert(event);
+    // localStorage.clear();
   }
 
   onLogout(): void {

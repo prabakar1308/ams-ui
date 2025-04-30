@@ -1,66 +1,48 @@
 <div class="form-generator-container">
   <mat-card>
     <mat-card-content>
-      <form
-        [formGroup]="dynamicForm"
-        (ngSubmit)="onSubmit()"
-        class="form-container"
-      >
+      <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" class="form-container">
         <div class="form-fields">
           <mat-grid-list [cols]="formLayoutCols" rowHeight="80px">
             <div *ngFor="let control of formStructure" class="col-3">
               <mat-grid-tile [colspan]="control.cols" [rowspan]="control.rows">
                 <!-- Text, Textarea & Number -->
                 @if (textInputTypes.includes(control.type)) {
-                <mat-form-field appearance="outline" class="small">
-                  <mat-label>{{ control.label }}</mat-label>
-                  @if (control.type === inputTypes.NUMBER) {
-                  <input
-                    matInput
-                    [formControlName]="control.name"
-                    [type]="control.type"
-                  />
-                  } @if(control.type === inputTypes.TEXTAREA) {
-                  <textarea
-                    matInput
-                    [formControlName]="control.name"
-                  ></textarea>
-                  } @else {
-                  <input
-                    matInput
-                    [formControlName]="control.name"
-                    [type]="control.type"
-                  />
-                  } @if (dynamicForm.controls[control.name].invalid &&
-                  dynamicForm.controls[control.name].touched) {
-                  <mat-error>
-                    {{ getErrorMessage(control) }}
-                  </mat-error>
-                  }
-                </mat-form-field>
-                } @else if (control.type === inputTypes.RADIO) {
-                <label>{{ control.label }}</label>
-                <mat-radio-group
-                  [ariaLabel]="control.label"
-                  [formControlName]="control.name"
-                >
-                  @for (item of control.options; track item.label) {
-                  <mat-radio-button [value]="item.value">{{
-                    item.label
-                  }}</mat-radio-button>
-                  }
-                </mat-radio-group>
-                } @else if (control.type === inputTypes.SELECT) {
-                <mat-form-field appearance="outline" class="small">
-                  <mat-label>{{ control.label }}</mat-label>
-                  <mat-select [formControlName]="control.name">
-                    @for (item of control.options; track item) {
-                    <mat-option [value]="item.value">{{
-                      item.label
-                    }}</mat-option>
+                  <mat-form-field appearance="outline" class="ams-small">
+                    <mat-label>{{ control.label }}</mat-label>
+                    @if (control.type === inputTypes.NUMBER) {
+                      <input matInput [formControlName]="control.name" [type]="control.type" />
                     }
-                  </mat-select>
-                </mat-form-field>
+                    @if (control.type === inputTypes.TEXTAREA) {
+                      <textarea matInput [formControlName]="control.name"></textarea>
+                    } @else {
+                      <input matInput [formControlName]="control.name" [type]="control.type" />
+                    }
+                    @if (
+                      dynamicForm.controls[control.name].invalid &&
+                      dynamicForm.controls[control.name].touched
+                    ) {
+                      <mat-error>
+                        {{ getErrorMessage(control) }}
+                      </mat-error>
+                    }
+                  </mat-form-field>
+                } @else if (control.type === inputTypes.RADIO) {
+                  <label>{{ control.label }}</label>
+                  <mat-radio-group [ariaLabel]="control.label" [formControlName]="control.name">
+                    @for (item of control.options; track item.label) {
+                      <mat-radio-button [value]="item.value">{{ item.label }}</mat-radio-button>
+                    }
+                  </mat-radio-group>
+                } @else if (control.type === inputTypes.SELECT) {
+                  <mat-form-field appearance="outline" class="ams-small">
+                    <mat-label>{{ control.label }}</mat-label>
+                    <mat-select [formControlName]="control.name">
+                      @for (item of control.options; track item) {
+                        <mat-option [value]="item.value">{{ item.label }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
                 }
               </mat-grid-tile>
             </div>

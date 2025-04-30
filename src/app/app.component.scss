@@ -1,0 +1,22 @@
+.app-body-content {
+
+    @media only screen and (min-width: 768px) {
+        padding: 0 10%;
+        padding-top: 75px;
+    }
+
+    @media only screen and (max-width: 768px) {
+        padding: 0 10%;
+        padding-top: 150px;
+    }
+
+    @media only screen and (max-width: 640px) {
+        padding: 0 5%;
+        padding-top: 150px;
+    }
+
+    @media only screen and (max-width: 480px) {
+        padding: 0;
+        padding-top: 150px;
+    }
+}

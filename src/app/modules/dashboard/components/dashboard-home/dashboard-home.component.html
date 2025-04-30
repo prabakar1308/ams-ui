@@ -1,1 +1,33 @@
-<p class="inline-block">dashboard-home works!</p>
+<div class="dashboard-container">
+  <div>
+    <app-dashboard-status></app-dashboard-status>
+  </div>
+  <div class="chart-section">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <div class="card-header">
+          <mat-card-title>Tank Status</mat-card-title>
+          <mat-button-toggle-group
+            [value]="tankTypeId"
+            (change)="toggleChange($event)"
+            name="tankType"
+            aria-label="Tank Type"
+          >
+            <mat-button-toggle [value]="1">Machinery</mat-button-toggle>
+            <mat-button-toggle [value]="2">Conventional</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="grid grid-cols-1 md:grid-cols-2 w-full">
+          <div #chartContainer class="chart-container-cl w-1/1 md:1/2" id="chart-container"></div>
+          <div
+            #userChartContainer
+            class="chart-container-cl w-1/1 md:1/2"
+            id="user-chart-container"
+          ></div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

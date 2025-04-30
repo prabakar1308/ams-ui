@@ -7,15 +7,11 @@ export interface AppState extends fromRoot.AppState {
   dashboard: DashboardState;
 }
 
-const getDashboardFeatureState =
-  createFeatureSelector<DashboardState>('dashboard');
+const getDashboardFeatureState = createFeatureSelector<DashboardState>('dashboard');
 
-export const getTankDetails = createSelector(
+export const getDashboardData = createSelector(
   getDashboardFeatureState,
-  (state) => state.tankDetails
+  (state: DashboardState) => state.production,
 );
 
-export const getMetaInfo = createSelector(
-  getDashboardFeatureState,
-  (state) => state.meta
-);
+export const getMetaInfo = createSelector(getDashboardFeatureState, (state) => state.meta);

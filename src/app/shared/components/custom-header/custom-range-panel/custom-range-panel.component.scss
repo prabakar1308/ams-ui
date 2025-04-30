@@ -1,0 +1,62 @@
+$width: 178px;
+
+:host {
+  position: absolute;
+  width: $width;
+  left: -$width; // to render it on the right side, use "right: -$width" instead
+  top: 5px;
+}
+
+:host(.touch-ui) {
+  position: relative;
+  left: 0;
+  display: flex;
+  width: 100%;
+}
+
+.preset {
+  background-color: aliceblue;
+  border-left-color: #00587c;
+  border-left-style: solid;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #00587c #dfe9eb;
+  // padding: 6px 0;
+  // height: auto !important;
+  min-height: 20px;
+  border-radius: 10px;
+}
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+  width: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: aliceblue;
+}
+
+// *::-webkit-scrollbar-track:hover {
+//   background-color: #B8C0C2;
+// }
+
+// *::-webkit-scrollbar-track:active {
+//   background-color: #B8C0C2;
+// }
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #00587c;
+}
+
+// *::-webkit-scrollbar-thumb:hover {
+//   background-color: aliceblue;
+// }
+
+// *::-webkit-scrollbar-thumb:active {
+//   background-color: aliceblue;
+// }

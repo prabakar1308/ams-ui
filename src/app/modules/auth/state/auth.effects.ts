@@ -1,12 +1,13 @@
 import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, tap, exhaustMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { userLoginSuccess, userLoginFailure } from '../state/auth.actions';
+
+import { userLoginSuccess, userLoginFailure, userLogin } from '../state/auth.actions';
 import { AuthService } from '../services/auth.service';
 import { Response } from '@app/shared/models/response';
 import { AuthResponse } from '../models/auth-response';
-import { Router } from '@angular/router';
 import { AuthFacadeService } from '../services/auth-facade.service';
 import { NotificationService } from '@app/core/services/notification.service';
 import { SEVERITY } from '@app/core/core.contants';
@@ -21,7 +22,7 @@ export class AuthEffects {
 
   login$ = createEffect(() =>
     this.actions$.pipe(
-      ofType('[Auth] User Login'),
+      ofType(userLogin.type),
       exhaustMap(({ payload: { userId, password } }) =>
         this.authService.login(userId, password).pipe(
           map((res: Response<AuthResponse>) => {
@@ -44,10 +45,10 @@ export class AuthEffects {
           }),
           // TODO: this is not working, handled in component
           tap(() => this.router.navigate(['/master'])),
-          catchError((error) => of(userLoginFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(userLoginFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   //   loginSuccess$ = createEffect(

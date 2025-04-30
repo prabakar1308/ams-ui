@@ -1,1 +1,126 @@
-<p>dashboard-status works!</p>
+<div class="dashboard-status-container">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <div class="flex flex-row justify-between items-center w-full">
+        <mat-card-title>Production</mat-card-title>
+        <div>
+          <app-date-range-picker
+            [value]="dateValue"
+            (selectionChange)="dateChange($event)"
+          ></app-date-range-picker>
+        </div>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-1 sm:gap-4 flex-wrap data-card"
+      >
+        <mat-card *ngFor="let item of productionItems" appearance="outlined">
+          <mat-card-content>
+            <div class="flex flex-col items-center">
+              <div class="icon-container">
+                <mat-icon aria-hidden="false" fontIcon="{{ item.icon }}"></mat-icon>
+              </div>
+              <div class="card-body font-sans">
+                <span>{{ item.title }}</span>
+              </div>
+              <div class="card-footer">
+                <span>
+                  {{ item.description }}
+                  <ng-container *ngIf="item.link">
+                    &nbsp;.&nbsp; <a [href]="item.link">View Details</a>
+                  </ng-container>
+                </span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <!-- <mat-card appearance="outlined">
+            <mat-card-content>
+              <div class="flex flex-col items-center">
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Example home icon"
+                  fontIcon="shopping_cart_checkout"
+                ></mat-icon>
+                <div class="card-body">
+                  <span>Restock</span>
+                </div>
+                <div class="card-footer">
+                  <span>16 Nos &nbsp;.&nbsp; <a href="#">View Details</a></span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card appearance="outlined">
+            <mat-card-content>
+              <div>
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Example home icon"
+                  fontIcon="live_tv"
+                ></mat-icon>
+              </div>
+              <div class="card-body">
+                <span>Live Artmenia</span>
+              </div>
+              <div class="card-footer">
+                <span>16 Tins &nbsp;.&nbsp; 10 Tins</span>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card appearance="outlined">
+            <mat-card-content>
+              <div>
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Example home icon"
+                  fontIcon="emoji_food_beverage"
+                ></mat-icon>
+              </div>
+              <div class="card-body">
+                <span>Frozen Cups</span>
+              </div>
+              <div class="card-footer">
+                <span>60 Cup &nbsp;.&nbsp; 60 Tin</span>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card appearance="outlined">
+            <mat-card-content>
+              <div>
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Example home icon"
+                  fontIcon="delete_sweep"
+                ></mat-icon>
+              </div>
+              <div class="card-body">
+                <span>Total tins</span>
+              </div>
+              <div class="card-footer">
+                <span>120 Tin &nbsp;.&nbsp; 120 Tin</span>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card appearance="outlined">
+            <mat-card-content>
+              <div>
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Example home icon"
+                  fontIcon="view_timeline"
+                ></mat-icon>
+              </div>
+              <div class="card-body">
+                <span>Total Guaranted</span>
+              </div>
+              <div class="card-footer">
+                <span>1 Board &nbsp;.&nbsp; 4 Reports</span>
+              </div>
+            </mat-card-content>
+          </mat-card> -->
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -13,7 +13,7 @@
       "@app/auth/*": ["app/modules/auth/*"],
       "@app/dashboard/*": ["app/modules/dashboard/*"],
       "@master/*": ["app/modules/master/*"],
-      "@worksheet/*": ["app/modules/worksheet/*"],
+      "@app/worksheet/*": ["app/modules/worksheet/*"],
     },
     "outDir": "./dist/out-tsc",
     "strict": true,
