@@ -1,6 +1,7 @@
 import { createAction } from '@ngrx/store';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { UserDetails } from '@app/shared/models/user-details';
+import { WorksheetFilter } from '../models/shared-state';
 
 export const getWorksheetStatus = createAction('[Shared] Get Worksheet Status');
 
@@ -24,4 +25,9 @@ export const getUsersListSuccess = createAction(
 export const getUsersListFailure = createAction(
   '[Shared] Load User Failure',
   (payload: { error: string }) => ({ payload }),
+);
+
+export const updateWorksheetFilter = createAction(
+  '[Shared] Update Worksheet Filter Data',
+  (payload: WorksheetFilter) => ({ payload }),
 );

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { MetaState } from '@app/shared/models/meta-state';
+import { WorksheetFilter } from '@app/shared/models/shared-state';
 import * as fromStore from '../state';
 import * as worksheetActions from '../state/worksheet.actions';
 import { ActiveWorksheet } from '../models/active-worksheet';
@@ -19,8 +20,8 @@ export class WorksheetFacadeService {
     this.meta$ = this.store.select(fromStore.getMetaInfo);
   }
 
-  getActiveWorksheets(userId: number, tankTypeId: number, statusId: number) {
-    this.store.dispatch(worksheetActions.getActiveWorksheets({ userId, tankTypeId, statusId }));
+  getActiveWorksheets(filterData: WorksheetFilter) {
+    this.store.dispatch(worksheetActions.getActiveWorksheets(filterData));
   }
 
   getActiveWorksheetsSuccess(response: ActiveWorksheet[]) {

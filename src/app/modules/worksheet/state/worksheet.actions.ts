@@ -1,9 +1,10 @@
 import { createAction } from '@ngrx/store';
-import { ActiveWorksheet, ActiveWorksheetRequest } from '../models/active-worksheet';
+import { ActiveWorksheet } from '../models/active-worksheet';
+import { WorksheetFilter } from '@app/shared/models/shared-state';
 
 export const getActiveWorksheets = createAction(
   '[Worksheet] Get Active Worksheets',
-  (payload: ActiveWorksheetRequest) => ({ payload }),
+  (payload: WorksheetFilter) => ({ payload }),
 );
 
 export const getActiveWorksheetsSuccess = createAction(

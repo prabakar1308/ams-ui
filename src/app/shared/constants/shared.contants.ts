@@ -35,3 +35,5 @@ export const CUSTOM_PRESETS = [
   'Previous month',
   'Custom',
 ];
+
+export const DEFAULT_TANK_TYPE = 1; // MACHINERY

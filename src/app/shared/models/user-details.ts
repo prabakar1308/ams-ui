@@ -1,20 +1,16 @@
 export interface UserDetails {
-    createdBy: number;
-    createdAt: Date | null;
-    updatedBy: number | null;
-    updatedAt: Date | null;
-    id: number;
-    userId: string | null; 
-    firstName: string | null;
-    lastName: string | null;
-    password: string | null;
-    email: string | null;
-    mobileNumber: string | null;
-    role: string | null;
-    designation: string | null;
-    departmetUnit: string | null;
-    dateOfBirth: Date | null;
-    address: string | null;
-    dateOfJoining: Date | null;
-    remarks: string | null;
+  id: number;
+  userId?: string;
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  email?: string;
+  mobileNumber?: string;
+  role?: string;
+  designation?: string;
+  departmetUnit?: string;
+  dateOfBirth?: Date;
+  address?: string;
+  dateOfJoining?: Date;
+  remarks?: string;
 }

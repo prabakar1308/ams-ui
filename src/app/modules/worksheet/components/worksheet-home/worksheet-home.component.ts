@@ -1,9 +1,9 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { Component } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
 import { ActiveWorksheet } from '@app/worksheet/models/active-worksheet';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-worksheet-home',
@@ -14,17 +14,13 @@ import { Subject, takeUntil } from 'rxjs';
 export class WorksheetHomeComponent {
   private unSubscribe = new Subject<void>();
   activeWorksheets: ActiveWorksheet[] = [];
-
   displayedColumns = ['select', 'tank', 'harvest', 'source', 'user', 'status', 'action'];
-
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
 
   constructor(private worksheetFacadeService: WorksheetFacadeService) {}
 
   ngOnInit() {
-    this.loadAllData();
-
     // subscriptions
     this.worksheetFacadeService.activeWorksheets$
       .pipe(takeUntil(this.unSubscribe))
@@ -32,10 +28,6 @@ export class WorksheetHomeComponent {
         this.activeWorksheets = data;
         this.dataSource.data = data;
       });
-  }
-
-  loadAllData() {
-    this.worksheetFacadeService.getActiveWorksheets(0, 0, 0);
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -61,26 +53,6 @@ export class WorksheetHomeComponent {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-  }
-
-  onStatusChange(event: any) {
-    console.log('Selected status:', event);
-    this.worksheetFacadeService.getActiveWorksheets(0, 0, event);
-  }
-
-  onUserChange(event: any) {
-    console.log('Selected user:', event);
-    this.worksheetFacadeService.getActiveWorksheets(event, 0, 0);
-  }
-
-  onTankTypeChange(event: string) {
-    this.loadAllData();
-    if (event !== 'All') {
-      this.activeWorksheets =
-        this.activeWorksheets?.filter((x) => x.worksheet?.tankType?.value === event) == null
-          ? []
-          : this.activeWorksheets?.filter((x) => x.worksheet?.tankType?.value === event);
-    }
   }
 
   ngOnDestroy(): void {

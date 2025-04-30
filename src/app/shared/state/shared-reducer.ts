@@ -1,10 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
 import { SharedState } from '@app/shared/models/shared-state';
 import * as SharedActions from './shared-actions';
+import { DEFAULT_TANK_TYPE } from '../constants/shared.contants';
 
 export const initialState: SharedState = {
   worksheetStatus: [],
   userDetails: [],
+  worksheetFilter: {
+    statusId: 0,
+    userId: 0,
+    tankTypeId: DEFAULT_TANK_TYPE,
+  },
   meta: {
     isLoading: false,
     error: '',
@@ -42,6 +48,13 @@ export const sharedReducer = createReducer(
     meta: {
       ...state.meta,
       isLoading: false,
+    },
+  })),
+  on(SharedActions.updateWorksheetFilter, (state, { payload }) => ({
+    ...state,
+    worksheetFilter: {
+      ...state.worksheetFilter,
+      ...payload,
     },
   })),
 );

@@ -13,11 +13,18 @@ export const getWorksheetStatus = createSelector(
   getSharedFeatureState,
   (state: SharedState) => state.worksheetStatus,
 );
+
 export const getUserData = createSelector(
   getSharedFeatureState,
   (state: SharedState) => state.userDetails,
 );
+
 export const getMetaInfo = createSelector(
   getSharedFeatureState,
   (state: SharedState) => state.meta,
+);
+
+export const getWorksheetFilter = createSelector(
+  getSharedFeatureState,
+  (state: SharedState) => state.worksheetFilter,
 );
