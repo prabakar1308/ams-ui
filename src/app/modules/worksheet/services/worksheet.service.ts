@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Response } from '@shared/models/response';
+import { Response } from '@app/shared/models/response';
 
 import { ActiveWorksheet } from '../models/active-worksheet';
 

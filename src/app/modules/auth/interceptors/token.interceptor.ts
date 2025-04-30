@@ -7,11 +7,15 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, filter, take, switchMap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
+
+import { Response } from '@app/shared/models/response';
+import { NotificationService } from '@app/core/services/notification.service';
+import { SEVERITY } from '@app/core/core.contants';
+
 import { AuthService } from '../services/auth.service';
 import { AuthFacadeService } from '../services/auth-facade.service';
 import { AuthResponse } from '../models/auth-response';
-import { Response } from '@shared/models/response';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -23,7 +27,8 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(
     private authService: AuthService,
-    private authFacadeService: AuthFacadeService
+    private authFacadeService: AuthFacadeService,
+    private notificationService: NotificationService
   ) {}
 
   intercept(
@@ -77,15 +82,23 @@ export class TokenInterceptor implements HttpInterceptor {
         catchError((err) => {
           this.isRefreshing = false;
           this.authFacadeService.logout();
+          this.notificationService.showMessage(
+            SEVERITY.ERROR,
+            'Authentication failed, please try login again!'
+          );
           return throwError(() => err);
         })
       );
     } else {
       return this.refreshTokenSubject.pipe(
-        filter((token) => token != null),
-        take(1),
         switchMap((accessToken) => {
-          return next.handle(this.addToken(request, accessToken));
+          if (accessToken)
+            return next.handle(this.addToken(request, accessToken));
+
+          return throwError(() => new Error());
+        }),
+        catchError((err) => {
+          return throwError(() => err);
         })
       );
     }

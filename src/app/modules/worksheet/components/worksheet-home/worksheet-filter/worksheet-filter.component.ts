@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WorksheetStatus } from '@shared/models/worksheet-status';
-import { SharedFacadeService } from '@shared/service/shared-facade.service';
+import { WorksheetStatus } from '@app/shared/models/worksheet-status';
+import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { Output, EventEmitter } from '@angular/core';
-import { UserDetails } from '@shared/models/user-details';
+import { UserDetails } from '@app/shared/models/user-details';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 

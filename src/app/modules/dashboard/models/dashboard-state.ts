@@ -1,4 +1,4 @@
-import { WorksheetDetails } from '@modules/worksheet/models/worksheet-details';
+import { WorksheetDetails } from '@app/worksheet/models/worksheet-details';
 
 export interface DashboardState {
   production: any;

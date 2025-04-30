@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { WorksheetStatus } from '@shared/models/worksheet-status';
-import { Response } from '@shared/models/response';
-import { UserDetails } from '@shared/models/user-details';
+import { WorksheetStatus } from '@app/shared/models/worksheet-status';
+import { Response } from '@app/shared/models/response';
+import { UserDetails } from '@app/shared/models/user-details';
 
 @Injectable({
   providedIn: 'root',

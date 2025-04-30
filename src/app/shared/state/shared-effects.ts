@@ -2,16 +2,16 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, tap, exhaustMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { SharedService } from '@shared/service/shared-service';
+import { SharedService } from '@app/shared/service/shared-service';
 import {
   getWorksheetStatusSuccess,
   getWorksheetStatusFailure,
   getUsersListFailure,
   getUsersListSuccess,
 } from './shared-actions';
-import { Response } from '@shared/models/response';
-import { WorksheetStatus } from '@shared/models/worksheet-status';
-import { UserDetails } from '@shared/models/user-details';
+import { Response } from '@app/shared/models/response';
+import { WorksheetStatus } from '@app/shared/models/worksheet-status';
+import { UserDetails } from '@app/shared/models/user-details';
 
 @Injectable()
 export class SharedEffects {

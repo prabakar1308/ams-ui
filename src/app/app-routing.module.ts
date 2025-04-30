@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthModule } from './modules/auth/auth.module';
-import { AuthGuard } from '@auth/guards/auth.guard';
+import { AuthModule } from '@app/auth/auth.module';
+import { AuthGuard } from '@app/auth/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
     loadChildren: () => AuthModule,
-    // import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
   {
     path: 'dashboard',

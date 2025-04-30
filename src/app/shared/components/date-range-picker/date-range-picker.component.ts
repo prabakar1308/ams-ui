@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDateRangeInput, MatDateRangePicker } from '@angular/material/datepicker';
 import { CustomHeaderComponent } from '../custom-header/custom-header.component';
 import { DateRangePickerService } from './date-range-picker.service';
-import { CUSTOM_PRESETS } from '@shared/constants/shared.contants';
+import { CUSTOM_PRESETS } from '@app/shared/constants/shared.contants';
 
 @Component({
   selector: 'app-date-range-picker',

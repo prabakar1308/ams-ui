@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { SharedState } from '@shared/models/shared-state';
+import { SharedState } from '@app/shared/models/shared-state';
 import * as fromRoot from '../../state/app-state';
 
 export interface AppState extends fromRoot.AppState {

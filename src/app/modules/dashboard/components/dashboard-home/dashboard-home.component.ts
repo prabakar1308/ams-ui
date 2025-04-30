@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { DashboardFacadeService } from '@modules/dashboard/services/dashboard-facade.service';
-import { DashboardResponse, TankWiseStatus } from '@modules/dashboard/models/dashboard-response';
+import { DashboardFacadeService } from '@app/dashboard/services/dashboard-facade.service';
+import { DashboardResponse, TankWiseStatus } from '@app/dashboard/models/dashboard-response';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -33,8 +33,8 @@ import type {
   DatasetComponentOption,
 } from 'echarts/components';
 import type { ComposeOption } from 'echarts/core';
-import { DashboardService } from '@modules/dashboard/services/dashboard.service';
-import { Response } from '@shared/models/response';
+import { DashboardService } from '@app/dashboard/services/dashboard.service';
+import { Response } from '@app/shared/models/response';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 // Create an Option type with only the required components and charts via ComposeOption

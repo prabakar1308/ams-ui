@@ -6,9 +6,11 @@ import { of } from 'rxjs';
 
 import { userLoginSuccess, userLoginFailure, userLogin } from '../state/auth.actions';
 import { AuthService } from '../services/auth.service';
-import { Response } from '@shared/models/response';
+import { Response } from '@app/shared/models/response';
 import { AuthResponse } from '../models/auth-response';
 import { AuthFacadeService } from '../services/auth-facade.service';
+import { NotificationService } from '@app/core/services/notification.service';
+import { SEVERITY } from '@app/core/core.contants';
 
 @Injectable()
 export class AuthEffects {
@@ -16,6 +18,7 @@ export class AuthEffects {
   private authService = inject(AuthService);
   private authFacadeService = inject(AuthFacadeService);
   private router = inject(Router);
+  private notificationService = inject(NotificationService);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -31,6 +34,10 @@ export class AuthEffects {
               if (userData) {
                 localStorage.setItem('userData', JSON.stringify(userData));
                 this.authFacadeService.userSubject.next(userData);
+                this.notificationService.showMessage(
+                  SEVERITY.SUCCESS,
+                  'Login is successfull!'
+                );
               }
               return userLoginSuccess(userData);
             }

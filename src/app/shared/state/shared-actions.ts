@@ -1,6 +1,6 @@
 import { createAction } from '@ngrx/store';
-import { WorksheetStatus } from '@shared/models/worksheet-status';
-import { UserDetails } from '@shared/models/user-details';
+import { WorksheetStatus } from '@app/shared/models/worksheet-status';
+import { UserDetails } from '@app/shared/models/user-details';
 
 export const getWorksheetStatus = createAction('[Shared] Get Worksheet Status');
 

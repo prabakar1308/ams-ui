@@ -1,29 +1,31 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
-// import { reducers, metaReducers } from './reducers';
-// import { dahsboardReducer } from './store/dashboard/dashboard.reducer';
-import { reducer } from './state';
+import { EffectsModule } from '@ngrx/effects';
+import { ToastrModule } from 'ngx-toastr';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { LoaderInterceptor } from './core/interceptors/loader.interceptor';
-import { TokenInterceptor } from './modules/auth/interceptors/token.interceptor';
-import { EffectsModule } from '@ngrx/effects';
 
+import { CoreModule } from '@app/core/core.module';
+import { LoaderInterceptor } from '@app/core/interceptors/loader.interceptor';
+import { TokenInterceptor } from '@app/auth/interceptors/token.interceptor';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { reducer } from './state';
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
+    ToastrModule.forRoot(),
     StoreModule.forRoot(reducer),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),

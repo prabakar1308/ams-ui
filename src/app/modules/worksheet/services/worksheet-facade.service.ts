@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { MetaState } from '@shared/models/meta-state';
+import { MetaState } from '@app/shared/models/meta-state';
 import * as fromStore from '../state';
 import * as worksheetActions from '../state/worksheet.actions';
 import { ActiveWorksheet } from '../models/active-worksheet';

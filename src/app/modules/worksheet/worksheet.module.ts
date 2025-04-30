@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { SharedModule } from '@shared/shared.module';
+import { SharedModule } from '@app/shared/shared.module';
 
 import { WorksheetRoutingModule } from './worksheet-routing.module';
 import { worksheetReducer } from './state/worksheet.reducer';

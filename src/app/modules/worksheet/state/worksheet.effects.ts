@@ -8,7 +8,7 @@ import {
   getActiveWorksheetsSuccess,
   getActiveWorksheetsFailure,
 } from './worksheet.actions';
-import { Response } from '@shared/models/response';
+import { Response } from '@app/shared/models/response';
 import { ActiveWorksheet } from '../models/active-worksheet';
 
 @Injectable()

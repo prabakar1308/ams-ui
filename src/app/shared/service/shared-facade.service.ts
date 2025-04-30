@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MetaState } from '@shared/models/meta-state';
-import { WorksheetStatus } from '@shared/models/worksheet-status';
+import { MetaState } from '@app/shared/models/meta-state';
+import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as fromStore from '../state';
 import { Store } from '@ngrx/store';
 import * as sharedAction from '../state/shared-actions';
-import { UserDetails } from '@shared/models/user-details';
+import { UserDetails } from '@app/shared/models/user-details';
 
 @Injectable({
   providedIn: 'root',

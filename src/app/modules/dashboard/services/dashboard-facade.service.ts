@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DashboardResponse } from '../models/dashboard-response';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MetaState } from '@shared/models/meta-state';
+import { MetaState } from '@app/shared/models/meta-state';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../state';
 import * as dashboardActions from '../state/dashboard.actions';

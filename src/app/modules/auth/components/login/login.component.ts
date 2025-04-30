@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthFacadeService } from '@modules/auth/services/auth-facade.service';
+import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
 import { APP_DEFAULT_ROUTE } from 'app/app.constants';
 @Component({
   selector: 'app-login',

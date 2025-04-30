@@ -1,8 +1,8 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActiveWorksheet } from '@modules/worksheet/models/active-worksheet';
-import { WorksheetFacadeService } from '@modules/worksheet/services/worksheet-facade.service';
+import { ActiveWorksheet } from '@app/worksheet/models/active-worksheet';
+import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
