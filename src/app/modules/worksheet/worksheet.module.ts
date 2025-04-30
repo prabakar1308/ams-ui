@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { SharedModule } from '@shared/shared.module';
 
 import { WorksheetRoutingModule } from './worksheet-routing.module';
-import { WorksheetHomeComponent } from './components/worksheet-home/worksheet-home.component';
-import { StoreModule } from '@ngrx/store';
 import { worksheetReducer } from './state/worksheet.reducer';
-import { SharedModule } from '../../shared/shared.module';
-import { WorksheetFilterComponent } from './components/worksheet-home/worksheet-filter/worksheet-filter.component';
-import { EffectsModule } from '@ngrx/effects';
 import { WorksheetEffects } from './state/worksheet.effects';
+import { WorksheetHomeComponent } from './components/worksheet-home/worksheet-home.component';
+import { WorksheetFilterComponent } from './components/worksheet-home/worksheet-filter/worksheet-filter.component';
 import { WorksheetCreateComponent } from './components/worksheet-create/worksheet-create.component';
 
 @NgModule({

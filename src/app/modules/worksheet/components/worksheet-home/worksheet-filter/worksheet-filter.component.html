@@ -1,48 +1,54 @@
 <div class="worksheet-filter-container">
-  <h4 class="head">Tank Details</h4>
+  <h4 class="text-xl pb-2">Tank Details</h4>
 
-  <div class="filter-section">
-    <div>
-      <mat-radio-group value="1" aria-label="Select an option">
-        <mat-radio-button value="1">Machinery</mat-radio-button>
-        <mat-radio-button value="2">Conventional</mat-radio-button>
-      </mat-radio-group>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+    <div class="col-span-2 grid grid-cols-1 lg:grid-cols-3 gap-2">
+      <div class="w-full">
+        <mat-radio-group value="1" aria-label="Select an option">
+          <mat-radio-button value="1">Machinery</mat-radio-button>
+          <mat-radio-button value="2">Conventional</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="w-full">
+        <mat-form-field appearance="outline" class="ams-small w-full">
+          <mat-label>User</mat-label>
+          <mat-select [(ngModel)]="selectedUser" (selectionChange)="onUserChange($event.value)">
+            @for (user of userDetails; track user) {
+              <mat-option [value]="user.id"
+                >{{ user.firstName }}&nbsp;{{ user.lastName }}</mat-option
+              >
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="w-full">
+        <mat-form-field appearance="outline" class="ams-small w-full">
+          <mat-label>Status</mat-label>
+
+          <mat-select [(ngModel)]="selectedStatus" (selectionChange)="onStatusChange($event.value)">
+            @for (option of statusDetails; track option) {
+              <mat-option [value]="option.id">{{ option.value }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div>
-      <mat-form-field appearance="outline" class="ams-small">
-        <mat-label>User</mat-label>
-        <mat-select [(ngModel)]="selectedUser" (selectionChange)="onUserChange($event.value)">
-          @for (user of userDetails; track user) {
-            <mat-option [value]="user.id">{{ user.firstName }}&nbsp;{{ user.lastName }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field appearance="outline" class="ams-small">
-        <mat-label>Status</mat-label>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="w-full">
+        <button mat-raised-button color="primary" (click)="onRefresh()" class="w-full">
+          Refresh
+          <mat-icon>sync</mat-icon>
+        </button>
+      </div>
 
-        <mat-select [(ngModel)]="selectedStatus" (selectionChange)="onStatusChange($event.value)">
-          @for (option of statusDetails; track option) {
-            <mat-option [value]="option.id">{{ option.value }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div>
-      <button mat-raised-button color="primary" (click)="onRefresh()">
-        Refresh
-        <mat-icon>sync</mat-icon>
-      </button>
-    </div>
-
-    <div>
-      <button mat-raised-button color="primary" (click)="onCreateWorksheet()">
-        Create workflow
-        <mat-icon>add_circle</mat-icon>
-      </button>
+      <div class="w-full">
+        <button mat-flat-button color="secondary" (click)="onCreateWorksheet()" class="w-full">
+          Create workflow
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
 </div>

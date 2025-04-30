@@ -7,12 +7,18 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        gap: 4;
         justify-content: space-between;
 
-        .dropdown-items {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-        }
+        // .dropdown-items {
+        //     display: flex;
+        //     flex-direction: row;
+        //     justify-content: space-around;
+        // }
+    }
+
+    // Add padding for screens less than 1024px
+    @media (max-width: 1024px) {
+        padding: 25px; // Adjust the padding value as needed
     }
 }

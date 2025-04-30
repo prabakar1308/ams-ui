@@ -3,16 +3,16 @@ import { DashboardResponse } from '../models/dashboard-response';
 import { DashboardRequest } from '../models/dashboard-request';
 
 export const getDashboardData = createAction(
-  '[Dashboard] Load Tank Details',
-  (payload: DashboardRequest) => ({ payload })
+  '[Dashboard] Get Production Data',
+  (payload: DashboardRequest) => ({ payload }),
 );
 
 export const getDashboardDataSuccess = createAction(
-  '[Dashboard] Load Tank Details Success',
-  (payload: DashboardResponse) => ({ payload })
+  '[Dashboard] Get Production Data Success',
+  (payload: DashboardResponse) => ({ payload }),
 );
 
-export const loadTankDetailsFailure = createAction(
-  '[Dashboard] Load Tank Failure',
-  (payload: { error: string }) => ({ payload })
+export const getDashboardDataFailure = createAction(
+  '[Dashboard] Get Production Data Failure',
+  (payload: { error: string }) => ({ payload }),
 );

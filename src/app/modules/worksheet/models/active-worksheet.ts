@@ -10,3 +10,8 @@ export interface ActiveWorksheetRequest {
   tankTypeId?: number;
   statusId?: number;
 }
+
+// export interface ActiveWorksheetTable {
+//   tankNumber: number;
+//   worksheet: WorksheetDetails;
+// }

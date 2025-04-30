@@ -3,7 +3,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, tap, exhaustMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { WorksheetService } from '../services/worksheet.service';
-import { getActiveWorksheetsSuccess, getActiveWorksheetsFailure } from './worksheet.actions';
+import {
+  getActiveWorksheets,
+  getActiveWorksheetsSuccess,
+  getActiveWorksheetsFailure,
+} from './worksheet.actions';
 import { Response } from '@shared/models/response';
 import { ActiveWorksheet } from '../models/active-worksheet';
 
@@ -14,7 +18,7 @@ export class WorksheetEffects {
 
   getActiveWorksheets$ = createEffect(() =>
     this.actions$.pipe(
-      ofType('[Worksheet] Get Active Worksheets'), // Replace with the actual action type
+      ofType(getActiveWorksheets.type),
       exhaustMap(({ payload: { userId, tankTypeId, statusId } }) =>
         this.WorksheetService.getActiveWorksheets(userId, tankTypeId, statusId).pipe(
           map((res: Response<ActiveWorksheet[]>) => {

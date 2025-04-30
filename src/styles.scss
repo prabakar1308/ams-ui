@@ -44,10 +44,17 @@ mat-form-field.ams-small {
 
 
 :root {
+
+    // core
+    @include mat.core-overrides((option-label-text-size: 14px,
+        ));
+
     @include mat.progress-spinner-overrides((active-indicator-color: #eeece9, active-indicator-width: '1px'));
 
-    @include mat.select-overrides((trigger-text-size: 10px,
+    @include mat.select-overrides((trigger-text-size: 14px,
         ));
+
+
 
     @include mat.button-toggle-overrides((height: '30px',
         ));
@@ -57,6 +64,15 @@ mat-form-field.ams-small {
 
     @include mat.datepicker-overrides((calendar-container-background-color: white,
         ));
+
+    // table
+    @include mat.table-overrides((background-color: rgb(255, 255, 255),
+        ));
+
+    //button
+    // @include mat.button-overrides((filled-container-color: rgb(20, 202, 193),
+    //         filled-label-text-color: rgb(241, 238, 238),
+    //     ));
 
 }
 

@@ -97,26 +97,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   }
 
   loadAllData() {
-    this.dashboardFacade.getDashboardData(0, 0, 0);
-
-    this.dashboardFacade.dashboardData.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
-      this.dashboardData = data;
-    });
-  }
-
-  onStatusChange(event: any) {
-    console.log('Selected status:', event);
-    this.dashboardFacade.getDashboardData(0, 0, event);
-    this.dashboardFacade.dashboardData.subscribe((data) => {
-      this.dashboardData = data;
-    });
-  }
-  onUserChange(event: any) {
-    console.log('Selected user:', event);
-    this.dashboardFacade.getDashboardData(event, 0, 0);
-    this.dashboardFacade.dashboardData.subscribe((data) => {
-      this.dashboardData = data;
-    });
+    // this.dashboardFacade.getDashboardData(0, 0, 0);
   }
 
   onTankTypeChange(event: string) {
@@ -201,9 +182,22 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
       .subscribe((res: Response<TankWiseStatus[]>) => {
         console.log(res.data);
         const option: ECOption = {
+          title: {
+            text: 'No. of tanks assigned against user',
+            bottom: 0,
+            left: '30%',
+            textStyle: {
+              fontSize: '12px',
+              align: 'right',
+              position: 'right',
+            },
+          },
           xAxis: {
             type: 'category',
             data: res.data.map((data) => data.name),
+            axisLabel: {
+              show: true,
+            },
           },
           yAxis: {
             type: 'value',

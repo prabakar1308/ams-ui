@@ -1,8 +1,7 @@
 import { WorksheetDetails } from '@modules/worksheet/models/worksheet-details';
 
 export interface DashboardState {
-  tankNumber: number;
-  worksheet: WorksheetDetails;
+  production: any;
   meta: {
     isLoading: boolean;
     error: string;

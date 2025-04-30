@@ -7,27 +7,21 @@ import * as fromStore from '../state';
 import * as dashboardActions from '../state/dashboard.actions';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DashboardFacadeService {
-dashboardData$: Observable<DashboardResponse>;
+  dashboardData$: Observable<DashboardResponse>;
   meta$: Observable<MetaState>;
-  public dashboardSubject: BehaviorSubject<any>;
-  public dashboardData: Observable<any>;
   constructor(private store: Store<fromStore.AppState>) {
-      this.dashboardData$ = this.store.select(fromStore.getDashboardData);
-      this.meta$ = this.store.select(fromStore.getMetaInfo);
-  
-      const dashboard = localStorage.getItem('dashboardData');
-      this.dashboardSubject = new BehaviorSubject<any>(dashboard ? JSON.parse(dashboard) : null);
-      this.dashboardData = this.dashboardSubject.asObservable();
-    }
+    this.dashboardData$ = this.store.select(fromStore.getDashboardData);
+    this.meta$ = this.store.select(fromStore.getMetaInfo);
+  }
 
-    getDashboardData(userId: number, tankTypeId: number, statusId: number) {
-        this.store.dispatch(dashboardActions.getDashboardData({ userId, tankTypeId, statusId }));
-      }
+  getDashboardData(userId: number, tankTypeId: number, statusId: number) {
+    this.store.dispatch(dashboardActions.getDashboardData({ userId, tankTypeId, statusId }));
+  }
 
-    getDashboardDataSuccess(response: DashboardResponse) {
-        this.store.dispatch(dashboardActions.getDashboardDataSuccess(response));
-      }
+  getDashboardDataSuccess(response: DashboardResponse) {
+    this.store.dispatch(dashboardActions.getDashboardDataSuccess(response));
+  }
 }
