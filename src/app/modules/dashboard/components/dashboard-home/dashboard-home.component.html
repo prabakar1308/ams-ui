@@ -19,9 +19,13 @@
         </div>
       </mat-card-header>
       <mat-card-content>
-        <div class="flex flex-row w-full">
-          <div #chartContainer class="chart-container-cl w-auto" id="chart-container"></div>
-          <div #userChartContainer class="chart-container-cl" id="user-chart-container"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 w-full">
+          <div #chartContainer class="chart-container-cl w-1/1 md:1/2" id="chart-container"></div>
+          <div
+            #userChartContainer
+            class="chart-container-cl w-1/1 md:1/2"
+            id="user-chart-container"
+          ></div>
         </div>
       </mat-card-content>
     </mat-card>

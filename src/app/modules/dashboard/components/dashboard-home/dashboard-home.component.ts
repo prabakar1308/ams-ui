@@ -146,6 +146,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           },
           series: [
             {
+              color: ['#d0f3fc', '#faeb98', '#a2fa98', '#f298fa'],
               name: '',
               type: 'pie',
               radius: ['30%', '70%'],
@@ -156,9 +157,12 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
                 borderWidth: 2,
               },
               label: {
-                formatter: '{@[' + 1 + ']}',
-                fontSize: 12,
+                formatter: '{c}',
+                fontSize: 14,
                 position: 'inside',
+                color: '#808080',
+                fontStyle: 'italic',
+                fontWeight: 'bold',
               },
               // label: {
               //   show: true,
@@ -208,9 +212,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
             trigger: 'item',
           },
           legend: {
-            top: 'bottom',
-            left: 'center',
-            // orient: 'vertical',
+            data: ['UnAssigned', 'Others', 'tets'],
           },
           series: [
             {
@@ -220,18 +222,30 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
                     id: data.id,
                     value: data.value,
                     itemStyle: {
-                      color: '#5470c6',
+                      color: '#d0f3fc',
                     },
                   };
                 return {
                   id: data.id,
                   value: data.value,
                   itemStyle: {
-                    color: '#73c0de',
+                    color: '#a3e7de',
                   },
                 };
               }),
               type: 'bar',
+              label: {
+                show: true,
+                fontSize: 14,
+                color: '#808080',
+                fontStyle: 'italic',
+                fontWeight: 'bold',
+                formatter: '{c}',
+                position: 'top',
+              },
+              emphasis: {
+                focus: 'self',
+              },
             },
           ],
         };

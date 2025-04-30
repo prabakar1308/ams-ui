@@ -1,29 +1,46 @@
 @use 'styles/scss/variables' as *;
 
 
+.dashboard-status-container {
+    mat-card {
+        // margin-left: 10px;
+        // height: 150px;
+        // margin-right: 10px;
+        // background-color: white;
+        // text-align: center;
+        // padding-top: 15px;
+        // width: 85%;
+    }
 
-.ams-prod-table mat-card {
-    margin-left: 10px;
-    height: 150px;
-    margin-right: 10px;
-    background-color: white;
-    text-align: center;
-    padding-top: 15px;
-    width: 85%;
-}
+    .icon-container {
+        border-radius: 21px;
+        color: $white;
+        margin-bottom: 15px;
+        background: #7e8891;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.ams-prod-table mat-icon {
-    color: $dark-green;
-    margin-bottom: 15px;
-}
+    .card-footer {
+        margin-top: $mt10;
+        color: $grey;
+    }
 
-.card-footer {
-    margin-top: $mt10;
-    color: $grey;
-}
+    .card-body span {
+        font-weight: 500;
+        font-size: 18px;
+        color: $black;
+    }
 
-.card-body span {
-    font-weight: 500;
-    font-size: 18px;
-    color: #279ceb;
+    // Add margin for mat-card when screen size is less than 767px
+    @media (max-width: 767px) {
+        .data-card {
+            mat-card {
+                margin: 10px 30px; // Adjust the margin as needed
+            }
+        }
+    }
 }

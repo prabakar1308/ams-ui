@@ -16,6 +16,7 @@
     "editor.quickSuggestions": {
         "strings": true
     },
+    "editor.inlineSuggest.enabled": true,
     "css.validate": false, // Disable CSS validation to avoid conflicts with Tailwind
     "scss.validate": false, // Disable SCSS validation for Tailwind
     "less.validate": false // Disable LESS validation for Tailwind

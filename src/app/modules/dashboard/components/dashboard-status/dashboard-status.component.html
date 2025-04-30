@@ -1,32 +1,41 @@
-<div>
-  <div>
-    <mat-card appearance="outlined">
-      <mat-card-header>
+<div class="dashboard-status-container">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <div class="flex flex-row justify-between items-center w-full">
+        <mat-card-title>Production</mat-card-title>
         <div>
-          <mat-card-title>Production</mat-card-title>
+          <app-date-range-picker
+            [value]="dateValue"
+            (selectionChange)="dateChange($event)"
+          ></app-date-range-picker>
         </div>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-1 sm:gap-4 flex-wrap">
-          <mat-card *ngFor="let item of productionItems" appearance="outlined">
-            <mat-card-content>
-              <div class="flex flex-col items-center">
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-1 sm:gap-4 flex-wrap data-card"
+      >
+        <mat-card *ngFor="let item of productionItems" appearance="outlined">
+          <mat-card-content>
+            <div class="flex flex-col items-center">
+              <div class="icon-container">
                 <mat-icon aria-hidden="false" fontIcon="{{ item.icon }}"></mat-icon>
-                <div class="card-body">
-                  <span>{{ item.title }}</span>
-                </div>
-                <div class="card-footer">
-                  <span>
-                    {{ item.description }}
-                    <ng-container *ngIf="item.link">
-                      &nbsp;.&nbsp; <a [href]="item.link">View Details</a>
-                    </ng-container>
-                  </span>
-                </div>
               </div>
-            </mat-card-content>
-          </mat-card>
-          <!-- <mat-card appearance="outlined">
+              <div class="card-body font-sans">
+                <span>{{ item.title }}</span>
+              </div>
+              <div class="card-footer">
+                <span>
+                  {{ item.description }}
+                  <ng-container *ngIf="item.link">
+                    &nbsp;.&nbsp; <a [href]="item.link">View Details</a>
+                  </ng-container>
+                </span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <!-- <mat-card appearance="outlined">
             <mat-card-content>
               <div class="flex flex-col items-center">
                 <mat-icon
@@ -111,8 +120,7 @@
               </div>
             </mat-card-content>
           </mat-card> -->
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

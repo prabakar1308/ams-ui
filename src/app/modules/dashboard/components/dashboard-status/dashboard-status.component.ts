@@ -39,4 +39,14 @@ export class DashboardStatusComponent {
       link: '',
     },
   ];
+  dateValue: string = '';
+
+  dateChange(event: unknown): void {
+    const date: { start: string; end: string } = event as { start: string; end: string };
+    console.log(date);
+    if (date) {
+      const { start, end } = date;
+      this.dateValue = start;
+    }
+  }
 }

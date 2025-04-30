@@ -46,7 +46,8 @@
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss",
-              "src/assets/styles/app.scss"
+              "src/assets/styles/app.scss",
+              "node_modules/roboto-fontface/css/roboto/roboto-fontface.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/assets"]

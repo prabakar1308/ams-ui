@@ -6,15 +6,23 @@ import { StoreModule } from '@ngrx/store';
 import { sharedReducer } from './state/shared-reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { SharedEffects } from './state/shared-effects';
+import { CustomHeaderComponent } from './components/custom-header/custom-header.component';
+import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
+import { CustomRangePanelComponent } from './components/custom-header/custom-range-panel/custom-range-panel.component';
 
 @NgModule({
-  declarations: [FormGeneratorComponent],
+  declarations: [
+    FormGeneratorComponent,
+    DateRangePickerComponent,
+    CustomHeaderComponent,
+    CustomRangePanelComponent,
+  ],
   imports: [
     CommonModule,
     MaterialModule,
     StoreModule.forFeature('shared', sharedReducer),
     EffectsModule.forFeature([SharedEffects]),
   ],
-  exports: [MaterialModule, FormGeneratorComponent],
+  exports: [MaterialModule, FormGeneratorComponent, DateRangePickerComponent],
 })
 export class SharedModule {}
