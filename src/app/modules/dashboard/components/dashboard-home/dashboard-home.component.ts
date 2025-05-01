@@ -36,6 +36,7 @@ import type { ComposeOption } from 'echarts/core';
 import { DashboardService } from '@app/dashboard/services/dashboard.service';
 import { Response } from '@app/shared/models/response';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 
 // Create an Option type with only the required components and charts via ComposeOption
 type ECOption = ComposeOption<
@@ -60,9 +61,10 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   tankTypeId = 1;
 
   constructor(
-    private dashboardFacade: DashboardFacadeService,
+    private sharedFacadeService: SharedFacadeService,
     private dashboardService: DashboardService,
     private _elementRef: ElementRef,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -127,7 +129,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           },
           series: [
             {
-              color: ['#d0f3fc', '#faeb98', '#a2fa98', '#f298fa'],
+              color: ['#faeb98', '#a2fa98', '#e9dff7', '#d0f3fc'],
               name: '',
               type: 'pie',
               radius: ['30%', '70%'],
@@ -165,9 +167,14 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
             },
           ],
         };
-        myChart.on('click', function (params) {
-          // Print name in console
-          console.log(params.data);
+        myChart.on('click', (params) => {
+          const data = params.data as { id: number };
+          this.sharedFacadeService.updateWorksheetFilter({
+            tankTypeId: this.tankTypeId,
+            statusId: data?.id,
+            userId: 0,
+          });
+          this.router.navigate(['/worksheet']);
         });
         myChart.setOption(option);
       });
@@ -243,9 +250,14 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
             },
           ],
         };
-        userChart.on('click', function (params) {
-          // Print name in console
-          console.log(params.data);
+        userChart.on('click', (params) => {
+          const data = params.data as { id: number };
+          this.sharedFacadeService.updateWorksheetFilter({
+            tankTypeId: this.tankTypeId,
+            statusId: 0,
+            userId: data?.id,
+          });
+          this.router.navigate(['/worksheet']);
         });
         userChart.setOption(option);
       });

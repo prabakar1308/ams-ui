@@ -58,7 +58,7 @@ export class WorksheetFilterComponent implements OnInit, OnDestroy {
     this.sharedFacade.updateWorksheetFilter({ userId: event });
   }
 
-  onTankTypeChange(event: MatRadioChange) {
+  onTankTypeChange(event: any) {
     this.sharedFacade.updateWorksheetFilter({ tankTypeId: event.value });
   }
 

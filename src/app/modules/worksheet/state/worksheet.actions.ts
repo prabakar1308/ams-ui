@@ -1,5 +1,5 @@
 import { createAction } from '@ngrx/store';
-import { ActiveWorksheet } from '../models/active-worksheet';
+import { ActiveWorksheet, WorksheetTank } from '../models/active-worksheet';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
 
 export const getActiveWorksheets = createAction(
@@ -9,7 +9,7 @@ export const getActiveWorksheets = createAction(
 
 export const getActiveWorksheetsSuccess = createAction(
   '[Worksheet] Get Active Worksheets Success',
-  (payload: ActiveWorksheet[]) => ({ payload }),
+  (payload: WorksheetTank[]) => ({ payload }),
 );
 
 export const getActiveWorksheetsFailure = createAction(

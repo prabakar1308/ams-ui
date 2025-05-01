@@ -67,14 +67,21 @@ mat-form-field.ams-small {
         ));
 
     // table
-    @include mat.table-overrides((background-color: rgb(255, 255, 255),
-        ));
+    @include mat.table-overrides((background-color: rgb(255, 255, 255), row-item-outline-color: #dee3e3));
 
     //button
     // @include mat.button-overrides((filled-container-color: rgb(20, 202, 193),
     //         filled-label-text-color: rgb(241, 238, 238),
     //     ));
 
+}
+
+.warning {
+    @include mat.icon-button-overrides((icon-color: red), )
+}
+
+.primary {
+    @include mat.icon-button-overrides((icon-color: #006a6a), )
 }
 
 mat-card {

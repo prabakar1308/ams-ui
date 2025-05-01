@@ -8,8 +8,9 @@
             <table mat-table [dataSource]="dataSource">
               <!-- Checkbox Column -->
               <ng-container matColumnDef="select" sticky>
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef class="max-w-15">
                   <mat-checkbox
+                    [disabled]="disableHeader"
                     (change)="$event ? toggleAllRows() : null"
                     [checked]="selection.hasValue() && isAllSelected()"
                     [indeterminate]="selection.hasValue() && !isAllSelected()"
@@ -17,9 +18,9 @@
                   >
                   </mat-checkbox>
                 </th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell *matCellDef="let element" class="max-w-15">
                   <mat-checkbox
-                    [disabled]="element.worksheet !== null"
+                    [disabled]="element.worksheetId !== 0"
                     (click)="$event.stopPropagation()"
                     (change)="$event ? selection.toggle(element) : null"
                     [checked]="selection.isSelected(element)"
@@ -31,8 +32,8 @@
 
               <!-- Name Column -->
               <ng-container matColumnDef="tank" sticky>
-                <th mat-header-cell *matHeaderCellDef>Tank #</th>
-                <td mat-cell *matCellDef="let element">
+                <th mat-header-cell *matHeaderCellDef class="max-w-18">Tank</th>
+                <td mat-cell *matCellDef="let element" class="max-w-18">
                   {{ element.tankNumber }}
                 </td>
               </ng-container>
@@ -41,7 +42,7 @@
               <ng-container matColumnDef="harvest">
                 <th mat-header-cell *matHeaderCellDef class="min-w-32">Harvest Type</th>
                 <td mat-cell *matCellDef="let element" class="min-w-32">
-                  {{ element.worksheet?.harvestType.value || '-' }}
+                  {{ element.harvestType?.value || '-' }}
                 </td>
               </ng-container>
 
@@ -49,35 +50,65 @@
               <ng-container matColumnDef="source">
                 <th mat-header-cell *matHeaderCellDef>Source</th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.worksheet?.inputCount }} {{ element.worksheet?.inputSource || '-' }}
+                  {{ element.inputSource || '-' }}
                 </td>
               </ng-container>
 
               <!-- Symbol Column -->
               <ng-container matColumnDef="user">
                 <th mat-header-cell *matHeaderCellDef class="min-w-32">Assigned User</th>
-                <td mat-cell *matCellDef="let element" class="min-w-32">
-                  {{ element.worksheet?.user.firstName || '-' }}
+                <td mat-cell *matCellDef="let element" class="min-w-32 grid-cols-2">
+                  <div class="flex flex-row">
+                    @if (element.assignedUser) {
+                      <mat-icon>person</mat-icon>
+                    }
+                    <p class="pt-1 font-medium">{{ element.assignedUser?.value || '-' }}</p>
+                  </div>
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef class="min-w-40">Status</th>
-                <td mat-cell *matCellDef="let element" class="min-w-40">
-                  {{ element.worksheet?.status?.value || '-' }}
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  class="min-w-40 text-[#006a6a] font-semibold"
+                >
+                  {{ element.status?.value || '-' }}
+                  <p
+                    class="font-sans text-xs"
+                    [ngClass]="{
+                      'past-class': element.harvestTimeDiff?.isPast,
+                      'future-class': !element.harvestTimeDiff?.isPast,
+                    }"
+                  >
+                    {{ element.harvestTimeDiff?.text }}
+                  </p>
                 </td>
               </ng-container>
 
               <!-- Star Column -->
               <ng-container matColumnDef="action" stickyEnd>
-                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">Actions</th>
                 <td mat-cell *matCellDef="let element">
-                  <mat-icon>more_vert</mat-icon>
+                  <button class="primary" mat-icon-button (click)="onAction(element, 'delete')">
+                    <mat-icon>double_arrow</mat-icon>
+                  </button>
+                  @if (canDelete(element)) {
+                    <button class="warning" mat-icon-button (click)="onAction(element, 'delete')">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  }
                 </td>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns" class="pl-1 pr-1"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td [attr.colspan]="displayedColumns.length" class="p-4 text-center font-bold">
+                  No records available!
+                </td>
+              </tr>
             </table>
           </section>
         </mat-card-content>

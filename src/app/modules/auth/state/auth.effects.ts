@@ -34,17 +34,14 @@ export class AuthEffects {
               if (userData) {
                 localStorage.setItem('userData', JSON.stringify(userData));
                 this.authFacadeService.userSubject.next(userData);
-                this.notificationService.showMessage(
-                  SEVERITY.SUCCESS,
-                  'Login is successfull!'
-                );
+                this.notificationService.showMessage(SEVERITY.SUCCESS, 'Login is successfull!');
               }
               return userLoginSuccess(userData);
             }
             return userLoginFailure({ error: 'Login failed' });
           }),
           // TODO: this is not working, handled in component
-          tap(() => this.router.navigate(['/master'])),
+          tap(() => this.router.navigate(['/dashboard'])),
           catchError((error) => of(userLoginFailure({ error }))),
         ),
       ),

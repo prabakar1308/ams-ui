@@ -1,8 +1,7 @@
-import { ActiveWorksheet } from './active-worksheet';
-import { WorksheetDetails } from './worksheet-details';
+import { WorksheetTank } from './active-worksheet';
 
 export interface WorksheetState {
-  activeWorksheets: ActiveWorksheet[];
+  activeWorksheets: WorksheetTank[];
   meta: {
     isLoading: boolean;
     error: string;

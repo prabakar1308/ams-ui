@@ -4,14 +4,25 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
     <div class="col-span-2 grid grid-cols-1 lg:grid-cols-3 gap-2">
       <div class="w-full">
-        <mat-radio-group
+        <!-- <mat-radio-group
           [value]="worksheetFilter.tankTypeId"
           aria-label="Select an option"
           (change)="onTankTypeChange($event)"
         >
           <mat-radio-button [value]="1">Machinery</mat-radio-button>
           <mat-radio-button [value]="2">Conventional</mat-radio-button>
-        </mat-radio-group>
+        </mat-radio-group> -->
+
+        <mat-button-toggle-group
+          [value]="worksheetFilter.tankTypeId"
+          (change)="onTankTypeChange($event)"
+          name="tankType"
+          aria-label="Tank Type"
+          class="mt-1 mb-4 w-full"
+        >
+          <mat-button-toggle class="w-1/2" [value]="1">Machinery</mat-button-toggle>
+          <mat-button-toggle class="w-1/2" [value]="2">Conventional</mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
 
       <div class="w-full">

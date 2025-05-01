@@ -6,6 +6,28 @@
     .table-container {
 
         max-width: 100%;
-        overflow: auto;
+        overflow-y: auto;
+        height: 600px;
+
+        .mat-mdc-row {
+            height: 60px;
+        }
+
+        .mat-mdc-header-row {
+            background-color: #dff1f1;
+        }
+
+        .past-class {
+            color: rgb(241, 15, 15);
+        }
+
+        .future-class {
+            color: rgb(13, 212, 13)
+        }
+
+        // Set height to 380px for mobile screens
+        @media (max-width: 767px) {
+            height: 380px;
+        }
     }
 }

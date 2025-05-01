@@ -37,3 +37,11 @@ export const CUSTOM_PRESETS = [
 ];
 
 export const DEFAULT_TANK_TYPE = 1; // MACHINERY
+
+export const WORKSHEET_STATUS = {
+  READY_FOR_STOCKING: 1,
+  IN_STOCKING: 2,
+  READY_FOR_HARVEST: 3,
+  COMPLETED: 4,
+  FREE: 5,
+};

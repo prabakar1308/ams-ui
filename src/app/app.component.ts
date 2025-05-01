@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
     if (userData) {
       this.authFacadeService.userLoginSucess(JSON.parse(userData));
       this.authFacadeService.userSubject.next(JSON.parse(userData));
-      this.router.navigate([APP_DEFAULT_ROUTE]);
+      // this.router.navigate([APP_DEFAULT_ROUTE]);
     }
   }
 

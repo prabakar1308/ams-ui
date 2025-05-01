@@ -5,6 +5,15 @@ export interface ActiveWorksheet {
   worksheet: WorksheetDetails;
 }
 
+export interface WorksheetTank {
+  tankNumber: number;
+  worksheetId?: number;
+  harvestType?: { id: number; value: string };
+  inputSource?: string;
+  assignedUser?: { id: number; value: string };
+  status?: { id: number; value: string };
+}
+
 export interface ActiveWorksheetRequest {
   userId?: number;
   tankTypeId?: number;
