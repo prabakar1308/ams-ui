@@ -9,6 +9,7 @@ import { SharedEffects } from './state/shared-effects';
 import { CustomHeaderComponent } from './components/custom-header/custom-header.component';
 import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
 import { CustomRangePanelComponent } from './components/custom-header/custom-range-panel/custom-range-panel.component';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { CustomRangePanelComponent } from './components/custom-header/custom-ran
     DateRangePickerComponent,
     CustomHeaderComponent,
     CustomRangePanelComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -23,6 +25,11 @@ import { CustomRangePanelComponent } from './components/custom-header/custom-ran
     StoreModule.forFeature('shared', sharedReducer),
     EffectsModule.forFeature([SharedEffects]),
   ],
-  exports: [MaterialModule, FormGeneratorComponent, DateRangePickerComponent],
+  exports: [
+    MaterialModule,
+    FormGeneratorComponent,
+    DateRangePickerComponent,
+    ConfirmationDialogComponent,
+  ],
 })
 export class SharedModule {}

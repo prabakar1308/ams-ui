@@ -5,6 +5,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 import { WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { WorksheetUpdateDialogComponent } from '../worksheet-update-dialog/worksheet-update-dialog.component';
 
 @Component({
   selector: 'app-worksheet-home',
@@ -19,7 +22,10 @@ export class WorksheetHomeComponent {
   dataSource = new MatTableDataSource<WorksheetTank>();
   selection = new SelectionModel<any>(true, []);
 
-  constructor(private worksheetFacadeService: WorksheetFacadeService) {}
+  constructor(
+    private worksheetFacadeService: WorksheetFacadeService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit() {
     // subscriptions
@@ -65,8 +71,30 @@ export class WorksheetHomeComponent {
     return data && data.status?.id === WORKSHEET_STATUS.READY_FOR_STOCKING;
   }
 
-  onAction(data: any, action: string) {
-    console.log(data, action);
+  onAction(worksheet: WorksheetTank, action: string) {
+    if (action === 'delete') {
+      const data = {
+        title: 'Delete Confirmation',
+        message: `Are you sure you want to delete the worksheet?`,
+      };
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
+      dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+        if (isConfirmed) {
+          // this.deleteAccountType(accountType.value.accountTypeId);
+        }
+      });
+    } else if (action === 'next') {
+      const data: any = {
+        title: `Tank ${worksheet.tankNumber}`,
+        worksheet,
+      };
+      const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
+      dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+        if (isConfirmed) {
+          // this.deleteAccountType(accountType.value.accountTypeId);
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {

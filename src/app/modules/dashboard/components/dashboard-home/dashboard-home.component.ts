@@ -189,6 +189,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
       .subscribe((res: Response<TankWiseStatus[]>) => {
         console.log(res.data);
         const option: ECOption = {
+          grid: { containLabel: true },
           title: {
             text: 'No. of tanks assigned against user',
             bottom: 0,
@@ -204,6 +205,9 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
             data: res.data.map((data) => data.name),
             axisLabel: {
               show: true,
+              width: 100, //fixed number of pixels
+              overflow: 'truncate', // or 'break' to continue in a new line
+              interval: 0,
             },
           },
           yAxis: {
@@ -211,9 +215,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           },
           tooltip: {
             trigger: 'item',
-          },
-          legend: {
-            data: ['UnAssigned', 'Others', 'tets'],
+            extraCssText: 'width:200px; white-space:pre-wrap;',
           },
           series: [
             {

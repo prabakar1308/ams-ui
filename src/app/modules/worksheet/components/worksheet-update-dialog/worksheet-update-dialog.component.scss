@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+
+.worksheet-update-container {
+
+    h2 {
+        @include mat.chips-overrides((container-height: '20px',
+                elevated-container-color: #e1e1e1));
+
+        mat-chip {
+            margin-bottom: 2px;
+        }
+    }
+
+    .select-all {
+        margin-left: 10px;
+        padding: 5px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 8px;
+        background-color: #e1e1e1;
+        font-weight: 500;
+    }
+}

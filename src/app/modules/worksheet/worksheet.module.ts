@@ -10,9 +10,10 @@ import { WorksheetEffects } from './state/worksheet.effects';
 import { WorksheetHomeComponent } from './components/worksheet-home/worksheet-home.component';
 import { WorksheetFilterComponent } from './components/worksheet-home/worksheet-filter/worksheet-filter.component';
 import { WorksheetCreateComponent } from './components/worksheet-create/worksheet-create.component';
+import { WorksheetUpdateDialogComponent } from './components/worksheet-update-dialog/worksheet-update-dialog.component';
 
 @NgModule({
-  declarations: [WorksheetHomeComponent, WorksheetFilterComponent, WorksheetCreateComponent],
+  declarations: [WorksheetHomeComponent, WorksheetFilterComponent, WorksheetCreateComponent, WorksheetUpdateDialogComponent],
   imports: [
     CommonModule,
     SharedModule,
