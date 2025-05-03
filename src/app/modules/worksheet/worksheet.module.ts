@@ -11,9 +11,11 @@ import { WorksheetHomeComponent } from './components/worksheet-home/worksheet-ho
 import { WorksheetFilterComponent } from './components/worksheet-home/worksheet-filter/worksheet-filter.component';
 import { WorksheetCreateComponent } from './components/worksheet-create/worksheet-create.component';
 import { WorksheetUpdateDialogComponent } from './components/worksheet-update-dialog/worksheet-update-dialog.component';
+import { HarvestHomeComponent } from './components/harvest/harvest-home/harvest-home.component';
+import { HarvestCreateComponent } from './components/harvest/harvest-create/harvest-create.component';
 
 @NgModule({
-  declarations: [WorksheetHomeComponent, WorksheetFilterComponent, WorksheetCreateComponent, WorksheetUpdateDialogComponent],
+  declarations: [WorksheetHomeComponent, WorksheetFilterComponent, WorksheetCreateComponent, WorksheetUpdateDialogComponent, HarvestHomeComponent, HarvestCreateComponent],
   imports: [
     CommonModule,
     SharedModule,

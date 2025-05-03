@@ -8,6 +8,7 @@ import { WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { WorksheetUpdateDialogComponent } from '../worksheet-update-dialog/worksheet-update-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-worksheet-home',
@@ -25,6 +26,7 @@ export class WorksheetHomeComponent {
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
     private dialog: MatDialog,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -71,6 +73,20 @@ export class WorksheetHomeComponent {
     return data && data.status?.id === WORKSHEET_STATUS.READY_FOR_STOCKING;
   }
 
+  getIconName(data: WorksheetTank) {
+    const status = data && data.status ? data.status.id : WORKSHEET_STATUS.FREE;
+    switch (status) {
+      case WORKSHEET_STATUS.READY_FOR_STOCKING:
+        return 'keyboard_double_arrow_right';
+      case WORKSHEET_STATUS.READY_FOR_HARVEST:
+        return 'task_alt';
+      case WORKSHEET_STATUS.FREE:
+        return 'add_circle';
+      default:
+        return '';
+    }
+  }
+
   onAction(worksheet: WorksheetTank, action: string) {
     if (action === 'delete') {
       const data = {
@@ -84,16 +100,29 @@ export class WorksheetHomeComponent {
         }
       });
     } else if (action === 'next') {
-      const data: any = {
-        title: `Tank ${worksheet.tankNumber}`,
-        worksheet,
-      };
-      const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
-      dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
-        if (isConfirmed) {
-          // this.deleteAccountType(accountType.value.accountTypeId);
-        }
-      });
+      const status = worksheet && worksheet.status ? worksheet.status.id : WORKSHEET_STATUS.FREE;
+      switch (status) {
+        case WORKSHEET_STATUS.READY_FOR_STOCKING:
+          const data: any = {
+            title: `Tank ${worksheet.tankNumber}`,
+            worksheet,
+          };
+          const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
+          dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+            if (isConfirmed) {
+              // this.deleteAccountType(accountType.value.accountTypeId);
+            }
+          });
+          break;
+        case WORKSHEET_STATUS.READY_FOR_HARVEST:
+          this.router.navigate(['worksheet/harvest/create']);
+          break;
+        case WORKSHEET_STATUS.FREE:
+          this.router.navigate(['worksheet/create']);
+          break;
+        default:
+          break;
+      }
     }
   }
 
