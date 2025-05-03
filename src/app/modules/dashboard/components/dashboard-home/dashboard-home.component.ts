@@ -1,11 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { DashboardFacadeService } from '@app/dashboard/services/dashboard-facade.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DashboardResponse, TankWiseStatus } from '@app/dashboard/models/dashboard-response';
 import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-
+import { Observable, of, Subject, switchMap } from 'rxjs';
 import * as echarts from 'echarts/core';
-import { BarChart, LineChart, PieChart } from 'echarts/charts';
+import { BarChart, PieChart } from 'echarts/charts';
 import {
   TitleComponent,
   TooltipComponent,
@@ -18,36 +16,10 @@ import {
 } from 'echarts/components';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import type {
-  // The series option types are defined with the SeriesOption suffix
-
-  BarSeriesOption,
-  LineSeriesOption,
-  PieSeriesOption,
-} from 'echarts/charts';
-import type {
-  // The component option types are defined with the ComponentOption suffix
-  TitleComponentOption,
-  TooltipComponentOption,
-  GridComponentOption,
-  DatasetComponentOption,
-} from 'echarts/components';
-import type { ComposeOption } from 'echarts/core';
 import { DashboardService } from '@app/dashboard/services/dashboard.service';
-import { Response } from '@app/shared/models/response';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
-
-// Create an Option type with only the required components and charts via ComposeOption
-type ECOption = ComposeOption<
-  | PieSeriesOption
-  | BarSeriesOption
-  | LineSeriesOption
-  | TitleComponentOption
-  | TooltipComponentOption
-  | GridComponentOption
-  | DatasetComponentOption
->;
+import { DEFAULT_TANK_TYPE } from '@app/shared/constants/shared.contants';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -58,18 +30,17 @@ type ECOption = ComposeOption<
 export class DashboardHomeComponent implements OnInit, OnDestroy {
   private unSubscribe = new Subject<void>();
   dashboardData: DashboardResponse[] | null = [];
-  tankTypeId = 1;
+  tankTypeId = DEFAULT_TANK_TYPE;
+  statusChartOption$!: Observable<echarts.EChartsCoreOption>;
+  userChartOption$!: Observable<echarts.EChartsCoreOption>;
 
   constructor(
     private sharedFacadeService: SharedFacadeService,
     private dashboardService: DashboardService,
-    private _elementRef: ElementRef,
     private router: Router,
   ) {}
 
   ngOnInit() {
-    this.loadAllData();
-
     // Register the required components
     echarts.use([
       TitleComponent,
@@ -80,7 +51,6 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
       LegendComponent,
       PieChart,
       BarChart,
-      LineChart,
       LabelLayout,
       UniversalTransition,
       CanvasRenderer,
@@ -98,34 +68,16 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
     this.loadUserChart();
   }
 
-  loadAllData() {
-    // this.dashboardFacade.getDashboardData(0, 0, 0);
-  }
-
-  onTankTypeChange(event: string) {
-    this.loadAllData();
-    if (event !== 'All') {
-      this.dashboardData =
-        this.dashboardData?.filter((x) => x.worksheet?.tankType?.value === event) == null
-          ? []
-          : this.dashboardData?.filter((x) => x.worksheet?.tankType?.value === event);
-    }
-  }
-
   loadCharts() {
-    const myChart = echarts.init(this._elementRef.nativeElement.querySelector('#chart-container'));
-    this.dashboardService
-      .getTankWiseStatus(this.tankTypeId)
-      .subscribe((res: Response<TankWiseStatus[]>) => {
-        console.log(res.data);
-        const option: ECOption = {
+    this.statusChartOption$ = this.dashboardService.getTankWiseStatus(this.tankTypeId).pipe(
+      switchMap((data: TankWiseStatus[]) => {
+        return of({
           tooltip: {
             trigger: 'item',
           },
           legend: {
             top: 'bottom',
             left: 'center',
-            // orient: 'vertical',
           },
           series: [
             {
@@ -147,48 +99,31 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
                 fontStyle: 'italic',
                 fontWeight: 'bold',
               },
-              // label: {
-              //   show: true,
-              //   position: 'left',
-
-              // },
               emphasis: {
                 focus: 'self',
-                // label: {
-                //   show: true,
-                //   fontSize: 40,
-                //   fontWeight: 'bold',
-                // },
               },
-              labelLine: {
-                // show: true,
-              },
-              data: res.data,
+              data: data,
             },
           ],
-        };
-        myChart.on('click', (params) => {
-          const data = params.data as { id: number };
-          this.sharedFacadeService.updateWorksheetFilter({
-            tankTypeId: this.tankTypeId,
-            statusId: data?.id,
-            userId: 0,
-          });
-          this.router.navigate(['/worksheet']);
         });
-        myChart.setOption(option);
-      });
+      }),
+    );
+  }
+
+  statusChartClick(event: echarts.ECElementEvent) {
+    const data = event.data as { id: number };
+    this.sharedFacadeService.updateWorksheetFilter({
+      tankTypeId: this.tankTypeId,
+      statusId: data?.id,
+      userId: 0,
+    });
+    this.router.navigate(['/worksheet']);
   }
 
   loadUserChart() {
-    const userChart = echarts.init(
-      this._elementRef.nativeElement.querySelector('#user-chart-container'),
-    );
-    this.dashboardService
-      .getUsersByTankWise(this.tankTypeId)
-      .subscribe((res: Response<TankWiseStatus[]>) => {
-        console.log(res.data);
-        const option: ECOption = {
+    this.userChartOption$ = this.dashboardService.getUsersByTankWise(this.tankTypeId).pipe(
+      switchMap((data: TankWiseStatus[]) => {
+        return of({
           grid: { containLabel: true },
           title: {
             text: 'No. of tanks assigned against user',
@@ -202,7 +137,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           },
           xAxis: {
             type: 'category',
-            data: res.data.map((data) => data.name),
+            data: data.map((item) => item.name),
             axisLabel: {
               show: true,
               width: 100, //fixed number of pixels
@@ -219,18 +154,18 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           },
           series: [
             {
-              data: res.data.map((data) => {
-                if (data.id === 0)
+              data: data.map((item) => {
+                if (item.id === 0)
                   return {
-                    id: data.id,
-                    value: data.value,
+                    id: item.id,
+                    value: item.value,
                     itemStyle: {
                       color: '#d0f3fc',
                     },
                   };
                 return {
-                  id: data.id,
-                  value: data.value,
+                  id: item.id,
+                  value: item.value,
                   itemStyle: {
                     color: '#a3e7de',
                   },
@@ -251,18 +186,19 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
               },
             },
           ],
-        };
-        userChart.on('click', (params) => {
-          const data = params.data as { id: number };
-          this.sharedFacadeService.updateWorksheetFilter({
-            tankTypeId: this.tankTypeId,
-            statusId: 0,
-            userId: data?.id,
-          });
-          this.router.navigate(['/worksheet']);
         });
-        userChart.setOption(option);
-      });
+      }),
+    );
+  }
+
+  userChartClick(event: echarts.ECElementEvent) {
+    const data = event.data as { id: number };
+    this.sharedFacadeService.updateWorksheetFilter({
+      tankTypeId: this.tankTypeId,
+      statusId: 0,
+      userId: data?.id,
+    });
+    this.router.navigate(['/worksheet']);
   }
 
   ngOnDestroy(): void {

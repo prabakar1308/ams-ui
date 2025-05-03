@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { Response } from '@app/shared/models/response';
 import { DashboardResponse, TankWiseStatus } from '../models/dashboard-response';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,15 +21,15 @@ export class DashboardService {
     });
   }
 
-  getTankWiseStatus(tankTypeId: number): Observable<Response<TankWiseStatus[]>> {
-    return this.http.get<Response<TankWiseStatus[]>>(
-      `${this.API_URL}/tank-wise-statuses/${tankTypeId}`,
-    );
+  getTankWiseStatus(tankTypeId: number): Observable<TankWiseStatus[]> {
+    return this.http
+      .get<Response<TankWiseStatus[]>>(`${this.API_URL}/tank-wise-statuses/${tankTypeId}`)
+      .pipe(map((resp) => resp.data));
   }
 
-  getUsersByTankWise(tankTypeId: number): Observable<Response<TankWiseStatus[]>> {
-    return this.http.get<Response<TankWiseStatus[]>>(
-      `${this.API_URL}/tank-wise-users/${tankTypeId}`,
-    );
+  getUsersByTankWise(tankTypeId: number): Observable<TankWiseStatus[]> {
+    return this.http
+      .get<Response<TankWiseStatus[]>>(`${this.API_URL}/tank-wise-users/${tankTypeId}`)
+      .pipe(map((resp) => resp.data));
   }
 }

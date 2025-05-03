@@ -20,9 +20,19 @@
       </mat-card-header>
       <mat-card-content>
         <div class="grid grid-cols-1 md:grid-cols-2 w-full">
-          <div #chartContainer class="chart-container-cl w-1/1 md:1/2" id="chart-container"></div>
           <div
-            #userChartContainer
+            echarts
+            [options]="statusChartOption$ | async"
+            [autoResize]="true"
+            (chartClick)="statusChartClick($event)"
+            class="chart-container-cl w-1/1 md:1/2"
+            id="chart-container"
+          ></div>
+          <div
+            echarts
+            [options]="userChartOption$ | async"
+            [autoResize]="true"
+            (chartClick)="userChartClick($event)"
             class="chart-container-cl w-1/1 md:1/2"
             id="user-chart-container"
           ></div>
