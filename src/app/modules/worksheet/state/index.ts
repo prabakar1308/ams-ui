@@ -14,4 +14,9 @@ export const getActiveWorksheets = createSelector(
   (state: WorksheetState) => state.activeWorksheets,
 );
 
+export const getWorksheetTankDetails = createSelector(
+  getWorksheetFeatureState,
+  (state: WorksheetState) => state.createWorksheet,
+);
+
 export const getMetaInfo = createSelector(getWorksheetFeatureState, (state) => state.meta);

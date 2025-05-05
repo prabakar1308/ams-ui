@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { MatRadioChange } from '@angular/material/radio';
@@ -16,6 +16,7 @@ import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade
   styleUrl: './worksheet-filter.component.scss',
 })
 export class WorksheetFilterComponent implements OnInit, OnDestroy {
+  @Input() disableCreate = false;
   private unSubscribe = new Subject<void>();
   selectedUser: number = 0;
   userDetails: UserDetails[] | null = null;

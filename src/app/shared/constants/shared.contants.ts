@@ -8,6 +8,19 @@ export const INPUT_TYPES = {
   DATE: 'date',
   TIME: 'time',
   FILE: 'file',
+  BUTTON_TOGGLE: 'button_toggle',
+  SLIDER: 'slider',
+};
+
+export const LAYOUT_CLASSES = {
+  CONTAINER: 'grid md:grid-cols-4 sm:grid-cols-1 gap-5 md:gap-15 md:gap-x-10',
+  // Form layout is by default considered as 1 column for mobile and 4 columns for other
+  // mobile - 1/1, other - 1/4
+  NONE: '',
+  // mobile - 1/1, other - 2/4
+  DEFAULT: 'sm:col-span-1 md:col-span-2',
+  // mobile - 1/1, other - 4/4
+  FULL_WIDTH: 'sm:col-span-1 md:col-span-4',
 };
 
 export const TEXT_INPUT_TYPES = [

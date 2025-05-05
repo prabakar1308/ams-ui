@@ -1,6 +1,6 @@
 <div class="worksheet-container">
   <div>
-    <app-worksheet-filter></app-worksheet-filter>
+    <app-worksheet-filter [disableCreate]="disableCreate"></app-worksheet-filter>
     <div>
       <mat-card appearance="outlined">
         <mat-card-content>
@@ -22,7 +22,7 @@
                   <mat-checkbox
                     [disabled]="element.worksheetId !== 0"
                     (click)="$event.stopPropagation()"
-                    (change)="$event ? selection.toggle(element) : null"
+                    (change)="$event ? toggleRow(element) : null"
                     [checked]="selection.isSelected(element)"
                     [aria-label]="checkboxLabel(element)"
                   >
@@ -99,6 +99,7 @@
                       class="primary small"
                       mat-icon-button
                       (click)="onAction(element, 'next')"
+                      [matTooltip]="getTooltipValue(element)"
                     >
                       <mat-icon>{{ getIconName(element) }}</mat-icon>
                     </button>
@@ -108,6 +109,7 @@
                       class="warning small"
                       mat-icon-button
                       (click)="onAction(element, 'delete')"
+                      matTooltip="Delete"
                     >
                       <mat-icon>delete</mat-icon>
                     </button>

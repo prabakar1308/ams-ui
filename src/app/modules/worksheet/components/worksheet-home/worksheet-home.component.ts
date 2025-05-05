@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { WorksheetUpdateDialogComponent } from '../worksheet-update-dialog/worksheet-update-dialog.component';
 import { Router } from '@angular/router';
+import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
+import { WorksheetFilter } from '@app/shared/models/shared-state';
 
 @Component({
   selector: 'app-worksheet-home',
@@ -16,15 +18,18 @@ import { Router } from '@angular/router';
   templateUrl: './worksheet-home.component.html',
   styleUrl: './worksheet-home.component.scss',
 })
-export class WorksheetHomeComponent {
+export class WorksheetHomeComponent implements OnInit, OnDestroy {
   private unSubscribe = new Subject<void>();
   activeWorksheets: WorksheetTank[] = [];
   displayedColumns = ['select', 'tank', 'harvest', 'source', 'user', 'status', 'action'];
   dataSource = new MatTableDataSource<WorksheetTank>();
   selection = new SelectionModel<any>(true, []);
+  worksheetFilter: WorksheetFilter = {};
+  disableCreate = true;
 
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
+    private sharedFacadeService: SharedFacadeService,
     private dialog: MatDialog,
     private router: Router,
   ) {}
@@ -32,10 +37,18 @@ export class WorksheetHomeComponent {
   ngOnInit() {
     // subscriptions
     this.worksheetFacadeService.activeWorksheets$
-      .pipe(takeUntil(this.unSubscribe))
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
+        this.selection.clear();
+        this.disableCreate = true;
         this.activeWorksheets = data;
         this.dataSource.data = data;
+      });
+
+    this.sharedFacadeService.worksheetFilter$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((data) => {
+        this.worksheetFilter = data;
       });
   }
 
@@ -55,10 +68,17 @@ export class WorksheetHomeComponent {
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
+      this.disableCreate = true;
       return;
     }
 
     this.selection.select(...this.dataSource.data.filter((data) => !data.worksheetId));
+    this.disableCreate = false;
+  }
+
+  toggleRow(element: WorksheetTank) {
+    this.selection.toggle(element);
+    this.disableCreate = !this.selection.selected.length;
   }
 
   /** The label for the checkbox on the passed row */
@@ -82,6 +102,20 @@ export class WorksheetHomeComponent {
         return 'task_alt';
       case WORKSHEET_STATUS.FREE:
         return 'add_circle';
+      default:
+        return '';
+    }
+  }
+
+  getTooltipValue(data: WorksheetTank) {
+    const status = data && data.status ? data.status.id : WORKSHEET_STATUS.FREE;
+    switch (status) {
+      case WORKSHEET_STATUS.READY_FOR_STOCKING:
+        return 'Update';
+      case WORKSHEET_STATUS.READY_FOR_HARVEST:
+        return 'Harvest';
+      case WORKSHEET_STATUS.FREE:
+        return 'Create';
       default:
         return '';
     }
@@ -118,6 +152,10 @@ export class WorksheetHomeComponent {
           this.router.navigate(['worksheet/harvest/create']);
           break;
         case WORKSHEET_STATUS.FREE:
+          this.worksheetFacadeService.updateWorksheetTankSelection({
+            tankType: this.worksheetFilter.tankTypeId,
+            tanks: [worksheet.tankNumber],
+          });
           this.router.navigate(['worksheet/create']);
           break;
         default:

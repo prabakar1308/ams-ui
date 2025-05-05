@@ -6,17 +6,20 @@ import { MetaState } from '@app/shared/models/meta-state';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
 import * as fromStore from '../state';
 import * as worksheetActions from '../state/worksheet.actions';
-import { ActiveWorksheet, WorksheetTank } from '../models/active-worksheet';
+import { WorksheetTank } from '../models/active-worksheet';
+import { TankSelection } from '../models/create-worksheet';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorksheetFacadeService {
   activeWorksheets$: Observable<WorksheetTank[]>;
+  tankSelection$: Observable<TankSelection>;
   meta$: Observable<MetaState>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.activeWorksheets$ = this.store.select(fromStore.getActiveWorksheets);
+    this.tankSelection$ = this.store.select(fromStore.getWorksheetTankDetails);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
   }
 
@@ -26,5 +29,9 @@ export class WorksheetFacadeService {
 
   getActiveWorksheetsSuccess(response: WorksheetTank[]) {
     this.store.dispatch(worksheetActions.getActiveWorksheetsSuccess(response));
+  }
+
+  updateWorksheetTankSelection(data: TankSelection) {
+    this.store.dispatch(worksheetActions.updateWorksheetTankDetails(data));
   }
 }

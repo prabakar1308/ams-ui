@@ -57,17 +57,26 @@ mat-form-field.ams-small {
 
 
 
-    @include mat.button-toggle-overrides((height: '30px',
+    @include mat.button-toggle-overrides((height: '36px',
         ));
 
     @include mat.card-overrides((outlined-container-color: #ffffff,
-            outlined-container-elevation: 1px 1px 10px 1px gray));
+            outlined-container-elevation: 1px 1px 10px 1px gray,
+            subtitle-text-size: 12px,
+            subtitle-text-color: #858989));
+
+    @include mat.divider-overrides((color: rgb(209, 208, 206),
+        ));
 
     @include mat.datepicker-overrides((calendar-container-background-color: white,
         ));
 
     // table
     @include mat.table-overrides((background-color: rgb(255, 255, 255), row-item-outline-color: #dee3e3));
+
+    //mat-slider
+    @include mat.slider-overrides((inactive-track-color: rgb(173, 169, 169),
+        ));
 
     //button
     // @include mat.button-overrides((filled-container-color: rgb(20, 202, 193),
@@ -90,6 +99,11 @@ mat-form-field.ams-small {
 
 mat-card {
     margin: 10px 2px;
+}
+
+.mat-mdc-slider {
+    // TODO: change this later
+    width: 100% !important;
 }
 
 .head {

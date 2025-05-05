@@ -5,6 +5,10 @@ import * as WorksheetActions from './worksheet.actions';
 
 export const initialState: WorksheetState = {
   activeWorksheets: [],
+  createWorksheet: {
+    tankType: 0,
+    tanks: [],
+  },
   meta: {
     isLoading: false,
     error: '',
@@ -43,5 +47,9 @@ export const worksheetReducer = createReducer(
       ...state.meta,
       isLoading: false,
     },
+  })),
+  on(WorksheetActions.updateWorksheetTankDetails, (state, { payload }) => ({
+    ...state,
+    createWorksheet: payload,
   })),
 );
