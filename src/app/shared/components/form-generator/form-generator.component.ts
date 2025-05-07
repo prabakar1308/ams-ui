@@ -1,12 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
 import { GenericForm, GenericOption } from '@app/shared/models/generic-form';
 import { FormStructure, FormValidation } from '@app/shared/models/form-structure';
 import { INPUT_TYPES, TEXT_INPUT_TYPES } from '@app/shared/constants/shared.contants';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-form-generator',
@@ -14,24 +25,37 @@ import { INPUT_TYPES, TEXT_INPUT_TYPES } from '@app/shared/constants/shared.cont
   templateUrl: './form-generator.component.html',
   styleUrl: './form-generator.component.scss',
 })
-export class FormGeneratorComponent {
+export class FormGeneratorComponent implements OnInit, OnDestroy {
   @Input() formStructure: FormStructure[] = [];
   @Input() formDetails!: GenericForm;
   @Output() moveBack = new EventEmitter<void>();
   @Output() formData = new EventEmitter<unknown>();
+  @Output() formValueChange = new EventEmitter<unknown>();
 
+  private unSubscribe = new Subject<void>();
   formLayoutCols = 'grid md:grid-cols-4 sm:grid-cols-1 gap-10 gap-y-5';
   inputTypes = INPUT_TYPES;
   textInputTypes = TEXT_INPUT_TYPES;
-
   dynamicForm!: FormGroup;
+  previousValue: unknown;
 
   constructor(
     private fb: FormBuilder,
     private notificationService: NotificationService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
+    this.initializeForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['formStructure'] && !changes['formStructure'].firstChange) {
+      this.initializeForm(); // Reinitialize the form when formStructure changes
+    }
+  }
+
+  private initializeForm(): void {
     let formGroup: Record<string, any> = {};
     this.formStructure.forEach((control) => {
       let controlValidators: Validators[] = [];
@@ -53,6 +77,17 @@ export class FormGeneratorComponent {
     });
 
     this.dynamicForm = this.fb.group(formGroup);
+
+    // Add subscriptions once the form is initialized
+    this.formStructure.forEach((control) => {
+      if (control.callback) {
+        this.dynamicForm.controls[control.name].valueChanges
+          .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+          .subscribe(() => {
+            this.previousValue = this.dynamicForm.value[control.name];
+          });
+      }
+    });
   }
 
   getErrorMessage(control: any) {
@@ -79,14 +114,28 @@ export class FormGeneratorComponent {
     return this.dynamicForm.controls[name].value;
   }
 
-  onValueChange(event: MatSelectChange, data?: GenericOption[]) {
+  onValueChange(event: number, parentName: string, data?: GenericOption[]) {
     if (data && event) {
-      const selectedOption = data.filter((item) => item.value === event.value);
+      const selectedOption = data.filter((item) => item.value === event);
       if (selectedOption && selectedOption.length) {
         const dependents = selectedOption[0]?.dependents;
         if (dependents) {
-          const { value, name } = dependents;
-          this.dynamicForm.controls[name].setValue(value);
+          const { value, name, askReset } = dependents;
+
+          if (askReset) {
+            const data = {
+              title: 'Reset',
+              message: `The form will be reset. Do you want to proceed?`,
+            };
+            const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
+            dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+              if (isConfirmed) {
+                this.dynamicForm.controls[name].setValue(value);
+                this.dynamicForm.controls[name].markAsUntouched();
+                this.formValueChange.emit({ name: parentName, value: event });
+              } else this.dynamicForm.controls[parentName].setValue(this.previousValue);
+            });
+          } else this.dynamicForm.controls[name].setValue(value);
         }
       }
     }
@@ -103,5 +152,10 @@ export class FormGeneratorComponent {
       return;
     }
     this.formData.emit(this.dynamicForm.value);
+  }
+
+  ngOnDestroy(): void {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 }

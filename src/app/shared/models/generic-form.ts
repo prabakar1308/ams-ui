@@ -7,5 +7,6 @@ export interface GenericForm {
 export interface GenericOption {
   label: string;
   value?: unknown;
-  dependents?: { name: string; value: unknown };
+  disabled?: boolean;
+  dependents?: { name: string; value: unknown; askReset?: boolean };
 }

@@ -23,7 +23,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
   activeWorksheets: WorksheetTank[] = [];
   displayedColumns = ['select', 'tank', 'harvest', 'source', 'user', 'status', 'action'];
   dataSource = new MatTableDataSource<WorksheetTank>();
-  selection = new SelectionModel<any>(true, []);
+  selection = new SelectionModel<WorksheetTank>(true, []);
   worksheetFilter: WorksheetFilter = {};
   disableCreate = true;
 

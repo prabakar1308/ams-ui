@@ -1,6 +1,9 @@
 <div class="worksheet-container">
   <div>
-    <app-worksheet-filter [disableCreate]="disableCreate"></app-worksheet-filter>
+    <app-worksheet-filter
+      [disableCreate]="disableCreate"
+      [selectedItems]="selection.selected"
+    ></app-worksheet-filter>
     <div>
       <mat-card appearance="outlined">
         <mat-card-content>

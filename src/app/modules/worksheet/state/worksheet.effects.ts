@@ -7,6 +7,8 @@ import {
   getActiveWorksheets,
   getActiveWorksheetsSuccess,
   getActiveWorksheetsFailure,
+  createWorksheet,
+  createWorksheetFailure,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { ActiveWorksheet } from '../models/active-worksheet';
@@ -35,6 +37,30 @@ export class WorksheetEffects {
             });
           }),
           catchError((error) => of(getActiveWorksheetsFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  createWorksheets$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createWorksheet.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.createWorksheets(payload).pipe(
+          map((res: Response<ActiveWorksheet[]>) => {
+            if (res.status !== 201) {
+              return createWorksheetFailure({
+                error: res.message || 'Create Worksheet failed',
+              });
+            }
+            if (res.data) {
+              return getActiveWorksheetsSuccess(res.data);
+            }
+            return createWorksheetFailure({
+              error: res.message || 'Create Worksheet failed',
+            });
+          }),
+          catchError((error) => of(createWorksheetFailure({ error }))),
         ),
       ),
     ),

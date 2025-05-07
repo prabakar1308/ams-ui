@@ -32,19 +32,19 @@
 
 <ng-template #routerLinks>
   <div class="router-links">
-    @for (item of navbarItems; track item.name;) {
-    <a
-      routerLinkActive="active"
-      [ngClass]="{ highlight: activeUrl.includes(item.route) }"
-      [routerLink]="item.route"
-      >{{ item.name }}</a
-    >
+    @for (item of navbarItems; track item.name) {
+      <a
+        routerLinkActive="active"
+        [ngClass]="{ highlight: activeUrl.includes(item.route) }"
+        [routerLink]="item.route"
+        >{{ item.name }}</a
+      >
     }
   </div>
 </ng-template>
 
 <ng-template #logout>
-  <div class="logout-button">
+  <div class="flex justify-end w-full">
     <button mat-button (click)="logoutButton()">
       <mat-icon>logout</mat-icon>
       Logout

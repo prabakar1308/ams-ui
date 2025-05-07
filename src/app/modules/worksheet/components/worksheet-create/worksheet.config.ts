@@ -25,8 +25,16 @@ export const formConfig: FormStructure[] = [
     name: FORM_CONTROL_NAMES.TANK_TYPE,
     value: DEFAULT_TANK_TYPE,
     options: [
-      { label: 'Machinery', value: 1 },
-      { label: 'Conventional', value: 2 },
+      {
+        label: 'Machinery',
+        value: 1,
+        dependents: { name: FORM_CONTROL_NAMES.TANKS, value: [], askReset: true },
+      },
+      {
+        label: 'Conventional',
+        value: 2,
+        dependents: { name: FORM_CONTROL_NAMES.TANKS, value: [], askReset: true },
+      },
     ],
     validations: [
       {
@@ -35,6 +43,7 @@ export const formConfig: FormStructure[] = [
         message: 'Tank Type is required',
       },
     ],
+    callback: true,
   },
 
   {
@@ -48,6 +57,8 @@ export const formConfig: FormStructure[] = [
       { label: 'India', value: 1 },
       { label: 'USA', value: 2 },
       { label: 'Canada', value: 3 },
+      { label: '4', value: 4 },
+      { label: '5', value: 5 },
     ],
     validations: [
       {
@@ -56,6 +67,9 @@ export const formConfig: FormStructure[] = [
         message: 'Tank selection is required',
       },
     ],
+    meta: {
+      hint: 'tanks selected.',
+    },
   },
 
   {

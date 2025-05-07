@@ -33,16 +33,15 @@ export const worksheetReducer = createReducer(
       isLoading: false,
     },
   })),
-  on(WorksheetActions.saveWorksheet, (state, { payload }) => ({
+  on(WorksheetActions.createWorksheet, (state, { payload }) => ({
     ...state,
     meta: {
       ...state.meta,
       isLoading: true,
     },
   })),
-  on(WorksheetActions.saveWorksheetSuccess, (state, { payload }) => ({
+  on(WorksheetActions.createWorksheetSuccess, (state, { payload }) => ({
     ...state,
-    worksheet: payload,
     meta: {
       ...state.meta,
       isLoading: false,

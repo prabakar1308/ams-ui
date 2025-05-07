@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 @use 'styles/scss/variables' as *;
 @use "tailwindcss";
+@tailwind utilities;
 @import url('../node_modules/ngx-toastr/toastr.css');
 
 /* You can add global styles to this file, and also import other style files */

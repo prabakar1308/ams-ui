@@ -44,10 +44,12 @@
                   <mat-select
                     [formControlName]="control.name"
                     [multiple]="control.isMultiple"
-                    (selectionChange)="onValueChange($event, control.options)"
+                    (selectionChange)="onValueChange($event.value, control.name, control.options)"
                   >
                     @for (item of control.options; track item) {
-                      <mat-option [value]="item.value">{{ item.label }}</mat-option>
+                      <mat-option [value]="item.value" [disabled]="item.disabled">{{
+                        item.label
+                      }}</mat-option>
                     }
                   </mat-select>
                   @if (
@@ -58,6 +60,12 @@
                       {{ getErrorMessage(control) }}
                     </mat-error>
                   }
+                  @if (control.meta?.hint) {
+                    <mat-hint
+                      >{{ getControlValue(control.name)?.length }}
+                      {{ control.meta?.hint }}</mat-hint
+                    >
+                  }
                 </mat-form-field>
               } @else if (control.type === inputTypes.BUTTON_TOGGLE) {
                 <div class="w-full flex flex-row items-center">
@@ -67,6 +75,7 @@
                     [name]="control.name"
                     [ariaLabel]="control.label"
                     class="w-full"
+                    (change)="onValueChange($event.value, control.name, control.options)"
                   >
                     @for (item of control.options; track item) {
                       <mat-button-toggle class="w-1/2" [value]="item.value">{{

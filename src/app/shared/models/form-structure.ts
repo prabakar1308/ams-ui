@@ -1,8 +1,6 @@
 import { GenericOption } from './generic-form';
 
 export interface FormStructure {
-  rows?: number;
-  cols?: number;
   class?: string;
   type: string;
   label: string;
@@ -13,6 +11,8 @@ export interface FormStructure {
   options?: GenericOption[];
   validations?: FormValidation[];
   meta?: Meta;
+  //set it as true to retain the previous value, if option has dependents with askReset as true
+  callback?: boolean;
 }
 
 export interface FormValidation {
@@ -24,8 +24,9 @@ export interface FormValidation {
 }
 
 export interface Meta {
-  min: number;
-  max: number;
-  step: number;
+  min?: number;
+  max?: number;
+  step?: number;
   unitLabel?: string;
+  hint?: string;
 }

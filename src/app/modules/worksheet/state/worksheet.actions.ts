@@ -1,7 +1,7 @@
 import { createAction } from '@ngrx/store';
 import { WorksheetTank } from '../models/active-worksheet';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
-import { TankSelection } from '../models/create-worksheet';
+import { CreateWorksheetRequest, TankSelection } from '../models/create-worksheet';
 
 export const getActiveWorksheets = createAction(
   '[Worksheet] Get Active Worksheets',
@@ -18,13 +18,21 @@ export const getActiveWorksheetsFailure = createAction(
   (payload: { error: string }) => ({ payload }),
 );
 
-export const saveWorksheet = createAction('[Worksheet] Save Worksheet', (payload: any) => ({
-  payload,
-}));
+export const createWorksheet = createAction(
+  '[Worksheet] Create Worksheet',
+  (payload: CreateWorksheetRequest) => ({
+    payload,
+  }),
+);
 
-export const saveWorksheetSuccess = createAction(
-  '[Worksheet] Save Worksheet Success',
-  (payload: any) => ({ payload }),
+export const createWorksheetSuccess = createAction(
+  '[Worksheet] Create Worksheet Success',
+  (payload: WorksheetTank[]) => ({ payload }),
+);
+
+export const createWorksheetFailure = createAction(
+  '[Worksheet] Create Worksheet Failure',
+  (payload: { error: string }) => ({ payload }),
 );
 
 export const updateWorksheetTankDetails = createAction(
