@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
@@ -8,6 +8,8 @@ import { UserDetails } from '@app/shared/models/user-details';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { WorksheetNavigationComponent } from '../worksheet-navigation/worksheet-navigation.component';
 
 @Component({
   selector: 'app-worksheet-filter',
@@ -18,6 +20,8 @@ import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 export class WorksheetFilterComponent implements OnInit, OnDestroy {
   @Input() disableCreate = false;
   @Input() selectedItems: WorksheetTank[] = [];
+
+  private _bottomSheet = inject(MatBottomSheet);
   private unSubscribe = new Subject<void>();
   selectedUser: number = 0;
   userDetails: UserDetails[] | null = null;
@@ -74,6 +78,10 @@ export class WorksheetFilterComponent implements OnInit, OnDestroy {
       tanks: this.selectedItems.map((item) => item.tankNumber),
     });
     this.router.navigate(['/worksheet/create']);
+  }
+
+  openBottomSheet(): void {
+    this._bottomSheet.open(WorksheetNavigationComponent);
   }
 
   ngOnDestroy(): void {

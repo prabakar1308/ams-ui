@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Response } from '@app/shared/models/response';
 
 import { ActiveWorksheet } from '../models/active-worksheet';
-import { CreateWorksheetRequest } from '../models/create-worksheet';
+import { CreateWorksheetRequest, UpdateWorksheetRequest } from '../models/create-worksheet';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +24,13 @@ export class WorksheetService {
   createWorksheets(request: CreateWorksheetRequest) {
     return this.http.post<Response<ActiveWorksheet[]>>(
       `${this.API_URL}/create-worksheets`,
+      request,
+    );
+  }
+
+  updateWorksheets(request: UpdateWorksheetRequest) {
+    return this.http.post<Response<ActiveWorksheet[]>>(
+      `${this.API_URL}/update-worksheets`,
       request,
     );
   }

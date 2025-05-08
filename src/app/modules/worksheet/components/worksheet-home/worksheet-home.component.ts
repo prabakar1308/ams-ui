@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
-import { WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
+import { WORKSHEET_STATUS, WORKSHEET_UPDATE_ACTION } from '@app/shared/constants/shared.contants';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { WorksheetUpdateDialogComponent } from '../worksheet-update-dialog/worksheet-update-dialog.component';
@@ -144,7 +144,15 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
           const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
           dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
             if (isConfirmed) {
-              // this.deleteAccountType(accountType.value.accountTypeId);
+              this.worksheetFacadeService.updateWorksheets({
+                worksheets: [
+                  {
+                    id: worksheet.worksheetId,
+                    statusId: WORKSHEET_STATUS.IN_STOCKING,
+                  },
+                ],
+                updateAction: WORKSHEET_UPDATE_ACTION.STATUS,
+              });
             }
           });
           break;

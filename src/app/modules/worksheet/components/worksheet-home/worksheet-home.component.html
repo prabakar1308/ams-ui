@@ -61,11 +61,21 @@
               <ng-container matColumnDef="user">
                 <th mat-header-cell *matHeaderCellDef class="min-w-40">Assigned User</th>
                 <td mat-cell *matCellDef="let element" class="min-w-40 grid-cols-2">
-                  <div class="flex flex-row">
+                  <div class="flex flex-row items-center">
                     @if (element.assignedUser) {
-                      <mat-icon>person</mat-icon>
+                      <button
+                        class="primary small"
+                        mat-icon-button
+                        (click)="onAction(element, 'next')"
+                        [matTooltip]="getTooltipValue(element)"
+                      >
+                        <mat-icon>manage_accounts</mat-icon>
+                      </button>
+
+                      <p class="font-medium">{{ element.assignedUser?.value || '-' }}</p>
+                    } @else {
+                      <p>-</p>
                     }
-                    <p class="pt-1 font-medium">{{ element.assignedUser?.value || '-' }}</p>
                   </div>
                 </td>
               </ng-container>

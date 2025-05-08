@@ -7,7 +7,11 @@ import { WorksheetFilter } from '@app/shared/models/shared-state';
 import * as fromStore from '../state';
 import * as worksheetActions from '../state/worksheet.actions';
 import { WorksheetTank } from '../models/active-worksheet';
-import { TankSelection } from '../models/create-worksheet';
+import {
+  CreateWorksheetRequest,
+  TankSelection,
+  UpdateWorksheetRequest,
+} from '../models/create-worksheet';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +33,14 @@ export class WorksheetFacadeService {
 
   getActiveWorksheetsSuccess(response: WorksheetTank[]) {
     this.store.dispatch(worksheetActions.getActiveWorksheetsSuccess(response));
+  }
+
+  createWorksheets(request: CreateWorksheetRequest) {
+    this.store.dispatch(worksheetActions.createWorksheet(request));
+  }
+
+  updateWorksheets(request: UpdateWorksheetRequest) {
+    this.store.dispatch(worksheetActions.updateWorksheet(request));
   }
 
   updateWorksheetTankSelection(data: TankSelection) {

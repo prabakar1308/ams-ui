@@ -84,6 +84,10 @@ mat-form-field.ams-small {
     //         filled-label-text-color: rgb(241, 238, 238),
     //     ));
 
+    // mat-button-fab
+    @include mat.fab-overrides((small-container-color: rgb(209, 238, 233),
+        ));
+
 }
 
 .warning {
@@ -91,7 +95,15 @@ mat-form-field.ams-small {
 }
 
 .primary {
-    @include mat.icon-button-overrides((icon-color: #006a6a), )
+    @include mat.icon-button-overrides((icon-color: #006a6a),
+    );
+
+    @include mat.fab-overrides((small-container-color: rgb(209, 238, 233)));
+}
+
+.secondary {
+    @include mat.fab-overrides((small-container-color: #165d51,
+            small-foreground-color: rgb(209, 238, 233)));
 }
 
 .small {
