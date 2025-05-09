@@ -13,6 +13,7 @@ export interface FormStructure {
   meta?: Meta;
   //set it as true to retain the previous value, if option has dependents with askReset as true
   callback?: boolean;
+  hide?: boolean;
 }
 
 export interface FormValidation {

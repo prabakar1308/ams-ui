@@ -9,6 +9,7 @@ export const initialState: WorksheetState = {
     tankType: 0,
     tanks: [],
   },
+  activeRestocks: [],
   meta: {
     isLoading: false,
     error: '',
@@ -50,5 +51,21 @@ export const worksheetReducer = createReducer(
   on(WorksheetActions.updateWorksheetTankDetails, (state, { payload }) => ({
     ...state,
     createWorksheet: payload,
+  })),
+  // Restock
+  on(WorksheetActions.getActiveRestocksSuccess, (state, { payload }) => ({
+    ...state,
+    activeRestocks: payload,
+    meta: {
+      ...state.meta,
+      isLoading: true,
+    },
+  })),
+  on(WorksheetActions.getActiveRestocks, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      isLoading: false,
+    },
   })),
 );

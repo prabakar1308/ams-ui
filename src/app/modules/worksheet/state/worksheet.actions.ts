@@ -6,6 +6,7 @@ import {
   TankSelection,
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
+import { ActiveRestock } from '../models/restock';
 
 export const getActiveWorksheets = createAction(
   '[Worksheet] Get Active Worksheets',
@@ -54,4 +55,20 @@ export const updateWorksheetFailure = createAction(
 export const updateWorksheetTankDetails = createAction(
   '[Worksheet] Update Worksheet Tank Details',
   (payload: TankSelection) => ({ payload }),
+);
+
+// Restock
+export const getActiveRestocks = createAction(
+  '[Restock] Get Active Restocks',
+  (payload: string) => ({ payload }),
+);
+
+export const getActiveRestocksSuccess = createAction(
+  '[Worksheet] Get Active Restocks Success',
+  (payload: ActiveRestock[]) => ({ payload }),
+);
+
+export const getActiveRestocksFailure = createAction(
+  '[Worksheet] Get Active Restocks Failure',
+  (payload: { error: string }) => ({ payload }),
 );

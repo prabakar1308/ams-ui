@@ -4,6 +4,7 @@ import { Response } from '@app/shared/models/response';
 
 import { ActiveWorksheet } from '../models/active-worksheet';
 import { CreateWorksheetRequest, UpdateWorksheetRequest } from '../models/create-worksheet';
+import { ActiveRestock } from '../models/restock';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,13 @@ export class WorksheetService {
     return this.http.post<Response<ActiveWorksheet[]>>(
       `${this.API_URL}/update-worksheets`,
       request,
+    );
+  }
+
+  // restock
+  getRestocks(status: string) {
+    return this.http.get<Response<ActiveRestock[]>>(
+      `${this.API_URL}/get-restocks?status=${status}`,
     );
   }
 }

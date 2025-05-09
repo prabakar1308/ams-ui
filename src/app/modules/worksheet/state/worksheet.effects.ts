@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, tap, exhaustMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
+
 import { WorksheetService } from '../services/worksheet.service';
 import {
   getActiveWorksheets,
@@ -11,14 +13,22 @@ import {
   createWorksheetFailure,
   updateWorksheet,
   updateWorksheetFailure,
+  getActiveRestocks,
+  getActiveRestocksFailure,
+  getActiveRestocksSuccess,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { ActiveWorksheet } from '../models/active-worksheet';
+import { ActiveRestock } from '../models/restock';
+import { NotificationService } from '@app/core/services/notification.service';
+import { SEVERITY } from '@app/core/core.contants';
 
 @Injectable()
 export class WorksheetEffects {
   private actions$ = inject(Actions);
   private WorksheetService = inject(WorksheetService);
+  private router = inject(Router);
+  private notificationService = inject(NotificationService);
 
   getActiveWorksheets$ = createEffect(() =>
     this.actions$.pipe(
@@ -56,12 +66,17 @@ export class WorksheetEffects {
               });
             }
             if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Worksheets are created successfully!',
+              );
               return getActiveWorksheetsSuccess(res.data);
             }
             return createWorksheetFailure({
               error: res.message || 'Create Worksheet failed',
             });
           }),
+          tap(() => this.router.navigate(['/worksheet'])),
           catchError((error) => of(createWorksheetFailure({ error }))),
         ),
       ),
@@ -87,6 +102,31 @@ export class WorksheetEffects {
             });
           }),
           catchError((error) => of(updateWorksheetFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  //Restocks
+  getActiveRestocks$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getActiveRestocks.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.getRestocks(payload).pipe(
+          map((res: Response<ActiveRestock[]>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return getActiveRestocksFailure({
+                error: res.message || 'Get active restocks failed',
+              });
+            }
+            if (res.data) {
+              return getActiveRestocksSuccess(res.data);
+            }
+            return getActiveRestocksFailure({
+              error: res.message || 'Get active restocks failed',
+            });
+          }),
+          catchError((error) => of(getActiveRestocksFailure({ error }))),
         ),
       ),
     ),

@@ -12,17 +12,20 @@ import {
   TankSelection,
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
+import { ActiveRestock } from '../models/restock';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorksheetFacadeService {
   activeWorksheets$: Observable<WorksheetTank[]>;
+  activeRestocks$: Observable<ActiveRestock[]>;
   tankSelection$: Observable<TankSelection>;
   meta$: Observable<MetaState>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.activeWorksheets$ = this.store.select(fromStore.getActiveWorksheets);
+    this.activeRestocks$ = this.store.select(fromStore.getActiveRestocks);
     this.tankSelection$ = this.store.select(fromStore.getWorksheetTankDetails);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
   }
@@ -45,5 +48,10 @@ export class WorksheetFacadeService {
 
   updateWorksheetTankSelection(data: TankSelection) {
     this.store.dispatch(worksheetActions.updateWorksheetTankDetails(data));
+  }
+
+  //Restocks
+  getActiveRestocks(status: string) {
+    this.store.dispatch(worksheetActions.getActiveRestocks(status));
   }
 }

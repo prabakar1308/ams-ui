@@ -9,6 +9,9 @@ export const FORM_CONTROL_NAMES = {
   TANK_TYPE: 'tankTypeId',
   TANKS: 'tanks',
   HARVEST_HOURS: 'harvestHours',
+  RESTOCK: 'restocks',
+  INPUT_COUNT: 'inputCount',
+  INPUT_UNIT_ID: 'inputUnitId',
 };
 
 export const formDetails = {
@@ -145,16 +148,25 @@ export const formConfig: FormStructure[] = [
         label: 'Instar 1',
         value: 1,
         dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: 18 },
+        hide: [FORM_CONTROL_NAMES.RESTOCK],
       },
       {
         label: 'Instar 2',
         value: 2,
         dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: 24 },
+        hide: [FORM_CONTROL_NAMES.RESTOCK],
       },
       {
         label: 'Manual',
         value: 3,
         dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: 0 },
+        hide: [FORM_CONTROL_NAMES.RESTOCK],
+      },
+      {
+        label: 'Restock',
+        value: 4,
+        dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: 0 },
+        hide: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
       },
     ],
     validations: [
@@ -193,7 +205,7 @@ export const formConfig: FormStructure[] = [
       },
     ],
   },
-  // harvest type
+  // Input Count
   {
     class: LAYOUT_CLASSES.NONE,
     type: 'number',
@@ -209,7 +221,7 @@ export const formConfig: FormStructure[] = [
     ],
   },
 
-  // harvest hours
+  // Input Unit
   {
     class: LAYOUT_CLASSES.NONE,
     type: 'select',
@@ -228,6 +240,24 @@ export const formConfig: FormStructure[] = [
         message: 'Unit selection is required',
       },
     ],
+  },
+  // Restock
+  {
+    class: LAYOUT_CLASSES.DEFAULT,
+    type: 'select',
+    label: 'Restock',
+    name: FORM_CONTROL_NAMES.RESTOCK,
+    value: [],
+    isMultiple: true,
+    options: [],
+    validations: [
+      {
+        name: 'required',
+        validator: 'required',
+        message: 'Restock selection is required',
+      },
+    ],
+    hide: true,
   },
   // Assigned User
   {

@@ -15,6 +15,7 @@ export interface CreateWorksheetRequest {
   userId: number;
   statusId?: number;
   tanks: number[];
+  restocks?: number[];
 }
 
 export interface UpdateWorksheet {

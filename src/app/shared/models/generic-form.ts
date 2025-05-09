@@ -9,4 +9,5 @@ export interface GenericOption {
   value?: unknown;
   disabled?: boolean;
   dependents?: { name: string; value: unknown; askReset?: boolean };
+  hide?: string[];
 }

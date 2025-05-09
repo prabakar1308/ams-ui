@@ -3,10 +3,11 @@ import { combineLatest, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
-import { DEFAULT_TANK_TYPE } from '@app/shared/constants/shared.contants';
+import { DEFAULT_TANK_TYPE, WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
 import { CreateWorksheetRequest } from '@app/worksheet/models/create-worksheet';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
 import { FORM_CONTROL_NAMES, formConfig, formDetails } from './worksheet.config';
+import { ActiveRestock } from '@app/worksheet/models/restock';
 
 @Component({
   selector: 'app-worksheet-create',
@@ -20,6 +21,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
   formDetails = formDetails;
   worksheetFilter: WorksheetFilter = {};
   selectedTankType: number = DEFAULT_TANK_TYPE;
+  activeRestocks: ActiveRestock[] = [];
 
   constructor(
     private router: Router,
@@ -27,13 +29,16 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.worksheetFacadeService.getActiveRestocks('A');
     // Combine activeWorksheets$ and tankSelection$
     combineLatest([
       this.worksheetFacadeService.activeWorksheets$,
       this.worksheetFacadeService.tankSelection$,
+      this.worksheetFacadeService.activeRestocks$,
     ])
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
-      .subscribe(([activeWorksheets, tankSelection]) => {
+      .subscribe(([activeWorksheets, tankSelection, activeRestocks]) => {
+        this.activeRestocks = activeRestocks;
         const { tanks, tankType } = tankSelection;
 
         if (!tankType) {
@@ -60,6 +65,21 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
                   value: ws.tankNumber,
                 })),
             };
+          } else if (data.name === FORM_CONTROL_NAMES.RESTOCK) {
+            return {
+              ...data,
+              options: activeRestocks.map((restock) => {
+                const {
+                  count,
+                  unit,
+                  worksheet: { tankNumber, tankType },
+                } = restock;
+                return {
+                  label: `${tankType} Tank #${tankNumber} - ${count} ${unit}`,
+                  value: restock.id,
+                };
+              }),
+            };
           }
           return data;
         });
@@ -83,8 +103,29 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
   }
 
   submitFormData(formData: unknown) {
-    const data = formData as CreateWorksheetRequest;
-    console.log(data);
+    let requestData = formData as CreateWorksheetRequest;
+    if (requestData.restocks && requestData.restocks.length) {
+      let inputCount = 0;
+      let inputUnitId = 0;
+      requestData.restocks.forEach((restockId) => {
+        const filteredRestock = this.activeRestocks.filter((ar) => ar.id === restockId);
+        if (filteredRestock && filteredRestock.length) {
+          inputCount += filteredRestock[0].count;
+          inputUnitId = filteredRestock[0].unitId || 0;
+        }
+      });
+      requestData = {
+        ...requestData,
+        inputCount,
+        inputUnitId,
+      };
+    }
+    requestData = {
+      ...requestData,
+      harvestHours: +requestData.harvestHours,
+      statusId: WORKSHEET_STATUS.READY_FOR_STOCKING,
+    };
+    this.worksheetFacadeService.createWorksheets(requestData);
   }
 
   ngOnDestroy(): void {

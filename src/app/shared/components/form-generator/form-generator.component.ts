@@ -73,7 +73,10 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
         });
       }
 
-      formGroup[control.name] = [control.value || '', controlValidators];
+      formGroup[control.name] = [
+        { value: control.value || '', disabled: control.hide },
+        controlValidators,
+      ];
     });
 
     this.dynamicForm = this.fb.group(formGroup);
@@ -88,6 +91,10 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
           });
       }
     });
+  }
+
+  isFormControlActive(name: string) {
+    return !this.dynamicForm.get(name)?.disabled;
   }
 
   getErrorMessage(control: any) {
@@ -118,7 +125,7 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
     if (data && event) {
       const selectedOption = data.filter((item) => item.value === event);
       if (selectedOption && selectedOption.length) {
-        const dependents = selectedOption[0]?.dependents;
+        const { dependents, hide } = selectedOption[0];
         if (dependents) {
           const { value, name, askReset } = dependents;
 
@@ -136,6 +143,15 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
               } else this.dynamicForm.controls[parentName].setValue(this.previousValue);
             });
           } else this.dynamicForm.controls[name].setValue(value);
+        }
+
+        // hide controls dynamically
+        if (hide && hide.length) {
+          Object.keys(this.dynamicForm.controls).forEach((key) => {
+            const filteredNames = hide.filter((name) => name === key);
+            if (filteredNames.length) this.dynamicForm.controls[key].disable();
+            else this.dynamicForm.controls[key].enable();
+          });
         }
       }
     }
