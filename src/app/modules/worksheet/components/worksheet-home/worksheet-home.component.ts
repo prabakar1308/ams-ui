@@ -11,6 +11,7 @@ import { WorksheetUpdateDialogComponent } from '../worksheet-update-dialog/works
 import { Router } from '@angular/router';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
+import { UpdateWorksheetRequest } from '@app/worksheet/models/create-worksheet';
 
 @Component({
   selector: 'app-worksheet-home',
@@ -121,7 +122,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  onAction(worksheet: WorksheetTank, action: string) {
+  onAction(worksheet: WorksheetTank, action: string, userOnly: boolean = false) {
     if (action === 'delete') {
       const data = {
         title: 'Delete Confirmation',
@@ -135,24 +136,45 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       });
     } else if (action === 'next') {
       const status = worksheet && worksheet.status ? worksheet.status.id : WORKSHEET_STATUS.FREE;
+      console.log(worksheet, userOnly);
       switch (status) {
         case WORKSHEET_STATUS.READY_FOR_STOCKING:
+          const tankType = worksheet.tankType?.value;
           const data: any = {
-            title: `Tank ${worksheet.tankNumber}`,
+            title: `Tank ${worksheet.tankNumber} (${tankType})`,
             worksheet,
+            userOnly,
           };
           const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
-          dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
-            if (isConfirmed) {
-              this.worksheetFacadeService.updateWorksheets({
+          dialogRef.afterClosed().subscribe((result: boolean | number) => {
+            if (result) {
+              let updatedData: UpdateWorksheetRequest = {
                 worksheets: [
                   {
                     id: worksheet.worksheetId,
                     statusId: WORKSHEET_STATUS.IN_STOCKING,
                   },
+                  {
+                    id: worksheet.worksheetId,
+                    userId: result as number,
+                  },
                 ],
-                updateAction: WORKSHEET_UPDATE_ACTION.STATUS,
-              });
+                updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE_STATUS,
+                worksheetFilter: this.worksheetFilter,
+              };
+              if (userOnly) {
+                updatedData = {
+                  worksheets: [
+                    {
+                      id: worksheet.worksheetId,
+                      userId: result as number,
+                    },
+                  ],
+                  updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE,
+                  worksheetFilter: this.worksheetFilter,
+                };
+              }
+              this.worksheetFacadeService.updateWorksheets(updatedData);
             }
           });
           break;

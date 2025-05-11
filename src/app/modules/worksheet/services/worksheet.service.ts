@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Response } from '@app/shared/models/response';
 
-import { ActiveWorksheet } from '../models/active-worksheet';
+import { WorksheetTank } from '../models/active-worksheet';
 import { CreateWorksheetRequest, UpdateWorksheetRequest } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
 
@@ -15,7 +15,7 @@ export class WorksheetService {
   constructor(private http: HttpClient) {}
 
   getActiveWorksheets(userId: number, tankTypeId: number, statusId: number) {
-    return this.http.post<Response<ActiveWorksheet[]>>(`${this.API_URL}/get-active-worksheets`, {
+    return this.http.post<Response<WorksheetTank[]>>(`${this.API_URL}/get-active-worksheets`, {
       userId,
       tankTypeId,
       statusId,
@@ -23,17 +23,11 @@ export class WorksheetService {
   }
 
   createWorksheets(request: CreateWorksheetRequest) {
-    return this.http.post<Response<ActiveWorksheet[]>>(
-      `${this.API_URL}/create-worksheets`,
-      request,
-    );
+    return this.http.post<Response<WorksheetTank[]>>(`${this.API_URL}/create-worksheets`, request);
   }
 
   updateWorksheets(request: UpdateWorksheetRequest) {
-    return this.http.post<Response<ActiveWorksheet[]>>(
-      `${this.API_URL}/update-worksheets`,
-      request,
-    );
+    return this.http.patch<Response<WorksheetTank[]>>(`${this.API_URL}/update-worksheets`, request);
   }
 
   // restock

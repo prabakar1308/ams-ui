@@ -1,10 +1,3 @@
-import { WorksheetDetails } from './worksheet-details';
-
-export interface ActiveWorksheet {
-  tankNumber: number;
-  worksheet: WorksheetDetails;
-}
-
 export interface WorksheetTank {
   tankNumber: number;
   worksheetId?: number;
@@ -31,8 +24,3 @@ export interface ActiveWorksheetRequest {
   tankTypeId?: number;
   statusId?: number;
 }
-
-// export interface ActiveWorksheetTable {
-//   tankNumber: number;
-//   worksheet: WorksheetDetails;
-// }

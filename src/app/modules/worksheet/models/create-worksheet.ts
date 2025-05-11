@@ -1,3 +1,5 @@
+import { WorksheetFilter } from '@app/shared/models/shared-state';
+
 export interface TankSelection {
   tankType?: number;
   tanks: number[];
@@ -36,4 +38,5 @@ export interface UpdateWorksheet {
 export interface UpdateWorksheetRequest {
   worksheets: UpdateWorksheet[];
   updateAction: string;
+  worksheetFilter?: WorksheetFilter;
 }

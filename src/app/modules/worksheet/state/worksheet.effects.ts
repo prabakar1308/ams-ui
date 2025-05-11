@@ -18,7 +18,7 @@ import {
   getActiveRestocksSuccess,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
-import { ActiveWorksheet } from '../models/active-worksheet';
+import { WorksheetTank } from '../models/active-worksheet';
 import { ActiveRestock } from '../models/restock';
 import { NotificationService } from '@app/core/services/notification.service';
 import { SEVERITY } from '@app/core/core.contants';
@@ -35,7 +35,7 @@ export class WorksheetEffects {
       ofType(getActiveWorksheets.type),
       exhaustMap(({ payload: { userId, tankTypeId, statusId } }) =>
         this.WorksheetService.getActiveWorksheets(userId, tankTypeId, statusId).pipe(
-          map((res: Response<ActiveWorksheet[]>) => {
+          map((res: Response<WorksheetTank[]>) => {
             if (res.status !== 201) {
               return getActiveWorksheetsFailure({
                 error: res.message || 'Get dashboard details failed',
@@ -59,7 +59,7 @@ export class WorksheetEffects {
       ofType(createWorksheet.type),
       exhaustMap(({ payload }) =>
         this.WorksheetService.createWorksheets(payload).pipe(
-          map((res: Response<ActiveWorksheet[]>) => {
+          map((res: Response<WorksheetTank[]>) => {
             if (res.status !== 201) {
               return createWorksheetFailure({
                 error: res.message || 'Create Worksheet failed',
@@ -88,8 +88,8 @@ export class WorksheetEffects {
       ofType(updateWorksheet.type),
       exhaustMap(({ payload }) =>
         this.WorksheetService.updateWorksheets(payload).pipe(
-          map((res: Response<ActiveWorksheet[]>) => {
-            if (res.status !== 201) {
+          map((res: Response<WorksheetTank[]>) => {
+            if (res.status !== 201 && res.status !== 200) {
               return updateWorksheetFailure({
                 error: res.message || 'Update Worksheet failed',
               });

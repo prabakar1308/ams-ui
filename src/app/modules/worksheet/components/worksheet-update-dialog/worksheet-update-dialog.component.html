@@ -12,37 +12,52 @@
         <mat-chip>{{ data.worksheet.harvestHours }} Hrs Harvest</mat-chip>
       </mat-chip-set>
     </div>
-    <div class="md:min-w-md sm:min-w-sm">
-      <mat-selection-list (selectionChange)="onChange($event)">
-        @for (param of data.worksheet.parameters; track param) {
-          <mat-list-option [value]="param" [selected]="selection.isSelected(param)"
-            >{{ param.label }} - {{ param.value }}</mat-list-option
-          >
-        }
-      </mat-selection-list>
-      <div class="select-all">
-        <span>Select All</span>
-        <mat-checkbox
-          class="example-margin"
-          [(ngModel)]="selectAllCheck"
-          (change)="selectAll($event)"
-        ></mat-checkbox>
-      </div>
 
-      <div>
-        <div class="flex flex-row justify-evenly items-center gap-2 p-2 pt-5">
-          <mat-chip class="line-through">Ready For Stocking</mat-chip>
-          <mat-icon>arrow_forward</mat-icon>
-          <mat-chip>In Stocking</mat-chip>
+    <div class="w-full p-2 pb-0 pt-6">
+      <mat-form-field appearance="outline" class="ams-small w-full">
+        <mat-label>User</mat-label>
+        <mat-select [value]="selectedUserId" (selectionChange)="onUserChange($event.value)">
+          @for (user of userDetails; track user) {
+            <mat-option [value]="user.id"
+              >{{ user.firstName || 'All' }} {{ user.lastName }}</mat-option
+            >
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    @if (!data.userOnly) {
+      <div class="md:min-w-md sm:min-w-sm">
+        <mat-selection-list (selectionChange)="onChange($event)">
+          @for (param of data.worksheet.parameters; track param) {
+            <mat-list-option [value]="param" [selected]="selection.isSelected(param)"
+              >{{ param.label }} - {{ param.value }}</mat-list-option
+            >
+          }
+        </mat-selection-list>
+        <div class="select-all">
+          <span>Select All</span>
+          <mat-checkbox
+            class="example-margin"
+            [(ngModel)]="selectAllCheck"
+            (change)="selectAll($event)"
+          ></mat-checkbox>
+        </div>
+
+        <div>
+          <div class="flex flex-row justify-evenly items-center gap-2 p-2 pt-5">
+            <mat-chip class="line-through">Ready For Stocking</mat-chip>
+            <mat-icon>arrow_forward</mat-icon>
+            <mat-chip>In Stocking</mat-chip>
+          </div>
         </div>
       </div>
-    </div>
+    }
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button (click)="dialogRef.close(false)">Cancel</button>
     <button
       mat-flat-button
-      (click)="dialogRef.close(true)"
+      (click)="dialogRef.close(selectedUserId)"
       cdkFocusInitial
       [disabled]="disableUpdate"
     >
