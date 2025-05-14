@@ -21,20 +21,15 @@ import { AuthResponse } from '../models/auth-response';
 export class TokenInterceptor implements HttpInterceptor {
   private isRefreshing = false;
 
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
-    null
-  );
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(
     private authService: AuthService,
     private authFacadeService: AuthFacadeService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let userData = this.authFacadeService.currentUserData;
     if (userData && userData.accessToken) {
       request = this.addToken(request, userData.accessToken);
@@ -47,7 +42,7 @@ export class TokenInterceptor implements HttpInterceptor {
         } else {
           return throwError(() => error);
         }
-      })
+      }),
     );
   }
 
@@ -84,22 +79,21 @@ export class TokenInterceptor implements HttpInterceptor {
           this.authFacadeService.logout();
           this.notificationService.showMessage(
             SEVERITY.ERROR,
-            'Authentication failed, please try login again!'
+            'Authentication failed, please try login again!',
           );
           return throwError(() => err);
-        })
+        }),
       );
     } else {
       return this.refreshTokenSubject.pipe(
         switchMap((accessToken) => {
-          if (accessToken)
-            return next.handle(this.addToken(request, accessToken));
+          if (accessToken) return next.handle(this.addToken(request, accessToken));
 
           return throwError(() => new Error());
         }),
         catchError((err) => {
           return throwError(() => err);
-        })
+        }),
       );
     }
   }

@@ -139,44 +139,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       console.log(worksheet, userOnly);
       switch (status) {
         case WORKSHEET_STATUS.READY_FOR_STOCKING:
-          const tankType = worksheet.tankType?.value;
-          const data: any = {
-            title: `Tank ${worksheet.tankNumber} (${tankType})`,
-            worksheet,
-            userOnly,
-          };
-          const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
-          dialogRef.afterClosed().subscribe((result: boolean | number) => {
-            if (result) {
-              let updatedData: UpdateWorksheetRequest = {
-                worksheets: [
-                  {
-                    id: worksheet.worksheetId,
-                    statusId: WORKSHEET_STATUS.IN_STOCKING,
-                  },
-                  {
-                    id: worksheet.worksheetId,
-                    userId: result as number,
-                  },
-                ],
-                updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE_STATUS,
-                worksheetFilter: this.worksheetFilter,
-              };
-              if (userOnly) {
-                updatedData = {
-                  worksheets: [
-                    {
-                      id: worksheet.worksheetId,
-                      userId: result as number,
-                    },
-                  ],
-                  updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE,
-                  worksheetFilter: this.worksheetFilter,
-                };
-              }
-              this.worksheetFacadeService.updateWorksheets(updatedData);
-            }
-          });
+          this.openWorksheetUpdateDialog(worksheet, userOnly);
           break;
         case WORKSHEET_STATUS.READY_FOR_HARVEST:
           this.router.navigate(['worksheet/harvest/create']);
@@ -191,7 +154,49 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
         default:
           break;
       }
+    } else if (action === 'update') {
+      this.openWorksheetUpdateDialog(worksheet, userOnly);
     }
+  }
+
+  openWorksheetUpdateDialog(worksheet: WorksheetTank, userOnly: boolean) {
+    const data: any = {
+      title: `Tank ${worksheet.tankNumber}`,
+      worksheet,
+      userOnly,
+    };
+    const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
+    dialogRef.afterClosed().subscribe((result: boolean | number) => {
+      if (result) {
+        let updatedData: UpdateWorksheetRequest = {
+          worksheets: [
+            {
+              id: worksheet.worksheetId,
+              statusId: WORKSHEET_STATUS.IN_STOCKING,
+            },
+            {
+              id: worksheet.worksheetId,
+              userId: result as number,
+            },
+          ],
+          updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE_STATUS,
+          worksheetFilter: this.worksheetFilter,
+        };
+        if (userOnly) {
+          updatedData = {
+            worksheets: [
+              {
+                id: worksheet.worksheetId,
+                userId: result as number,
+              },
+            ],
+            updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE,
+            worksheetFilter: this.worksheetFilter,
+          };
+        }
+        this.worksheetFacadeService.updateWorksheets(updatedData);
+      }
+    });
   }
 
   ngOnDestroy(): void {

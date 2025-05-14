@@ -1,7 +1,7 @@
 import { createAction } from '@ngrx/store';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { UserDetails } from '@app/shared/models/user-details';
-import { WorksheetFilter } from '../models/shared-state';
+import { MasterData, WorksheetFilter } from '../models/shared-state';
 
 export const getWorksheetStatus = createAction('[Shared] Get Worksheet Status');
 
@@ -30,4 +30,15 @@ export const getUsersListFailure = createAction(
 export const updateWorksheetFilter = createAction(
   '[Shared] Update Worksheet Filter Data',
   (payload: WorksheetFilter) => ({ payload }),
+);
+
+export const getMasterData = createAction('[Shared] Get Master Data');
+export const getMasterDataSuccess = createAction(
+  '[Shared] Get Master Data Success',
+  (payload: MasterData) => ({ payload }),
+);
+
+export const getMasterDataFailure = createAction(
+  '[Shared] Get Master Data Failure',
+  (payload: { error: string }) => ({ payload }),
 );

@@ -5,9 +5,11 @@ import { Router } from '@angular/router';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 import { DEFAULT_TANK_TYPE, WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
 import { CreateWorksheetRequest } from '@app/worksheet/models/create-worksheet';
-import { WorksheetFilter } from '@app/shared/models/shared-state';
+import { MasterData, WorksheetFilter } from '@app/shared/models/shared-state';
 import { FORM_CONTROL_NAMES, formConfig, formDetails } from './worksheet.config';
 import { ActiveRestock } from '@app/worksheet/models/restock';
+import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
+import { MasterRange } from '@app/shared/models/master';
 
 @Component({
   selector: 'app-worksheet-create',
@@ -26,6 +28,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private worksheetFacadeService: WorksheetFacadeService,
+    private sharedFacadeService: SharedFacadeService,
   ) {}
 
   ngOnInit() {
@@ -35,9 +38,11 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
       this.worksheetFacadeService.activeWorksheets$,
       this.worksheetFacadeService.tankSelection$,
       this.worksheetFacadeService.activeRestocks$,
+      this.sharedFacadeService.masterData$,
+      this.sharedFacadeService.userData$,
     ])
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
-      .subscribe(([activeWorksheets, tankSelection, activeRestocks]) => {
+      .subscribe(([activeWorksheets, tankSelection, activeRestocks, masterData, userData]) => {
         this.activeRestocks = activeRestocks;
         const { tanks, tankType } = tankSelection;
 
@@ -52,36 +57,110 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
 
         // Update formConfigData based on tankSelection and activeWorksheets
         this.formConfigData = this.formConfigData.map((data) => {
-          if (data.name === FORM_CONTROL_NAMES.TANK_TYPE) {
-            return { ...data, value: tankType || DEFAULT_TANK_TYPE };
-          } else if (data.name === FORM_CONTROL_NAMES.TANKS) {
-            return {
-              ...data,
-              value: tanks,
-              options: activeWorksheets
-                .filter((ws) => !ws.worksheetId)
-                .map((ws) => ({
-                  label: `Tank ${ws.tankNumber}`,
-                  value: ws.tankNumber,
+          switch (data.name) {
+            case FORM_CONTROL_NAMES.TANK_TYPE:
+              return {
+                ...data,
+                value: tankType || DEFAULT_TANK_TYPE,
+                options: masterData?.tankTypes.map((type) => ({
+                  label: type.value,
+                  value: type.id,
+                  dependents: { name: FORM_CONTROL_NAMES.TANKS, value: [], askReset: true },
                 })),
-            };
-          } else if (data.name === FORM_CONTROL_NAMES.RESTOCK) {
-            return {
-              ...data,
-              options: activeRestocks.map((restock) => {
-                const {
-                  count,
-                  unit,
-                  worksheet: { tankNumber, tankType },
-                } = restock;
-                return {
-                  label: `${tankType} Tank #${tankNumber} - ${count} ${unit}`,
-                  value: restock.id,
-                };
-              }),
-            };
+              };
+
+            case FORM_CONTROL_NAMES.TANKS:
+              return {
+                ...data,
+                value: tanks,
+                options: activeWorksheets
+                  .filter((ws) => !ws.worksheetId)
+                  .map((ws) => ({
+                    label: `Tank ${ws.tankNumber}`,
+                    value: ws.tankNumber,
+                  })),
+              };
+
+            case FORM_CONTROL_NAMES.PH:
+            case FORM_CONTROL_NAMES.SALNITY:
+            case FORM_CONTROL_NAMES.TEMPERATURE: {
+              const key = data.name.toLowerCase() as keyof MasterData;
+              const masterValues = masterData[key] as MasterRange;
+              return {
+                ...data,
+                value: masterValues.defaultValue,
+                meta: {
+                  ...data.meta,
+                  min: masterValues.min,
+                  max: masterValues.max,
+                  step: masterValues.step,
+                  unitLabel: masterValues.unitName,
+                },
+              };
+            }
+
+            case FORM_CONTROL_NAMES.HARVEST_TYPE:
+              return {
+                ...data,
+                options: masterData?.harvestTypes.map((type) => {
+                  if (type.value.toLowerCase().includes('restock')) {
+                    return {
+                      label: type.value,
+                      value: type.id,
+                      dependents: {
+                        name: FORM_CONTROL_NAMES.HARVEST_HOURS,
+                        value: type.harvestTime,
+                      },
+                      hide: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
+                    };
+                  }
+                  return {
+                    label: type.value,
+                    value: type.id,
+                    dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: type.harvestTime },
+                    hide: [FORM_CONTROL_NAMES.RESTOCK],
+                  };
+                }),
+              };
+
+            case FORM_CONTROL_NAMES.RESTOCK:
+              return {
+                ...data,
+                options: activeRestocks.map((restock) => {
+                  const {
+                    count,
+                    unit,
+                    worksheet: { tankNumber, tankType },
+                  } = restock;
+                  return {
+                    label: `${tankType} Tank #${tankNumber} - ${count} ${unit}`,
+                    value: restock.id,
+                  };
+                }),
+              };
+
+            case FORM_CONTROL_NAMES.INPUT_UNIT_ID:
+              return {
+                ...data,
+                options: masterData?.units.map((unit) => ({
+                  label: unit.value,
+                  value: unit.id,
+                })),
+              };
+
+            case FORM_CONTROL_NAMES.USER_ID:
+              return {
+                ...data,
+                options: userData.map((user) => ({
+                  ...user,
+                  label: `${user.firstName} ${user.lastName}`,
+                  value: user.id,
+                })),
+              };
+
+            default:
+              return data;
           }
-          return data;
         });
       });
   }

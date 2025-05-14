@@ -76,6 +76,7 @@
                         [formControlName]="control.name"
                         [name]="control.name"
                         [ariaLabel]="control.label"
+                        [hideSingleSelectionIndicator]="true"
                         class="w-full"
                         (change)="onValueChange($event.value, control.name, control.options)"
                       >

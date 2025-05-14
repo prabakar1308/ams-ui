@@ -28,3 +28,12 @@ export const getWorksheetFilter = createSelector(
   getSharedFeatureState,
   (state: SharedState) => state.worksheetFilter,
 );
+
+export const getMasterData = createSelector(getSharedFeatureState, (state: SharedState) => ({
+  harvestTypes: state.harvestTypes,
+  tankTypes: state.tankTypes,
+  units: state.units,
+  ph: state.ph,
+  salnity: state.salnity,
+  temperature: state.temperature,
+}));

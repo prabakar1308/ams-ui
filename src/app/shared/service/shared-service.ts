@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { Response } from '@app/shared/models/response';
 import { UserDetails } from '@app/shared/models/user-details';
+import { HarvestType, MasterGeneric, MasterRange } from '../models/master';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +19,20 @@ export class SharedService {
 
   getUserData() {
     return this.http.get<Response<{ data: UserDetails[] }>>(`${this.API_URL}/users`);
+  }
+
+  // harvest type
+  getHarvestTypes() {
+    return this.http.get<Response<HarvestType[]>>(`${this.API_URL}/master/harvest-type`);
+  }
+
+  // ph, salnity, temperature, tank
+  getMasterRange(method: string) {
+    return this.http.get<Response<MasterRange>>(`${this.API_URL}/master/${method}`);
+  }
+
+  // tank-types, unit
+  getMasterGeneric(method: string) {
+    return this.http.get<Response<MasterGeneric[]>>(`${this.API_URL}/master/${method}`);
   }
 }

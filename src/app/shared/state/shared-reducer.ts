@@ -3,6 +3,15 @@ import { SharedState } from '@app/shared/models/shared-state';
 import * as SharedActions from './shared-actions';
 import { DEFAULT_TANK_TYPE } from '../constants/shared.contants';
 
+const defaultRangeValues = {
+  id: 0,
+  min: 0,
+  max: 0,
+  defaultValue: 0,
+  step: 0,
+  unitName: '',
+};
+
 export const initialState: SharedState = {
   worksheetStatus: [],
   userDetails: [],
@@ -11,6 +20,12 @@ export const initialState: SharedState = {
     userId: 0,
     tankTypeId: DEFAULT_TANK_TYPE,
   },
+  harvestTypes: [],
+  tankTypes: [],
+  units: [],
+  ph: defaultRangeValues,
+  salnity: defaultRangeValues,
+  temperature: defaultRangeValues,
   meta: {
     isLoading: false,
     error: '',
@@ -55,6 +70,14 @@ export const sharedReducer = createReducer(
     worksheetFilter: {
       ...state.worksheetFilter,
       ...payload,
+    },
+  })),
+  on(SharedActions.getMasterDataSuccess, (state, { payload }) => ({
+    ...state,
+    ...payload,
+    meta: {
+      ...state.meta,
+      isLoading: true,
     },
   })),
 );

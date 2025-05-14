@@ -8,10 +8,15 @@ import { FormStructure } from '@app/shared/models/form-structure';
 export const FORM_CONTROL_NAMES = {
   TANK_TYPE: 'tankTypeId',
   TANKS: 'tanks',
+  HARVEST_TYPE: 'harvestTypeId',
   HARVEST_HOURS: 'harvestHours',
   RESTOCK: 'restocks',
   INPUT_COUNT: 'inputCount',
   INPUT_UNIT_ID: 'inputUnitId',
+  USER_ID: 'userId',
+  PH: 'ph',
+  SALNITY: 'salnity',
+  TEMPERATURE: 'temperature',
 };
 
 export const formDetails = {
@@ -27,18 +32,6 @@ export const formConfig: FormStructure[] = [
     label: 'Tank Type',
     name: FORM_CONTROL_NAMES.TANK_TYPE,
     value: DEFAULT_TANK_TYPE,
-    options: [
-      {
-        label: 'Machinery',
-        value: 1,
-        dependents: { name: FORM_CONTROL_NAMES.TANKS, value: [], askReset: true },
-      },
-      {
-        label: 'Conventional',
-        value: 2,
-        dependents: { name: FORM_CONTROL_NAMES.TANKS, value: [], askReset: true },
-      },
-    ],
     validations: [
       {
         name: 'required',
@@ -56,13 +49,7 @@ export const formConfig: FormStructure[] = [
     name: FORM_CONTROL_NAMES.TANKS,
     value: [], //[1],
     isMultiple: true,
-    options: [
-      { label: 'India', value: 1 },
-      { label: 'USA', value: 2 },
-      { label: 'Canada', value: 3 },
-      { label: '4', value: 4 },
-      { label: '5', value: 5 },
-    ],
+    options: [],
     validations: [
       {
         name: 'required',
@@ -80,7 +67,7 @@ export const formConfig: FormStructure[] = [
     type: 'slider',
     label: 'PH',
     name: 'ph',
-    value: 7.7,
+    value: 0,
     validations: [
       {
         name: 'required',
@@ -88,11 +75,6 @@ export const formConfig: FormStructure[] = [
         message: 'PH is required',
       },
     ],
-    meta: {
-      min: 7.5,
-      max: 8.5,
-      step: 0.1,
-    },
   },
   // salnity
   {
@@ -100,7 +82,7 @@ export const formConfig: FormStructure[] = [
     type: 'slider',
     label: 'Salnity',
     name: 'salnity',
-    value: 25,
+    value: 0,
     validations: [
       {
         name: 'required',
@@ -108,12 +90,6 @@ export const formConfig: FormStructure[] = [
         message: 'Salnity is required',
       },
     ],
-    meta: {
-      min: 23,
-      max: 32,
-      step: 1,
-      unitLabel: 'ppt',
-    },
   },
   // Temperature
   {
@@ -121,7 +97,7 @@ export const formConfig: FormStructure[] = [
     type: 'slider',
     label: 'Temperature',
     name: 'temperature',
-    value: 30,
+    value: 0,
     validations: [
       {
         name: 'required',
@@ -129,12 +105,6 @@ export const formConfig: FormStructure[] = [
         message: 'Salnity is required',
       },
     ],
-    meta: {
-      min: 25,
-      max: 34,
-      step: 1,
-      unitLabel: '°C',
-    },
   },
   // harvest type
   {
@@ -142,33 +112,7 @@ export const formConfig: FormStructure[] = [
     type: 'select',
     label: 'Harvest Type',
     name: 'harvestTypeId',
-    value: 1,
-    options: [
-      {
-        label: 'Instar 1',
-        value: 1,
-        dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: 18 },
-        hide: [FORM_CONTROL_NAMES.RESTOCK],
-      },
-      {
-        label: 'Instar 2',
-        value: 2,
-        dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: 24 },
-        hide: [FORM_CONTROL_NAMES.RESTOCK],
-      },
-      {
-        label: 'Manual',
-        value: 3,
-        dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: 0 },
-        hide: [FORM_CONTROL_NAMES.RESTOCK],
-      },
-      {
-        label: 'Restock',
-        value: 4,
-        dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: 0 },
-        hide: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
-      },
-    ],
+    value: 0,
     validations: [
       {
         name: 'required',
@@ -184,7 +128,7 @@ export const formConfig: FormStructure[] = [
     type: 'number',
     label: 'Harvest Hours',
     name: 'harvestHours',
-    value: 1,
+    value: 0,
     validations: [
       {
         name: 'required',
@@ -227,12 +171,7 @@ export const formConfig: FormStructure[] = [
     type: 'select',
     label: 'Input in Unit(s)',
     name: 'inputUnitId',
-    value: 1,
-    options: [
-      { label: 'India', value: 1 },
-      { label: 'USA', value: 2 },
-      { label: 'Canada', value: 3 },
-    ],
+    value: 0,
     validations: [
       {
         name: 'required',
@@ -265,12 +204,7 @@ export const formConfig: FormStructure[] = [
     type: 'select',
     label: 'User',
     name: 'userId',
-    value: 1,
-    options: [
-      { label: 'India', value: 1 },
-      { label: 'USA', value: 2 },
-      { label: 'Canada', value: 3 },
-    ],
+    value: 0,
     validations: [
       {
         name: 'required',
