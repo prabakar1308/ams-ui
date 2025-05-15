@@ -23,6 +23,7 @@ export const formDetails = {
   container: LAYOUT_CLASSES.CONTAINER,
   title: 'Create Worksheet',
   description: 'Please fill up the tank parameters to create the worksheet',
+  tags: [],
 };
 
 export const formConfig: FormStructure[] = [

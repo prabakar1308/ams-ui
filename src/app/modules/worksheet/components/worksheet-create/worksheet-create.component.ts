@@ -65,7 +65,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
                 options: masterData?.tankTypes.map((type) => ({
                   label: type.value,
                   value: type.id,
-                  dependents: { name: FORM_CONTROL_NAMES.TANKS, value: [], askReset: true },
+                  dependents: [{ name: FORM_CONTROL_NAMES.TANKS, value: [], askReset: true }],
                 })),
               };
 
@@ -107,17 +107,21 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
                     return {
                       label: type.value,
                       value: type.id,
-                      dependents: {
-                        name: FORM_CONTROL_NAMES.HARVEST_HOURS,
-                        value: type.harvestTime,
-                      },
+                      dependents: [
+                        {
+                          name: FORM_CONTROL_NAMES.HARVEST_HOURS,
+                          value: type.harvestTime,
+                        },
+                      ],
                       hide: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
                     };
                   }
                   return {
                     label: type.value,
                     value: type.id,
-                    dependents: { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: type.harvestTime },
+                    dependents: [
+                      { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: type.harvestTime },
+                    ],
                     hide: [FORM_CONTROL_NAMES.RESTOCK],
                   };
                 }),

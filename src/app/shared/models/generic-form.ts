@@ -2,12 +2,25 @@ export interface GenericForm {
   container: string;
   title: string;
   description: string;
+  tags?: string[];
 }
 
 export interface GenericOption {
   label: string;
   value?: unknown;
   disabled?: boolean;
-  dependents?: { name: string; value: unknown; askReset?: boolean };
+  dependents?: Depedent[];
   hide?: string[];
+}
+
+export interface Depedent {
+  name: string;
+  value: unknown;
+  askReset?: boolean;
+  // for validation
+  validations?: {
+    name?: string;
+    validator: string;
+    message?: string;
+  }[];
 }

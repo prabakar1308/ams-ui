@@ -13,6 +13,7 @@ import {
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
+import { CreateHarvestRequest } from '../models/create-harvest';
 
 @Injectable({
   providedIn: 'root',
@@ -53,5 +54,14 @@ export class WorksheetFacadeService {
   //Restocks
   getActiveRestocks(status: string) {
     this.store.dispatch(worksheetActions.getActiveRestocks(status));
+  }
+
+  // harvests
+  getHarvests(status: string) {
+    // this.store.dispatch(worksheetActions.getHarvests(status));
+  }
+
+  createHarvest(request: CreateHarvestRequest) {
+    this.store.dispatch(worksheetActions.createHarvest(request));
   }
 }

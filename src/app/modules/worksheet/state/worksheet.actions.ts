@@ -7,6 +7,7 @@ import {
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
+import { CreateHarvestRequest } from '../models/create-harvest';
 
 export const getActiveWorksheets = createAction(
   '[Worksheet] Get Active Worksheets',
@@ -70,5 +71,37 @@ export const getActiveRestocksSuccess = createAction(
 
 export const getActiveRestocksFailure = createAction(
   '[Worksheet] Get Active Restocks Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+// Harvests
+export const getHarvests = createAction('[Harvest] Get Harvests', (payload: WorksheetFilter) => ({
+  payload,
+}));
+
+export const getHarvestsSuccess = createAction(
+  '[Harvest] Get Harvests Success',
+  (payload: WorksheetTank[]) => ({ payload }),
+);
+
+export const getHarvestsFailure = createAction(
+  '[Harvest] Get Harvests Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const createHarvest = createAction(
+  '[Harvest] Create Harvest',
+  (payload: CreateHarvestRequest) => ({
+    payload,
+  }),
+);
+
+export const createHarvestSuccess = createAction(
+  '[Harvest] Create Harvest Success',
+  (payload: WorksheetTank[]) => ({ payload }),
+);
+
+export const createHarvestFailure = createAction(
+  '[Harvest] Create Harvest Failure',
   (payload: { error: string }) => ({ payload }),
 );

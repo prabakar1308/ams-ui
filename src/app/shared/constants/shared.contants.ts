@@ -10,6 +10,7 @@ export const INPUT_TYPES = {
   FILE: 'file',
   BUTTON_TOGGLE: 'button_toggle',
   SLIDER: 'slider',
+  DIVIDER: 'divider',
 };
 
 export const LAYOUT_CLASSES = {
@@ -50,6 +51,8 @@ export const CUSTOM_PRESETS = [
 ];
 
 export const DEFAULT_TANK_TYPE = 1; // MACHINERY
+
+export const DEFAULT_RESTOCK_UNIT_ID = 3; // Millions
 
 export const WORKSHEET_STATUS = {
   READY_FOR_STOCKING: 1,

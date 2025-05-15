@@ -16,6 +16,9 @@ import {
   getActiveRestocks,
   getActiveRestocksFailure,
   getActiveRestocksSuccess,
+  createHarvest,
+  createHarvestSuccess,
+  createHarvestFailure,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
@@ -127,6 +130,37 @@ export class WorksheetEffects {
             });
           }),
           catchError((error) => of(getActiveRestocksFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  // harvests
+
+  createHarvest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createHarvest.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.createHarvest(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201) {
+              return createHarvestFailure({
+                error: res.message || 'Create harvest failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Harvest is done successfully!',
+              );
+              return createHarvestSuccess(res.data);
+            }
+            return createHarvestFailure({
+              error: res.message || 'Create harvest failed',
+            });
+          }),
+          tap(() => this.router.navigate(['/worksheet/harvest'])),
+          catchError((error) => of(createHarvestFailure({ error }))),
         ),
       ),
     ),

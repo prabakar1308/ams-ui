@@ -36,9 +36,6 @@ export class WorksheetFilterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.sharedFacade.getWorksheetStatus();
-    this.sharedFacade.getUsersList();
-
     // subscriptions
     this.sharedFacade.worksheetStatus$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
       this.statusDetails = [{ id: 0 }, ...data];

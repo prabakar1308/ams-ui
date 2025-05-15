@@ -26,6 +26,7 @@ export const initialState: SharedState = {
   ph: defaultRangeValues,
   salnity: defaultRangeValues,
   temperature: defaultRangeValues,
+  unitSectors: [],
   meta: {
     isLoading: false,
     error: '',

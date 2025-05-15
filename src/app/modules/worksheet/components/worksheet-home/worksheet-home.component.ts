@@ -136,12 +136,12 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       });
     } else if (action === 'next') {
       const status = worksheet && worksheet.status ? worksheet.status.id : WORKSHEET_STATUS.FREE;
-      console.log(worksheet, userOnly);
       switch (status) {
         case WORKSHEET_STATUS.READY_FOR_STOCKING:
           this.openWorksheetUpdateDialog(worksheet, userOnly);
           break;
         case WORKSHEET_STATUS.READY_FOR_HARVEST:
+          localStorage.setItem('worksheet', JSON.stringify(worksheet));
           this.router.navigate(['worksheet/harvest/create']);
           break;
         case WORKSHEET_STATUS.FREE:

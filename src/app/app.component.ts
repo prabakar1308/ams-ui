@@ -13,6 +13,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'ams-ui';
   userLoggedIn = false;
+  initialLoad = true;
   private unSubscribe = new Subject<void>();
 
   constructor(
@@ -32,16 +33,21 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((userData) => {
         if (userData) {
           this.userLoggedIn = true;
-          setTimeout(() => {
-            this.sharedFacadeService.getMasterData();
-          }, 2000);
+          if (this.initialLoad) {
+            this.sharedFacadeService.getUsersList();
+            setTimeout(() => {
+              this.sharedFacadeService.getWorksheetStatus();
+              this.sharedFacadeService.getMasterData();
+            }, 2000);
+            this.initialLoad = false;
+          }
         } else {
           this.userLoggedIn = false;
         }
       });
 
     const userData = localStorage.getItem('userData');
-    if (userData && !this.userLoggedIn) {
+    if (userData) {
       this.authFacadeService.userLoginSucess(JSON.parse(userData));
       this.authFacadeService.userSubject.next(JSON.parse(userData));
       // this.router.navigate([APP_DEFAULT_ROUTE]);

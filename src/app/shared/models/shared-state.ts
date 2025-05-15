@@ -1,4 +1,4 @@
-import { HarvestType, MasterGeneric, MasterRange } from './master';
+import { HarvestType, MasterGeneric, MasterRange, UnitSector } from './master';
 import { UserDetails } from './user-details';
 import { WorksheetStatus } from './worksheet-status';
 
@@ -12,6 +12,7 @@ export interface SharedState {
   ph: MasterRange;
   salnity: MasterRange;
   temperature: MasterRange;
+  unitSectors: UnitSector[];
   meta: {
     isLoading: boolean;
     error: string;
@@ -31,4 +32,5 @@ export interface MasterData {
   ph: MasterRange;
   salnity: MasterRange;
   temperature: MasterRange;
+  unitSectors: UnitSector[];
 }

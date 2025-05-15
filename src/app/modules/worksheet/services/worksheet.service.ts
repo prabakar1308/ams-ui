@@ -5,6 +5,7 @@ import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
 import { CreateWorksheetRequest, UpdateWorksheetRequest } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
+import { CreateHarvestRequest } from '../models/create-harvest';
 
 @Injectable({
   providedIn: 'root',
@@ -35,5 +36,16 @@ export class WorksheetService {
     return this.http.get<Response<ActiveRestock[]>>(
       `${this.API_URL}/get-restocks?status=${status}`,
     );
+  }
+
+  // harvest
+  getHarvests(status: string) {
+    return this.http.get<Response<ActiveRestock[]>>(
+      `${this.API_URL}/get-harvests?status=${status}`,
+    );
+  }
+
+  createHarvest(request: CreateHarvestRequest) {
+    return this.http.post<Response<any>>(`${this.API_URL}/create-multiple-harvest`, request);
   }
 }

@@ -22,3 +22,10 @@ export interface MasterGeneric {
   description: string;
   limit?: number;
 }
+
+export interface UnitSector {
+  id: number;
+  name: string;
+  description: string;
+  location?: string;
+}

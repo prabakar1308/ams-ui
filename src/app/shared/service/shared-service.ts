@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { Response } from '@app/shared/models/response';
 import { UserDetails } from '@app/shared/models/user-details';
-import { HarvestType, MasterGeneric, MasterRange } from '../models/master';
+import { HarvestType, MasterGeneric, MasterRange, UnitSector } from '../models/master';
 
 @Injectable({
   providedIn: 'root',
@@ -34,5 +34,9 @@ export class SharedService {
   // tank-types, unit
   getMasterGeneric(method: string) {
     return this.http.get<Response<MasterGeneric[]>>(`${this.API_URL}/master/${method}`);
+  }
+
+  getUnitSector() {
+    return this.http.get<Response<UnitSector[]>>(`${this.API_URL}/master/unit-sector`);
   }
 }

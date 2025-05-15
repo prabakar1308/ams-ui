@@ -13,7 +13,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
-import { GenericForm, GenericOption } from '@app/shared/models/generic-form';
+import { Depedent, GenericForm, GenericOption } from '@app/shared/models/generic-form';
 import { FormStructure, FormValidation } from '@app/shared/models/form-structure';
 import { INPUT_TYPES, TEXT_INPUT_TYPES } from '@app/shared/constants/shared.contants';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
@@ -58,25 +58,27 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
   private initializeForm(): void {
     let formGroup: Record<string, any> = {};
     this.formStructure.forEach((control) => {
-      let controlValidators: Validators[] = [];
+      if (control.type !== INPUT_TYPES.DIVIDER) {
+        let controlValidators: Validators[] = [];
 
-      if (control.validations) {
-        control.validations.forEach((validation: FormValidation) => {
-          if (validation.validator === 'required') controlValidators.push(Validators.required);
-          if (validation.validator === 'min')
-            controlValidators.push(Validators.min(validation.value || 0));
-          if (validation.validator === 'max')
-            controlValidators.push(Validators.max(validation.value || 0));
-          if (validation.validator === 'pattern' && validation.pattern) {
-            controlValidators.push(Validators.pattern(validation.pattern));
-          }
-        });
+        if (control.validations) {
+          control.validations.forEach((validation: FormValidation) => {
+            if (validation.validator === 'required') controlValidators.push(Validators.required);
+            if (validation.validator === 'min')
+              controlValidators.push(Validators.min(validation.value || 0));
+            if (validation.validator === 'max')
+              controlValidators.push(Validators.max(validation.value || 0));
+            if (validation.validator === 'pattern' && validation.pattern) {
+              controlValidators.push(Validators.pattern(validation.pattern));
+            }
+          });
+        }
+
+        formGroup[control.name] = [
+          { value: control.value || '', disabled: control.hide },
+          controlValidators,
+        ];
       }
-
-      formGroup[control.name] = [
-        { value: control.value || '', disabled: control.hide },
-        controlValidators,
-      ];
     });
 
     this.dynamicForm = this.fb.group(formGroup);
@@ -97,16 +99,26 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
     return !this.dynamicForm.get(name)?.disabled;
   }
 
-  getErrorMessage(control: any) {
+  getErrorMessage(control: any): string {
     const formControl = this.dynamicForm.get(control.name);
 
-    if (!formControl) {
+    if (!formControl || !formControl.errors) {
       return '';
     }
 
-    for (let validation of control.validations) {
-      if (formControl.hasError(validation.name)) {
-        return validation.message;
+    if (control.validations) {
+      for (let validation of control.validations) {
+        if (formControl.hasError(validation.name)) {
+          return validation.message;
+        }
+      }
+    }
+
+    if (control.errorMessages) {
+      for (let errorKey in control.errorMessages) {
+        if (formControl.hasError(errorKey)) {
+          return control.errorMessages[errorKey];
+        }
       }
     }
 
@@ -121,29 +133,17 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
     return this.dynamicForm.controls[name].value;
   }
 
+  onTextChange(event: Event, parentName: string, dependents?: Depedent[]) {
+    const inputValue = Number((event.target as HTMLInputElement).value || 0);
+    this.executeDependentLogic(dependents ?? [], parentName, inputValue);
+  }
+
   onValueChange(event: number, parentName: string, data?: GenericOption[]) {
     if (data && event) {
       const selectedOption = data.filter((item) => item.value === event);
       if (selectedOption && selectedOption.length) {
         const { dependents, hide } = selectedOption[0];
-        if (dependents) {
-          const { value, name, askReset } = dependents;
-
-          if (askReset) {
-            const data = {
-              title: 'Reset',
-              message: `The form will be reset. Do you want to proceed?`,
-            };
-            const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
-            dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
-              if (isConfirmed) {
-                this.dynamicForm.controls[name].setValue(value);
-                this.dynamicForm.controls[name].markAsUntouched();
-                this.formValueChange.emit({ name: parentName, value: event });
-              } else this.dynamicForm.controls[parentName].setValue(this.previousValue);
-            });
-          } else this.dynamicForm.controls[name].setValue(value);
-        }
+        this.executeDependentLogic(dependents ?? [], parentName, event);
 
         // hide controls dynamically
         if (hide && hide.length) {
@@ -154,6 +154,49 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
           });
         }
       }
+    }
+  }
+
+  executeDependentLogic(dependents: Depedent[], parentName: string, parentValue: number) {
+    if (dependents?.length) {
+      dependents.forEach((dependent) => {
+        const { value, name, askReset, validations } = dependent;
+
+        if (askReset) {
+          const data = {
+            title: 'Reset',
+            message: `The form will be reset. Do you want to proceed?`,
+          };
+          const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
+          dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+            if (isConfirmed) {
+              this.dynamicForm.controls[name].setValue(value);
+              this.dynamicForm.controls[name].markAsUntouched();
+              this.formValueChange.emit({ name: parentName, value: parentValue });
+            } else this.dynamicForm.controls[parentName].setValue(this.previousValue);
+          });
+        } else if (validations && validations.length) {
+          const updatedValue = parseInt(String(value)) || parentValue;
+          this.dynamicForm.controls[name].clearValidators();
+          if (updatedValue) {
+            validations.forEach((validation) => {
+              const { validator } = validation;
+              // TODO: move validator logic to a separate function
+              if (validator === 'required') {
+                this.dynamicForm.controls[name].addValidators([Validators.required]);
+              } else if (validator === 'max') {
+                this.dynamicForm.controls[name].addValidators([Validators.max(updatedValue)]);
+              } else if (validator === 'min') {
+                this.dynamicForm.controls[name].addValidators([Validators.min(updatedValue)]);
+              }
+              this.dynamicForm.controls[name].updateValueAndValidity();
+            });
+          } else {
+            this.dynamicForm.controls[name].clearValidators();
+            this.dynamicForm.controls[name].updateValueAndValidity();
+          }
+        } else this.dynamicForm.controls[name].setValue(value);
+      });
     }
   }
 

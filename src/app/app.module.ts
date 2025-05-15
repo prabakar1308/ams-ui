@@ -14,6 +14,7 @@ import { TokenInterceptor } from '@app/auth/interceptors/token.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { reducer } from './state';
+import { AuthModule } from '@app/auth/auth.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -25,6 +26,7 @@ import { reducer } from './state';
     StoreModule.forRoot(reducer),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    AuthModule,
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
