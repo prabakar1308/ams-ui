@@ -9,6 +9,7 @@ export interface CreateHarvest {
   statusId: number;
   unitSectorId?: number;
   transitCount?: number | string;
+  divider?: string;
 }
 
 export interface CreateHarvestRequest {

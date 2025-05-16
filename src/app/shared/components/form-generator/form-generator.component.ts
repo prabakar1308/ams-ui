@@ -58,27 +58,27 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
   private initializeForm(): void {
     let formGroup: Record<string, any> = {};
     this.formStructure.forEach((control) => {
-      if (control.type !== INPUT_TYPES.DIVIDER) {
-        let controlValidators: Validators[] = [];
+      // if (control.type !== INPUT_TYPES.DIVIDER) {
+      let controlValidators: Validators[] = [];
 
-        if (control.validations) {
-          control.validations.forEach((validation: FormValidation) => {
-            if (validation.validator === 'required') controlValidators.push(Validators.required);
-            if (validation.validator === 'min')
-              controlValidators.push(Validators.min(validation.value || 0));
-            if (validation.validator === 'max')
-              controlValidators.push(Validators.max(validation.value || 0));
-            if (validation.validator === 'pattern' && validation.pattern) {
-              controlValidators.push(Validators.pattern(validation.pattern));
-            }
-          });
-        }
-
-        formGroup[control.name] = [
-          { value: control.value || '', disabled: control.hide },
-          controlValidators,
-        ];
+      if (control.validations) {
+        control.validations.forEach((validation: FormValidation) => {
+          if (validation.validator === 'required') controlValidators.push(Validators.required);
+          if (validation.validator === 'min')
+            controlValidators.push(Validators.min(validation.value || 0));
+          if (validation.validator === 'max')
+            controlValidators.push(Validators.max(validation.value || 0));
+          if (validation.validator === 'pattern' && validation.pattern) {
+            controlValidators.push(Validators.pattern(validation.pattern));
+          }
+        });
       }
+
+      formGroup[control.name] = [
+        { value: control.value || '', disabled: control.hide },
+        controlValidators,
+      ];
+      // }
     });
 
     this.dynamicForm = this.fb.group(formGroup);
@@ -146,13 +146,11 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
         this.executeDependentLogic(dependents ?? [], parentName, event);
 
         // hide controls dynamically
-        if (hide && hide.length) {
-          Object.keys(this.dynamicForm.controls).forEach((key) => {
-            const filteredNames = hide.filter((name) => name === key);
-            if (filteredNames.length) this.dynamicForm.controls[key].disable();
-            else this.dynamicForm.controls[key].enable();
-          });
-        }
+        Object.keys(this.dynamicForm.controls).forEach((key) => {
+          const filteredNames = hide && hide.length ? hide.filter((name) => name === key) : [];
+          if (filteredNames.length) this.dynamicForm.controls[key].disable();
+          else this.dynamicForm.controls[key].enable();
+        });
       }
     }
   }

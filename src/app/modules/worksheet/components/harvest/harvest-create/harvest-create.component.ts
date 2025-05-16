@@ -6,7 +6,11 @@ import { combineLatest, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { CreateHarvest } from '@app/worksheet/models/create-harvest';
-import { DEFAULT_RESTOCK_UNIT_ID, WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
+import {
+  DEFAULT_RESTOCK_UNIT_ID,
+  UNIT_IDS,
+  WORKSHEET_STATUS,
+} from '@app/shared/constants/shared.contants';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 
 @Component({
@@ -56,10 +60,25 @@ export class HarvestCreateComponent {
             case FORM_CONTROL_NAMES.UNIT_ID:
               return {
                 ...data,
-                options: masterData?.units.map((unit) => ({
-                  label: unit.value,
-                  value: unit.id,
-                })),
+                options: masterData?.units.map((unit) => {
+                  if (unit.id === UNIT_IDS.FROZEN_CUPS) {
+                    return {
+                      ...unit,
+                      label: unit.value,
+                      value: unit.id,
+                      hide: [
+                        FORM_CONTROL_NAMES.DIVIDER,
+                        FORM_CONTROL_NAMES.TRANSIT_COUNT,
+                        FORM_CONTROL_NAMES.UNIT_SECTOR_ID,
+                      ],
+                    };
+                  }
+                  return {
+                    ...unit,
+                    label: unit.value,
+                    value: unit.id,
+                  };
+                }),
               };
 
             case FORM_CONTROL_NAMES.MEASURED_BY:
@@ -103,6 +122,7 @@ export class HarvestCreateComponent {
 
     requestData = {
       ...requestData,
+      divider: undefined,
       worksheetId: this.worksheet.worksheetId || 0,
       count,
       countInStock,

@@ -45,7 +45,7 @@ export const formConfig: FormStructure[] = [
 
   {
     class: LAYOUT_CLASSES.DEFAULT,
-    type: 'select',
+    type: INPUT_TYPES.SELECT,
     label: 'Tanks',
     name: FORM_CONTROL_NAMES.TANKS,
     value: [], //[1],
@@ -65,7 +65,7 @@ export const formConfig: FormStructure[] = [
 
   {
     class: LAYOUT_CLASSES.DEFAULT,
-    type: 'slider',
+    type: INPUT_TYPES.SLIDER,
     label: 'PH',
     name: 'ph',
     value: 0,
@@ -80,7 +80,7 @@ export const formConfig: FormStructure[] = [
   // salnity
   {
     class: LAYOUT_CLASSES.DEFAULT,
-    type: 'slider',
+    type: INPUT_TYPES.SLIDER,
     label: 'Salnity',
     name: 'salnity',
     value: 0,
@@ -95,7 +95,7 @@ export const formConfig: FormStructure[] = [
   // Temperature
   {
     class: LAYOUT_CLASSES.DEFAULT,
-    type: 'slider',
+    type: INPUT_TYPES.SLIDER,
     label: 'Temperature',
     name: 'temperature',
     value: 0,
@@ -110,7 +110,7 @@ export const formConfig: FormStructure[] = [
   // harvest type
   {
     class: LAYOUT_CLASSES.NONE,
-    type: 'select',
+    type: INPUT_TYPES.SELECT,
     label: 'Harvest Type',
     name: 'harvestTypeId',
     value: 0,
@@ -126,7 +126,7 @@ export const formConfig: FormStructure[] = [
   // harvest hours
   {
     class: LAYOUT_CLASSES.NONE,
-    type: 'number',
+    type: INPUT_TYPES.NUMBER,
     label: 'Harvest Hours',
     name: 'harvestHours',
     value: 0,
@@ -153,10 +153,10 @@ export const formConfig: FormStructure[] = [
   // Input Count
   {
     class: LAYOUT_CLASSES.NONE,
-    type: 'number',
+    type: INPUT_TYPES.NUMBER,
     label: 'Input Count',
     name: 'inputCount',
-    value: 1,
+    value: 0,
     validations: [
       {
         name: 'required',
@@ -169,7 +169,7 @@ export const formConfig: FormStructure[] = [
   // Input Unit
   {
     class: LAYOUT_CLASSES.NONE,
-    type: 'select',
+    type: INPUT_TYPES.SELECT,
     label: 'Input in Unit(s)',
     name: 'inputUnitId',
     value: 0,
@@ -184,7 +184,7 @@ export const formConfig: FormStructure[] = [
   // Restock
   {
     class: LAYOUT_CLASSES.DEFAULT,
-    type: 'select',
+    type: INPUT_TYPES.SELECT,
     label: 'Restock',
     name: FORM_CONTROL_NAMES.RESTOCK,
     value: [],
@@ -202,7 +202,7 @@ export const formConfig: FormStructure[] = [
   // Assigned User
   {
     class: LAYOUT_CLASSES.DEFAULT,
-    type: 'select',
+    type: INPUT_TYPES.SELECT,
     label: 'User',
     name: 'userId',
     value: 0,

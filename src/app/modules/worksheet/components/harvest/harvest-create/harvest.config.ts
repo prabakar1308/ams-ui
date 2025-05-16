@@ -16,6 +16,7 @@ export const FORM_CONTROL_NAMES = {
   MEASURED_BY: 'measuredBy',
   UNIT_SECTOR_ID: 'unitSectorId',
   TRANSIT_COUNT: 'transitCount',
+  DIVIDER: 'divider',
 };
 
 export const formDetails = {
@@ -55,7 +56,7 @@ export const formConfig: FormStructure[] = [
     class: LAYOUT_CLASSES.DEFAULT,
     type: INPUT_TYPES.SELECT,
     label: 'Count in Unit(s)',
-    name: 'unitId',
+    name: FORM_CONTROL_NAMES.UNIT_ID,
     value: 0,
     validations: [
       {
@@ -95,7 +96,7 @@ export const formConfig: FormStructure[] = [
     class: LAYOUT_CLASSES.FULL_WIDTH,
     type: INPUT_TYPES.DIVIDER,
     label: 'Transit Details',
-    name: 'divider',
+    name: FORM_CONTROL_NAMES.DIVIDER,
     value: 0,
   },
 

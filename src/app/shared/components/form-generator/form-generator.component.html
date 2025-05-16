@@ -34,7 +34,12 @@
                       } @else if (control.type === inputTypes.TEXTAREA) {
                         <textarea matInput [formControlName]="control.name"></textarea>
                       } @else {
-                        <input matInput [formControlName]="control.name" [type]="control.type" />
+                        <input
+                          matInput
+                          [formControlName]="control.name"
+                          [type]="control.type"
+                          (change)="onTextChange($event, control.name, control.dependents)"
+                        />
                       }
                       @if (
                         dynamicForm.controls[control.name].invalid &&
@@ -67,9 +72,12 @@
                         "
                       >
                         @for (item of control.options; track item) {
-                          <mat-option [value]="item.value" [disabled]="item.disabled">{{
-                            item.label
-                          }}</mat-option>
+                          <mat-option [value]="item.value" [disabled]="item.disabled"
+                            >{{ item.label }}
+                            @if (item.tooltip) {
+                              <mat-icon [matTooltip]="item.tooltip">info</mat-icon>
+                            }
+                          </mat-option>
                         }
                       </mat-select>
                       @if (
@@ -122,7 +130,10 @@
                         >{{ getControlValue(control.name) }} {{ control.meta?.unitLabel }}</mat-chip
                       >
                     </div>
-                  } @else if (control.type === inputTypes.DIVIDER) {
+                  } @else if (
+                    control.type === inputTypes.DIVIDER &&
+                    dynamicForm.controls[control.name].enabled
+                  ) {
                     <mat-divider class="border-2 border-gray-100"></mat-divider>
                     <mat-label class="text-xl flex mt-4 md:mt-8 md:-mb-8">{{
                       control.label

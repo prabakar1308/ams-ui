@@ -53,6 +53,12 @@ export const CUSTOM_PRESETS = [
 export const DEFAULT_TANK_TYPE = 1; // MACHINERY
 
 export const DEFAULT_RESTOCK_UNIT_ID = 3; // Millions
+export const UNIT_IDS = {
+  MILLIONS: 3,
+  TINS: 1,
+  BAGS: 2,
+  FROZEN_CUPS: 4,
+};
 
 export const WORKSHEET_STATUS = {
   READY_FOR_STOCKING: 1,
