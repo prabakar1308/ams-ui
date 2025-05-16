@@ -11,6 +11,7 @@ export interface GenericOption {
   disabled?: boolean;
   dependents?: Depedent[];
   hide?: string[];
+  show?: string[];
   tooltip?: string;
 }
 

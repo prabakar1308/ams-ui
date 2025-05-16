@@ -114,6 +114,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
                         },
                       ],
                       hide: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
+                      show: [FORM_CONTROL_NAMES.RESTOCK],
                     };
                   }
                   return {
@@ -122,6 +123,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
                     dependents: [
                       { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: type.harvestTime },
                     ],
+                    show: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
                     hide: [FORM_CONTROL_NAMES.RESTOCK],
                   };
                 }),

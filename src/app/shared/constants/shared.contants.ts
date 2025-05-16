@@ -14,7 +14,7 @@ export const INPUT_TYPES = {
 };
 
 export const LAYOUT_CLASSES = {
-  CONTAINER: 'grid md:grid-cols-4 sm:grid-cols-1 gap-5 md:gap-15 md:gap-x-10',
+  CONTAINER: 'grid md:grid-cols-4 sm:grid-cols-1 gap-5 md:gap-8 md:gap-x-10',
   // Form layout is by default considered as 1 column for mobile and 4 columns for other
   // mobile - 1/1, other - 1/4
   NONE: '',
