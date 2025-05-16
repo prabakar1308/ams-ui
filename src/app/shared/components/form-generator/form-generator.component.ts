@@ -149,7 +149,13 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
         Object.keys(this.dynamicForm.controls).forEach((key) => {
           const filteredNames = hide && hide.length ? hide.filter((name) => name === key) : [];
           if (filteredNames.length) this.dynamicForm.controls[key].disable();
-          else this.dynamicForm.controls[key].enable();
+          else {
+            if (this.formStructure) {
+              const control = this.formStructure.find((control) => control.name === key);
+              if (control && control.hide) this.dynamicForm.controls[key].disable();
+              else this.dynamicForm.controls[key].enable();
+            }
+          }
         });
       }
     }
