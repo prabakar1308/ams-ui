@@ -29,3 +29,10 @@ export interface UnitSector {
   description: string;
   location?: string;
 }
+
+export interface WorksheetUnit {
+  id: number;
+  value: string;
+  brand: string;
+  specs?: string;
+}

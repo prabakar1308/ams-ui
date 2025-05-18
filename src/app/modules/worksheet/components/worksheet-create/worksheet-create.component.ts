@@ -29,7 +29,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
     private router: Router,
     private worksheetFacadeService: WorksheetFacadeService,
     private sharedFacadeService: SharedFacadeService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.worksheetFacadeService.getActiveRestocks('A');
@@ -148,10 +148,18 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
             case FORM_CONTROL_NAMES.INPUT_UNIT_ID:
               return {
                 ...data,
-                options: masterData?.units.map((unit) => ({
-                  label: unit.value,
-                  value: unit.id,
-                })),
+                options: masterData?.worksheetUnits.map((unit) => {
+                  const { value, brand, specs } = unit;
+                  let unitLabel = `${value} - ${brand}`;
+                  if (specs) {
+                    unitLabel = `${unitLabel} (${specs})`;
+                  }
+                  return {
+                    ...unit,
+                    label: unitLabel,
+                    value: unit.id,
+                  };
+                }),
               };
 
             case FORM_CONTROL_NAMES.USER_ID:

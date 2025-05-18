@@ -81,6 +81,7 @@ export class SharedEffects {
           this.sharedService.getMasterRange('salnity'),
           this.sharedService.getMasterRange('temperature'),
           this.sharedService.getUnitSector(),
+          this.sharedService.getWorksheetUnits(),
         ]).pipe(
           map((response) => {
             let isError = false;
@@ -98,6 +99,7 @@ export class SharedEffects {
               salnityRes,
               tempRes,
               unitSectorRes,
+              worksheetUnitRes,
             ] = response;
             if (isError) {
               return getMasterDataFailure({
@@ -111,6 +113,7 @@ export class SharedEffects {
               const salnity = salnityRes.data;
               const temperature = tempRes.data;
               const unitSectors = unitSectorRes.data;
+              const worksheetUnits = worksheetUnitRes.data;
               return getMasterDataSuccess({
                 harvestTypes,
                 tankTypes,
@@ -119,6 +122,7 @@ export class SharedEffects {
                 salnity,
                 temperature,
                 unitSectors,
+                worksheetUnits,
               });
             }
             // return getUsersListFailure({ error: 'Get user details failed' });

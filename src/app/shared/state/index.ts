@@ -37,4 +37,5 @@ export const getMasterData = createSelector(getSharedFeatureState, (state: Share
   salnity: state.salnity,
   temperature: state.temperature,
   unitSectors: state.unitSectors,
+  worksheetUnits: state.worksheetUnits,
 }));
