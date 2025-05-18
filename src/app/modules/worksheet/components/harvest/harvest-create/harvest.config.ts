@@ -14,9 +14,9 @@ export const FORM_CONTROL_NAMES = {
   // INPUT_COUNT: 'inputCount',
   UNIT_ID: 'unitId',
   MEASURED_BY: 'measuredBy',
-  UNIT_SECTOR_ID: 'unitSectorId',
-  TRANSIT_COUNT: 'transitCount',
-  DIVIDER: 'divider',
+  // UNIT_SECTOR_ID: 'unitSectorId',
+  // TRANSIT_COUNT: 'transitCount',
+  // DIVIDER: 'divider',
 };
 
 export const formDetails = {
@@ -40,17 +40,17 @@ export const formConfig: FormStructure[] = [
         message: 'Count is required',
       },
     ],
-    dependents: [
-      {
-        name: FORM_CONTROL_NAMES.TRANSIT_COUNT,
-        value: 0,
-        validations: [
-          {
-            validator: 'max',
-          },
-        ],
-      },
-    ],
+    // dependents: [
+    //   {
+    //     name: FORM_CONTROL_NAMES.TRANSIT_COUNT,
+    //     value: 0,
+    //     validations: [
+    //       {
+    //         validator: 'max',
+    //       },
+    //     ],
+    //   },
+    // ],
   },
   {
     class: LAYOUT_CLASSES.DEFAULT,
@@ -92,46 +92,46 @@ export const formConfig: FormStructure[] = [
     },
   },
 
-  {
-    class: LAYOUT_CLASSES.FULL_WIDTH,
-    type: INPUT_TYPES.DIVIDER,
-    label: 'Transit Details',
-    name: FORM_CONTROL_NAMES.DIVIDER,
-    value: 0,
-  },
+  // {
+  //   class: LAYOUT_CLASSES.FULL_WIDTH,
+  //   type: INPUT_TYPES.DIVIDER,
+  //   label: 'Transit Details',
+  //   name: FORM_CONTROL_NAMES.DIVIDER,
+  //   value: 0,
+  // },
 
-  {
-    class: LAYOUT_CLASSES.DEFAULT,
-    type: INPUT_TYPES.NUMBER,
-    label: 'Transit Count',
-    name: FORM_CONTROL_NAMES.TRANSIT_COUNT,
-    value: 0,
-    errorMessages: {
-      max: 'Transit count should be less than or equal to count',
-    },
+  // {
+  //   class: LAYOUT_CLASSES.DEFAULT,
+  //   type: INPUT_TYPES.NUMBER,
+  //   label: 'Transit Count',
+  //   name: FORM_CONTROL_NAMES.TRANSIT_COUNT,
+  //   value: 0,
+  //   errorMessages: {
+  //     max: 'Transit count should be less than or equal to count',
+  //   },
 
-    dependents: [
-      {
-        name: FORM_CONTROL_NAMES.UNIT_SECTOR_ID,
-        value: 0,
-        validations: [
-          {
-            validator: 'required',
-          },
-        ],
-      },
-    ],
-  },
+  //   dependents: [
+  //     {
+  //       name: FORM_CONTROL_NAMES.UNIT_SECTOR_ID,
+  //       value: 0,
+  //       validations: [
+  //         {
+  //           validator: 'required',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 
-  {
-    class: LAYOUT_CLASSES.DEFAULT,
-    type: INPUT_TYPES.SELECT,
-    label: 'Unit Sectors',
-    name: FORM_CONTROL_NAMES.UNIT_SECTOR_ID,
-    options: [],
-    value: 0,
-    errorMessages: {
-      required: 'Unit sector is required',
-    },
-  },
+  // {
+  //   class: LAYOUT_CLASSES.DEFAULT,
+  //   type: INPUT_TYPES.SELECT,
+  //   label: 'Unit Sectors',
+  //   name: FORM_CONTROL_NAMES.UNIT_SECTOR_ID,
+  //   options: [],
+  //   value: 0,
+  //   errorMessages: {
+  //     required: 'Unit sector is required',
+  //   },
+  // },
 ];

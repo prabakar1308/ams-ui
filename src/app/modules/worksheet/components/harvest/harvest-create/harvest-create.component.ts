@@ -7,8 +7,8 @@ import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { CreateHarvest } from '@app/worksheet/models/create-harvest';
 import {
-  DEFAULT_RESTOCK_UNIT_ID,
   UNIT_IDS,
+  WORKSHEET_OUTPUT_UNITS,
   WORKSHEET_STATUS,
 } from '@app/shared/constants/shared.contants';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
@@ -60,25 +60,19 @@ export class HarvestCreateComponent {
             case FORM_CONTROL_NAMES.UNIT_ID:
               return {
                 ...data,
-                options: masterData?.units.map((unit) => {
-                  if (unit.id === UNIT_IDS.FROZEN_CUPS) {
+                options: masterData?.worksheetUnits
+                  .filter((unit) => WORKSHEET_OUTPUT_UNITS.includes(unit.id))
+                  .map((unit) => {
+                    const { value, brand, specs } = unit;
+                    let unitLabel = value;
+                    if (brand) unitLabel = `${unitLabel} - ${brand}`;
+                    if (specs) unitLabel = `${unitLabel} (${specs})`;
                     return {
                       ...unit,
-                      label: unit.value,
+                      label: unitLabel,
                       value: unit.id,
-                      hide: [
-                        FORM_CONTROL_NAMES.DIVIDER,
-                        FORM_CONTROL_NAMES.TRANSIT_COUNT,
-                        FORM_CONTROL_NAMES.UNIT_SECTOR_ID,
-                      ],
                     };
-                  }
-                  return {
-                    ...unit,
-                    label: unit.value,
-                    value: unit.id,
-                  };
-                }),
+                  }),
               };
 
             case FORM_CONTROL_NAMES.MEASURED_BY:
@@ -91,15 +85,15 @@ export class HarvestCreateComponent {
                   value: user.id,
                 })),
               };
-            case FORM_CONTROL_NAMES.UNIT_SECTOR_ID:
-              return {
-                ...data,
-                options: masterData?.unitSectors.map((unit) => ({
-                  ...unit,
-                  label: unit.name,
-                  value: unit.id,
-                })),
-              };
+            // case FORM_CONTROL_NAMES.UNIT_SECTOR_ID:
+            //   return {
+            //     ...data,
+            //     options: masterData?.unitSectors.map((unit) => ({
+            //       ...unit,
+            //       label: unit.name,
+            //       value: unit.id,
+            //     })),
+            //   };
 
             default:
               return data;
@@ -117,19 +111,19 @@ export class HarvestCreateComponent {
 
     const count = parseInt(requestData.count.toString(), 10);
     const restockCount = parseInt((requestData.restockCount || '0').toString(), 10);
-    const transitCount = parseInt((requestData.transitCount || '0').toString(), 10);
-    const countInStock = count - transitCount;
+    // const transitCount = parseInt((requestData.transitCount || '0').toString(), 10);
+    // const countInStock = count - transitCount;
 
     requestData = {
       ...requestData,
       divider: undefined,
       worksheetId: this.worksheet.worksheetId || 0,
       count,
-      countInStock,
+      countInStock: count,
       restockCount,
-      transitCount,
+      // transitCount,
       statusId: WORKSHEET_STATUS.COMPLETED,
-      restockUnitId: restockCount ? DEFAULT_RESTOCK_UNIT_ID : undefined,
+      restockUnitId: restockCount ? UNIT_IDS.MILLIONS : undefined,
     };
 
     this.worksheetFacadeService.createHarvest({ harvests: [requestData] });
