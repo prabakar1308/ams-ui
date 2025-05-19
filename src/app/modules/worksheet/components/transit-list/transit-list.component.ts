@@ -15,7 +15,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class TransitListComponent {
   private unSubscribe = new Subject<void>();
-  displayedColumns = ['unitSector', 'createdAt', 'createdBy', 'transitCount'];
+  displayedColumns = ['unitSector', 'staffInCharge', 'createdAt', 'createdBy', 'transitCount'];
   dataSource = new MatTableDataSource<Transit>();
   statusDetails = WORKSHEET_TABLE_STATUS;
   status = WORKSHEET_TABLE_STATUS.ACTIVE;
