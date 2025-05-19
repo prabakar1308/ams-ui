@@ -14,9 +14,11 @@ import { WorksheetUpdateDialogComponent } from './components/worksheet-update-di
 import { HarvestHomeComponent } from './components/harvest/harvest-home/harvest-home.component';
 import { HarvestCreateComponent } from './components/harvest/harvest-create/harvest-create.component';
 import { WorksheetNavigationComponent } from './components/worksheet-home/worksheet-navigation/worksheet-navigation.component';
+import { RestockListComponent } from './components/restock-list/restock-list.component';
+import { TransitListComponent } from './components/transit-list/transit-list.component';
 
 @NgModule({
-  declarations: [WorksheetHomeComponent, WorksheetFilterComponent, WorksheetCreateComponent, WorksheetUpdateDialogComponent, HarvestHomeComponent, HarvestCreateComponent, WorksheetNavigationComponent],
+  declarations: [WorksheetHomeComponent, WorksheetFilterComponent, WorksheetCreateComponent, WorksheetUpdateDialogComponent, HarvestHomeComponent, HarvestCreateComponent, WorksheetNavigationComponent, RestockListComponent, TransitListComponent],
   imports: [
     CommonModule,
     SharedModule,

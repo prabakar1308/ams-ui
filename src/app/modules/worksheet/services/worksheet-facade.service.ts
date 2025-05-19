@@ -14,6 +14,7 @@ import {
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
 import { CreateHarvestRequest } from '../models/create-harvest';
+import { Transit, TransitPayload } from '../models/transit';
 
 @Injectable({
   providedIn: 'root',
@@ -21,12 +22,14 @@ import { CreateHarvestRequest } from '../models/create-harvest';
 export class WorksheetFacadeService {
   activeWorksheets$: Observable<WorksheetTank[]>;
   activeRestocks$: Observable<ActiveRestock[]>;
+  transits$: Observable<Transit[]>;
   tankSelection$: Observable<TankSelection>;
   meta$: Observable<MetaState>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.activeWorksheets$ = this.store.select(fromStore.getActiveWorksheets);
     this.activeRestocks$ = this.store.select(fromStore.getActiveRestocks);
+    this.transits$ = this.store.select(fromStore.getTransits);
     this.tankSelection$ = this.store.select(fromStore.getWorksheetTankDetails);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
   }
@@ -63,5 +66,10 @@ export class WorksheetFacadeService {
 
   createHarvest(request: CreateHarvestRequest) {
     this.store.dispatch(worksheetActions.createHarvest(request));
+  }
+
+  // get transits
+  getTransits(payload: TransitPayload) {
+    this.store.dispatch(worksheetActions.getTransits(payload));
   }
 }

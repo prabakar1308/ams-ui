@@ -88,6 +88,9 @@ mat-form-field.ams-small {
     @include mat.fab-overrides((small-container-color: rgb(209, 238, 233),
         ));
 
+    @include mat.table-overrides((row-item-label-text-color: #525050,
+        ));
+
 }
 
 .warning {

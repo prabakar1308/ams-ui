@@ -24,4 +24,10 @@ export const getWorksheetTankDetails = createSelector(
   (state: WorksheetState) => state.createWorksheet,
 );
 
+// transits
+export const getTransits = createSelector(
+  getWorksheetFeatureState,
+  (state: WorksheetState) => state.transits,
+);
+
 export const getMetaInfo = createSelector(getWorksheetFeatureState, (state) => state.meta);

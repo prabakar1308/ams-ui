@@ -1,0 +1,81 @@
+<div class="transit-list-container">
+  <div class="flex justify-between items-center m-4 pt-4">
+    <h4 class="text-xl">Today's Live Artemia</h4>
+    <div class="flex items-center gap-2">
+      <!-- <mat-button-toggle-group
+        [value]="status"
+        (change)="toggleChange($event)"
+        name="status"
+        aria-label="status"
+      >
+        <mat-button-toggle [value]="statusDetails.ACTIVE">Active</mat-button-toggle>
+        <mat-button-toggle [value]="statusDetails.IN_USE">In Use</mat-button-toggle>
+        <mat-button-toggle [value]="statusDetails.COMPLETED">Completed</mat-button-toggle>
+      </mat-button-toggle-group> -->
+      <button
+        mat-mini-fab
+        aria-label="worksheet refresh"
+        (click)="onClickBack()"
+        matTooltip="Create"
+        class="secondary"
+      >
+        <mat-icon>home</mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <section class="table-container mat-elevation-z8" tabindex="0">
+        <table mat-table [dataSource]="dataSource">
+          <!-- unitSector Column -->
+          <ng-container matColumnDef="unitSector">
+            <th mat-header-cell *matHeaderCellDef class="min-w-40">Unit Sector</th>
+            <td mat-cell *matCellDef="let element" class="min-w-40">
+              <span class="font-bold">{{ element.unitSector?.name }}</span>
+              <span class="pl-1 text-xs">({{ element.unitSector?.location }})</span>
+            </td>
+          </ng-container>
+
+          <!-- Restock created on Column -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef class="min-w-32">Created On</th>
+            <td mat-cell *matCellDef="let element" class="min-w-32">
+              {{ element.createdAt | date: 'short' }}
+            </td>
+          </ng-container>
+
+          <!-- Restock created By Column -->
+          <ng-container matColumnDef="createdBy">
+            <th mat-header-cell *matHeaderCellDef class="min-w-32">Created By</th>
+            <td mat-cell *matCellDef="let element" class="min-w-32">
+              {{ element.createdBy }}
+            </td>
+          </ng-container>
+          <!-- Harvest count Column -->
+          <!-- <ng-container matColumnDef="harvestCount">
+              <th mat-header-cell *matHeaderCellDef class="min-w-32">Harvest Count</th>
+              <td mat-cell *matCellDef="let element" class="min-w-32">
+                {{ element.harvest }}
+              </td>
+            </ng-container> -->
+
+          <!-- Restock count Column -->
+          <ng-container matColumnDef="transitCount" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef class="min-w-40">Count</th>
+            <td mat-cell *matCellDef="let element" class="min-w-32 text-[#177b1f] font-bold">
+              {{ element.transitCount }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns" class="pl-1 pr-1"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td [attr.colspan]="displayedColumns.length" class="p-4 text-center font-bold">
+              No records available!
+            </td>
+          </tr>
+        </table>
+      </section>
+    </mat-card-content>
+  </mat-card>
+</div>
