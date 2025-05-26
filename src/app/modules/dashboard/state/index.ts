@@ -14,4 +14,9 @@ export const getDashboardData = createSelector(
   (state: DashboardState) => state.production,
 );
 
+export const getProductionData = createSelector(
+  getDashboardFeatureState,
+  (state: DashboardState) => state.productionCount,
+);
+
 export const getMetaInfo = createSelector(getDashboardFeatureState, (state) => state.meta);

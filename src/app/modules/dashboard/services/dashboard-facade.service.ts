@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DashboardResponse } from '../models/dashboard-response';
+import { DashboardResponse, ProductionCount } from '../models/dashboard-response';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MetaState } from '@app/shared/models/meta-state';
 import { Store } from '@ngrx/store';
@@ -11,9 +11,11 @@ import * as dashboardActions from '../state/dashboard.actions';
 })
 export class DashboardFacadeService {
   dashboardData$: Observable<DashboardResponse>;
+  productionCount$: Observable<ProductionCount>;
   meta$: Observable<MetaState>;
   constructor(private store: Store<fromStore.AppState>) {
     this.dashboardData$ = this.store.select(fromStore.getDashboardData);
+    this.productionCount$ = this.store.select(fromStore.getProductionData);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
   }
 
@@ -21,7 +23,7 @@ export class DashboardFacadeService {
     this.store.dispatch(dashboardActions.getDashboardData({ userId, tankTypeId, statusId }));
   }
 
-  getDashboardDataSuccess(response: DashboardResponse) {
-    this.store.dispatch(dashboardActions.getDashboardDataSuccess(response));
+  getProductionData() {
+    this.store.dispatch(dashboardActions.getProductionData());
   }
 }

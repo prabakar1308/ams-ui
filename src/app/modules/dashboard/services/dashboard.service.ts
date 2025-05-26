@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Response } from '@app/shared/models/response';
-import { DashboardResponse, TankWiseStatus } from '../models/dashboard-response';
+import { DashboardResponse, InStockResponse, TankWiseStatus } from '../models/dashboard-response';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -10,6 +10,7 @@ import { map, Observable } from 'rxjs';
 })
 export class DashboardService {
   private API_URL = 'http://localhost:3000/api/dashboard';
+  private WS_API_URL = 'http://localhost:3000/api/worksheet';
 
   constructor(private http: HttpClient) {}
 
@@ -19,6 +20,32 @@ export class DashboardService {
       tankTypeId,
       statusId,
     });
+  }
+
+  getHarvestCount(unitId: number, statusIds: string[]) {
+    return this.http.post<Response<number>>(`${this.WS_API_URL}/get-harvests-count`, {
+      unitId,
+      statusIds,
+    });
+  }
+
+  getTransitsCount(unitId: number, days: number) {
+    return this.http.post<Response<number>>(`${this.WS_API_URL}/get-transits-count`, {
+      unitId,
+      days,
+    });
+  }
+
+  getRestockCount(status: string) {
+    return this.http.get<Response<number>>(
+      `${this.WS_API_URL}/get-restocks-count?status=${status}`,
+    );
+  }
+
+  getInStockCount(tankTypeId: number) {
+    return this.http.get<Response<InStockResponse[]>>(
+      `${this.WS_API_URL}/get-worksheets-instock-count?tankTypeId=${tankTypeId}`,
+    );
   }
 
   getTankWiseStatus(tankTypeId: number): Observable<TankWiseStatus[]> {
