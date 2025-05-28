@@ -1,0 +1,75 @@
+<div>
+  <div class="flex flex-col md:flex-row justify-between items-center">
+    @if (dataExists) {
+      <span class="italic text-sm pb-4"
+        >Total of
+        <span class="font-bold text-base text-green-600">{{ totalCountText }}</span> transit to
+        different unit sectors between
+        <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+        <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+      >
+    } @else {
+      <span class="italic text-sm text-red-600 pb-4"
+        >No records between <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+        <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong
+        >. Please change the date selection.</span
+      >
+    }
+    <app-date-range-picker
+      [value]="dateValue"
+      (selectionChange)="dateChange($event)"
+    ></app-date-range-picker>
+  </div>
+
+  <mat-accordion class="flex flex-col gap-4" multi>
+    @for (report of transitReports; track $index) {
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header class="flex flex-row justify-between">
+          <div class="flex flex-row w-1/2 items-center gap-2">
+            <div class="text-lg pl-2">{{ report.unitSector.name }}</div>
+            <span class="text-sm text-gray-500 pt-1">({{ report.unitSector.location }})</span>
+          </div>
+          <div class="flex justify-end w-1/2 pr-4">
+            <mat-chip>{{ getTotalCount(report.millions || report.frozenCups) }}</mat-chip>
+          </div>
+        </mat-expansion-panel-header>
+
+        <mat-card appearance="outlined">
+          <div class="flex flex-row justify-between items-center px-4 py-2 bg-[#b9eddf] rounded-sm">
+            <span class="text-md pl-4 font-semibold font-sans"
+              >Day shift <span class="text-gray-400 text-xs">(6AM - 6PM)</span></span
+            >
+            <mat-chip>{{ getTotalCount(report.shifts.dayShift.totalTransitCount) }}</mat-chip>
+          </div>
+          <mat-card-content>
+            <app-generic-table
+              [data]="getShiftData(report.shifts.dayShift.transits)"
+              [displayedColumns]="displayColumns"
+              [totalLength]="100"
+              [pageSize]="10"
+            >
+            </app-generic-table>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined">
+          <div class="flex flex-row justify-between items-center px-4 py-2 bg-[#b9eddf] rounded-sm">
+            <span class="text-md pl-4 font-semibold font-sans"
+              >Night shift <span class="text-gray-400 text-xs">(6PM - 6AM)</span></span
+            >
+            <mat-chip>{{ getTotalCount(report.shifts.nightShift.totalTransitCount) }}</mat-chip>
+          </div>
+          <mat-card-content>
+            <app-generic-table
+              [data]="getShiftData(report.shifts.nightShift.transits)"
+              [displayedColumns]="displayColumns"
+              [totalLength]="100"
+              [pageSize]="10"
+            >
+            </app-generic-table>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+</div>

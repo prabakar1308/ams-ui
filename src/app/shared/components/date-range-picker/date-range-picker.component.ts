@@ -12,11 +12,16 @@ import { CUSTOM_PRESETS } from '@app/shared/constants/shared.contants';
   standalone: false,
 })
 export class DateRangePickerComponent implements OnInit {
-  @Input() set value(value: unknown) {
+  @Input() set value(value: any) {
     if (!value) {
       this.range.setValue({
         start: null,
         end: null,
+      });
+    } else {
+      this.range.setValue({
+        start: value.startDate,
+        end: value.endDate,
       });
     }
   }
