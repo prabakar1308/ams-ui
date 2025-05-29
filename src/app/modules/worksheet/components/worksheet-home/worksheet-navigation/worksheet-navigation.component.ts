@@ -16,8 +16,12 @@ export class WorksheetNavigationComponent {
   navigationItems = [
     { label: 'Worksheet', description: 'Current Page', route: '/worksheet' },
     { label: 'Harvest', description: 'List of active harvest items', route: '/worksheet/harvest' },
-    { label: 'Restocking', description: 'List of active restock items', route: '/restocking' },
-    { label: 'Transit', description: 'List of active transit items', route: '/transit' },
+    {
+      label: 'Restocking',
+      description: 'List of active restock items',
+      route: '/worksheet/restock',
+    },
+    { label: 'Transit', description: 'List of active transit items', route: '/worksheet/transit' },
   ];
 
   openLink(event: MouseEvent, route: string): void {

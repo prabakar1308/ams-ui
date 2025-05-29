@@ -25,7 +25,7 @@ export class NavbarComponent {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        takeUntil(this.unSubscribe)
+        takeUntil(this.unSubscribe),
       )
       .subscribe((routeChange: NavigationEnd) => {
         this.activeUrl = routeChange.url;

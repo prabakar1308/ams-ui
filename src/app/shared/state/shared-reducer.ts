@@ -23,6 +23,7 @@ export const initialState: SharedState = {
   harvestTypes: [],
   tankTypes: [],
   units: [],
+  worksheetUnits: [],
   ph: defaultRangeValues,
   salnity: defaultRangeValues,
   temperature: defaultRangeValues,

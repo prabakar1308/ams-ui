@@ -170,14 +170,14 @@ export const formConfig: FormStructure[] = [
   {
     class: LAYOUT_CLASSES.NONE,
     type: INPUT_TYPES.SELECT,
-    label: 'Input in Unit(s)',
+    label: 'Input Specs',
     name: 'inputUnitId',
     value: 0,
     validations: [
       {
         name: 'required',
         validator: 'required',
-        message: 'Unit selection is required',
+        message: 'Input specs is required',
       },
     ],
   },

@@ -8,6 +8,7 @@ import {
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
 import { CreateHarvestRequest } from '../models/create-harvest';
+import { Transit, TransitPayload } from '../models/transit';
 
 export const getActiveWorksheets = createAction(
   '[Worksheet] Get Active Worksheets',
@@ -103,5 +104,21 @@ export const createHarvestSuccess = createAction(
 
 export const createHarvestFailure = createAction(
   '[Harvest] Create Harvest Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+// transits
+
+export const getTransits = createAction('[Harvest] Get Transits', (payload: TransitPayload) => ({
+  payload,
+}));
+
+export const getTransitsSuccess = createAction(
+  '[Harvest] Get Transits Success',
+  (payload: Transit[]) => ({ payload }),
+);
+
+export const getTransitsFailure = createAction(
+  '[Harvest] Get Transits Failure',
   (payload: { error: string }) => ({ payload }),
 );

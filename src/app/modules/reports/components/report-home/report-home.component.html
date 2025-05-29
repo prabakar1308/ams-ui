@@ -1,1 +1,24 @@
-<p>report-home works!</p>
+<mat-tab-group dynamicHeight class="md:pt-4" (selectedIndexChange)="onIndexChange($event)">
+  <mat-tab label="Live Artemia">
+    <div class="mat-elevation-z4 m-4">
+      @if (selectedIndex === 0) {
+        <app-live-artemia-report [unitId]="unitIds.MILLIONS"></app-live-artemia-report>
+      }
+    </div>
+  </mat-tab>
+  <mat-tab label="Frozen Cups">
+    <div class="mat-elevation-z4 m-4">
+      @if (selectedIndex === 1) {
+        <app-live-artemia-report [unitId]="unitIds.FROZEN_CUPS"></app-live-artemia-report>
+      }
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Restock">
+    <div class="example-large-box mat-elevation-z4">Large content</div>
+  </mat-tab>
+
+  <mat-tab label="Harvest">
+    <div class="example-large-box mat-elevation-z4">Large content</div>
+  </mat-tab>
+</mat-tab-group>

@@ -10,6 +10,7 @@ export const initialState: WorksheetState = {
     tanks: [],
   },
   activeRestocks: [],
+  transits: [],
   meta: {
     isLoading: false,
     error: '',
@@ -66,6 +67,15 @@ export const worksheetReducer = createReducer(
     meta: {
       ...state.meta,
       isLoading: false,
+    },
+  })),
+  // Transits
+  on(WorksheetActions.getTransitsSuccess, (state, { payload }) => ({
+    ...state,
+    transits: payload,
+    meta: {
+      ...state.meta,
+      isLoading: true,
     },
   })),
 );

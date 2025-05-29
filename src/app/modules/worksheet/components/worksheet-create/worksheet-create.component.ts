@@ -3,7 +3,11 @@ import { combineLatest, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
-import { DEFAULT_TANK_TYPE, WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
+import {
+  DEFAULT_TANK_TYPE,
+  WORKSHEET_OUTPUT_UNITS,
+  WORKSHEET_STATUS,
+} from '@app/shared/constants/shared.contants';
 import { CreateWorksheetRequest } from '@app/worksheet/models/create-worksheet';
 import { MasterData, WorksheetFilter } from '@app/shared/models/shared-state';
 import { FORM_CONTROL_NAMES, formConfig, formDetails } from './worksheet.config';
@@ -148,10 +152,19 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
             case FORM_CONTROL_NAMES.INPUT_UNIT_ID:
               return {
                 ...data,
-                options: masterData?.units.map((unit) => ({
-                  label: unit.value,
-                  value: unit.id,
-                })),
+                options: masterData?.worksheetUnits
+                  .filter((unit) => !WORKSHEET_OUTPUT_UNITS.includes(unit.id)) // Filter out units in WORKSHEET_OUTPUT_UNITS
+                  .map((unit) => {
+                    const { value, brand, specs } = unit;
+                    let unitLabel = value;
+                    if (brand) unitLabel = `${unitLabel} - ${brand}`;
+                    if (specs) unitLabel = `${unitLabel} (${specs})`;
+                    return {
+                      ...unit,
+                      label: unitLabel,
+                      value: unit.id,
+                    };
+                  }),
               };
 
             case FORM_CONTROL_NAMES.USER_ID:

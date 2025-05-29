@@ -1,4 +1,4 @@
-import { HarvestType, MasterGeneric, MasterRange, UnitSector } from './master';
+import { HarvestType, MasterGeneric, MasterRange, UnitSector, WorksheetUnit } from './master';
 import { UserDetails } from './user-details';
 import { WorksheetStatus } from './worksheet-status';
 
@@ -9,6 +9,7 @@ export interface SharedState {
   harvestTypes: HarvestType[];
   tankTypes: MasterGeneric[];
   units: MasterGeneric[];
+  worksheetUnits: WorksheetUnit[];
   ph: MasterRange;
   salnity: MasterRange;
   temperature: MasterRange;
@@ -33,4 +34,5 @@ export interface MasterData {
   salnity: MasterRange;
   temperature: MasterRange;
   unitSectors: UnitSector[];
+  worksheetUnits: WorksheetUnit[];
 }

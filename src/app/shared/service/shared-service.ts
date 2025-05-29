@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { Response } from '@app/shared/models/response';
 import { UserDetails } from '@app/shared/models/user-details';
-import { HarvestType, MasterGeneric, MasterRange, UnitSector } from '../models/master';
+import { HarvestType, MasterGeneric, MasterRange, UnitSector, WorksheetUnit } from '../models/master';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ import { HarvestType, MasterGeneric, MasterRange, UnitSector } from '../models/m
 export class SharedService {
   private API_URL = 'http://localhost:3000/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getWorksheetStatus() {
     return this.http.get<Response<WorksheetStatus[]>>(`${this.API_URL}/master/worksheet-status`);
@@ -38,5 +38,9 @@ export class SharedService {
 
   getUnitSector() {
     return this.http.get<Response<UnitSector[]>>(`${this.API_URL}/master/unit-sector`);
+  }
+
+  getWorksheetUnits() {
+    return this.http.get<Response<WorksheetUnit[]>>(`${this.API_URL}/master/worksheet-unit`);
   }
 }

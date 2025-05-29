@@ -19,12 +19,16 @@ import {
   createHarvest,
   createHarvestSuccess,
   createHarvestFailure,
+  getTransits,
+  getTransitsFailure,
+  getTransitsSuccess,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
 import { ActiveRestock } from '../models/restock';
 import { NotificationService } from '@app/core/services/notification.service';
 import { SEVERITY } from '@app/core/core.contants';
+import { Transit } from '../models/transit';
 
 @Injectable()
 export class WorksheetEffects {
@@ -161,6 +165,31 @@ export class WorksheetEffects {
           }),
           tap(() => this.router.navigate(['/worksheet/harvest'])),
           catchError((error) => of(createHarvestFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  // Transits
+  getTransits$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getTransits.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.getTransits(payload).pipe(
+          map((res: Response<Transit[]>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return getTransitsFailure({
+                error: res.message || 'Get transits failed',
+              });
+            }
+            if (res.data) {
+              return getTransitsSuccess(res.data);
+            }
+            return getTransitsFailure({
+              error: res.message || 'Get transits failed',
+            });
+          }),
+          catchError((error) => of(getTransitsFailure({ error }))),
         ),
       ),
     ),

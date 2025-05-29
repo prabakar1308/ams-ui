@@ -10,6 +10,7 @@ import { CustomHeaderComponent } from './components/custom-header/custom-header.
 import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
 import { CustomRangePanelComponent } from './components/custom-header/custom-range-panel/custom-range-panel.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { GenericTableComponent } from './components/generic-table/generic-table.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     CustomHeaderComponent,
     CustomRangePanelComponent,
     ConfirmationDialogComponent,
+    GenericTableComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +32,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     FormGeneratorComponent,
     DateRangePickerComponent,
     ConfirmationDialogComponent,
+    GenericTableComponent,
   ],
 })
 export class SharedModule {}
