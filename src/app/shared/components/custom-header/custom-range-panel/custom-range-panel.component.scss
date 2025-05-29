@@ -4,7 +4,7 @@ $width: 178px;
   position: absolute;
   width: $width;
   left: -$width; // to render it on the right side, use "right: -$width" instead
-  top: 5px;
+  top: 2px;
 }
 
 :host(.touch-ui) {
