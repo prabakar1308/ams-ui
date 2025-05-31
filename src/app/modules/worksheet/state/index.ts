@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import * as fromRoot from '../../../state/app-state';
 import { WorksheetState } from '../models/worksheet-state';
+import { HarvestState } from '../models/harvest-state';
 
 export interface AppState extends fromRoot.AppState {
   worksheet: WorksheetState;
@@ -31,3 +32,8 @@ export const getTransits = createSelector(
 );
 
 export const getMetaInfo = createSelector(getWorksheetFeatureState, (state) => state.meta);
+
+export const getHarvestList = createSelector(
+  getWorksheetFeatureState,
+  (state: WorksheetState) => state.harvestList,
+);

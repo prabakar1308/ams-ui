@@ -36,3 +36,8 @@ export interface MasterData {
   unitSectors: UnitSector[];
   worksheetUnits: WorksheetUnit[];
 }
+
+export interface HarvestFilter {
+  unitId: number;
+  statusIds: string[];
+}
