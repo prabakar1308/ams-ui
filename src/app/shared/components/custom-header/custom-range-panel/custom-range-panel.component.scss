@@ -4,7 +4,7 @@ $width: 178px;
   position: absolute;
   width: $width;
   left: -$width; // to render it on the right side, use "right: -$width" instead
-  top: 5px;
+  top: 2px;
 }
 
 :host(.touch-ui) {
@@ -17,7 +17,6 @@ $width: 178px;
 .preset {
   background-color: aliceblue;
   border-left-color: #00587c;
-  border-left-style: solid;
 }
 
 /* Firefox */
@@ -60,3 +59,27 @@ $width: 178px;
 // *::-webkit-scrollbar-thumb:active {
 //   background-color: aliceblue;
 // }
+
+
+/* Mobile View Adjustments */
+@media (max-width: 768px) {
+  :host {
+    position: relative;
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+
+  .preset {
+    background-color: #f0f8ff; // Slightly lighter background for mobile
+    border-left-color: #0077a8; // Adjust border color for better visibility
+  }
+
+  * {
+    scrollbar-width: none; // Hide scrollbar for mobile
+  }
+
+  *::-webkit-scrollbar {
+    display: none; // Hide scrollbar for mobile browsers
+  }
+}

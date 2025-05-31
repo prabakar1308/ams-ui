@@ -12,10 +12,18 @@
         // width: 85%;
     }
 
+
+
+    .indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 12px;
+    }
+
     .icon-container {
         border-radius: 21px;
         color: $white;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
         background: #7e8891;
         width: 40px;
         height: 40px;
@@ -25,9 +33,14 @@
     }
 
     .card-footer {
+        font-weight: 500;
         margin-top: $mt10;
         color: $grey;
-        font-size: 12px;
+        font-size: 14px;
+
+        .link:hover {
+            text-decoration: underline;
+        }
     }
 
     .card-body span {
@@ -36,11 +49,23 @@
         color: $black;
     }
 
+    .data-card {
+        mat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease; // Smooth transition for hover effects
+
+            &:hover {
+                transform: translateY(-5px); // Slightly lift the card
+                box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); // Add a shadow effect
+                cursor: pointer;
+            }
+        }
+    }
+
     // Add margin for mat-card when screen size is less than 767px
     @media (max-width: 767px) {
         .data-card {
             mat-card {
-                margin: 10px 30px; // Adjust the margin as needed
+                margin: 10px 40px; // Adjust the margin as needed
             }
         }
     }

@@ -5,6 +5,15 @@ import * as DashboardActions from './dashboard.actions';
 
 export const initialState: DashboardState = {
   production: null,
+  productionCount: {
+    frozenAvailable: 0,
+    frozenCompleted: 0,
+    liveAvailable: 0,
+    liveCompleted: 0,
+    restock: 0,
+    instockConventional: [],
+    instockMachinery: [],
+  },
   meta: {
     isLoading: false,
     error: '',
@@ -27,6 +36,14 @@ export const dashboardReducer = createReducer(
     meta: {
       ...state.meta,
       isLoading: false,
+    },
+  })),
+  on(DashboardActions.getProductionDataSuccess, (state, { payload }) => ({
+    ...state,
+    productionCount: payload,
+    meta: {
+      ...state.meta,
+      isLoading: true,
     },
   })),
 );

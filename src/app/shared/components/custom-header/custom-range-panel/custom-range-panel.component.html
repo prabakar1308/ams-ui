@@ -1,17 +1,28 @@
 <!-- <mat-card class="mat-elevation-z3" style="border-style: none;"> -->
-<div style="background-color: white; box-shadow: -2px 2px 5px #888; height: 398.19px;">
-    <div style="height: 354.19px;overflow-y: auto;">
-        <button mat-button *ngFor="let item of customPresets" color="primary" style="width: 100%; text-align: left;"
-            (click)="selectRange(item)" [class.preset]="item == selectedRange">
-            {{ item }}
-        </button>
-    </div>
-    <div style="height: 44px;
-      padding:0px 10px;
+<div style="background-color: white; box-shadow: -2px 2px 5px #888; height: 398.19px">
+  <div style="height: 354.19px; overflow-y: auto">
+    <button
+      mat-button
+      *ngFor="let item of customPresets"
+      color="primary"
+      style="width: 100%; text-align: left"
+      (click)="selectRange(item)"
+      [class.preset]="item == selectedRange"
+    >
+      {{ item }}
+    </button>
+  </div>
+  <div
+    style="
+      height: 44px;
+      padding: 0px 10px;
       display: flex;
       align-items: center;
-      justify-content: center;">
-        {{ selectedDateRange }}
-    </div>
-    <!-- </mat-card> -->
+      justify-content: center;
+    "
+    class="text-[#006a6a] font-bold bg-[#e2edea]"
+  >
+    {{ selectedDateRange }}
+  </div>
+  <!-- </mat-card> -->
 </div>

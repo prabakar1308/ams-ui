@@ -70,7 +70,7 @@ mat-form-field.ams-small {
         ));
 
     @include mat.datepicker-overrides((calendar-container-background-color: white,
-        ));
+            calendar-date-in-range-state-background-color: #b9eddf));
 
     // table
     @include mat.table-overrides((background-color: rgb(255, 255, 255), row-item-outline-color: #dee3e3));
@@ -89,6 +89,9 @@ mat-form-field.ams-small {
         ));
 
     @include mat.table-overrides((row-item-label-text-color: #525050,
+        ));
+
+    @include mat.expansion-overrides((container-background-color: #f7f7f7,
         ));
 
 }
@@ -133,4 +136,24 @@ mat-card {
 .mat-datepicker-content {
     // added this as there is no override option available for box shadow
     box-shadow: -2px 2px 5px #888 !important;
+}
+
+.mat-calendar {
+    height: 354px !important;
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* Mobile View Adjustments */
+@media (max-width: 768px) {
+    .mat-calendar {
+        height: auto !important;
+    }
 }
