@@ -1,6 +1,6 @@
 import { createAction } from '@ngrx/store';
 import { WorksheetTank } from '../models/active-worksheet';
-import { WorksheetFilter } from '@app/shared/models/shared-state';
+import { HarvestFilter, WorksheetFilter } from '@app/shared/models/shared-state';
 import {
   CreateWorksheetRequest,
   TankSelection,
@@ -9,6 +9,8 @@ import {
 import { ActiveRestock } from '../models/restock';
 import { CreateHarvestRequest } from '../models/create-harvest';
 import { Transit, TransitPayload } from '../models/transit';
+import { HarvestDetails } from '../models/harvest-details';
+import { CreateTransitRequest, CreateTransitResponse } from '../models/create-transit';
 
 export const getActiveWorksheets = createAction(
   '[Worksheet] Get Active Worksheets',
@@ -76,13 +78,13 @@ export const getActiveRestocksFailure = createAction(
 );
 
 // Harvests
-export const getHarvests = createAction('[Harvest] Get Harvests', (payload: WorksheetFilter) => ({
+export const getHarvests = createAction('[Harvest] Get Harvests', (payload: HarvestFilter) => ({
   payload,
 }));
 
 export const getHarvestsSuccess = createAction(
   '[Harvest] Get Harvests Success',
-  (payload: WorksheetTank[]) => ({ payload }),
+  (payload: HarvestDetails[]) => ({ payload }),
 );
 
 export const getHarvestsFailure = createAction(
@@ -120,5 +122,22 @@ export const getTransitsSuccess = createAction(
 
 export const getTransitsFailure = createAction(
   '[Harvest] Get Transits Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const createTransit = createAction(
+  '[Harvest] Create Transit',
+  (payload: CreateTransitRequest) => ({
+    payload,
+  }),
+);
+
+export const createTransitSuccess = createAction(
+  '[Harvest] Create Transit Success',
+  (payload: CreateTransitResponse[]) => ({ payload }),
+);
+
+export const createTransitFailure = createAction(
+  '[Harvest] Create Transit Failure',
   (payload: { error: string }) => ({ payload }),
 );

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { MetaState } from '@app/shared/models/meta-state';
-import { WorksheetFilter } from '@app/shared/models/shared-state';
+import { HarvestFilter, WorksheetFilter } from '@app/shared/models/shared-state';
 import * as fromStore from '../state';
 import * as worksheetActions from '../state/worksheet.actions';
 import { WorksheetTank } from '../models/active-worksheet';
@@ -15,6 +15,8 @@ import {
 import { ActiveRestock } from '../models/restock';
 import { CreateHarvestRequest } from '../models/create-harvest';
 import { Transit, TransitPayload } from '../models/transit';
+import { HarvestDetails } from '../models/harvest-details';
+import { CreateTransitRequest } from '../models/create-transit';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +27,7 @@ export class WorksheetFacadeService {
   transits$: Observable<Transit[]>;
   tankSelection$: Observable<TankSelection>;
   meta$: Observable<MetaState>;
+  activeHarvestList$: Observable<HarvestDetails[]>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.activeWorksheets$ = this.store.select(fromStore.getActiveWorksheets);
@@ -32,6 +35,7 @@ export class WorksheetFacadeService {
     this.transits$ = this.store.select(fromStore.getTransits);
     this.tankSelection$ = this.store.select(fromStore.getWorksheetTankDetails);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
+    this.activeHarvestList$ = this.store.select(fromStore.getHarvestList);
   }
 
   getActiveWorksheets(filterData: WorksheetFilter) {
@@ -60,8 +64,12 @@ export class WorksheetFacadeService {
   }
 
   // harvests
-  getHarvests(status: string) {
-    // this.store.dispatch(worksheetActions.getHarvests(status));
+  getHarvests(data: HarvestFilter) {
+    this.store.dispatch(worksheetActions.getHarvests(data));
+  }
+
+  getHarvestsSuccess(response: HarvestDetails[]) {
+    this.store.dispatch(worksheetActions.getHarvestsSuccess(response));
   }
 
   createHarvest(request: CreateHarvestRequest) {
@@ -71,5 +79,9 @@ export class WorksheetFacadeService {
   // get transits
   getTransits(payload: TransitPayload) {
     this.store.dispatch(worksheetActions.getTransits(payload));
+  }
+
+  createTransit(request: CreateTransitRequest) {
+    this.store.dispatch(worksheetActions.createTransit(request));
   }
 }

@@ -7,6 +7,9 @@ import { CreateWorksheetRequest, UpdateWorksheetRequest } from '../models/create
 import { ActiveRestock } from '../models/restock';
 import { CreateHarvestRequest } from '../models/create-harvest';
 import { Transit, TransitPayload } from '../models/transit';
+import { HarvestFilter } from '@app/shared/models/shared-state';
+import { HarvestDetails } from '../models/harvest-details';
+import { CreateTransitRequest } from '../models/create-transit';
 
 @Injectable({
   providedIn: 'root',
@@ -40,10 +43,11 @@ export class WorksheetService {
   }
 
   // harvest
-  getHarvests(status: string) {
-    return this.http.get<Response<ActiveRestock[]>>(
-      `${this.API_URL}/get-harvests?status=${status}`,
-    );
+  getHarvests(unitId: number, statusIds: string[]) {
+    return this.http.post<Response<HarvestDetails[]>>(`${this.API_URL}/get-harvests`, {
+      unitId,
+      statusIds,
+    });
   }
 
   createHarvest(request: CreateHarvestRequest) {
@@ -53,5 +57,9 @@ export class WorksheetService {
   // Transits
   getTransits(payload: TransitPayload) {
     return this.http.post<Response<Transit[]>>(`${this.API_URL}/get-transits`, payload);
+  }
+
+  createTransit(request: CreateTransitRequest) {
+    return this.http.post<Response<any>>(`${this.API_URL}/create-multiple-transit`, request);
   }
 }

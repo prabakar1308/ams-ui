@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { WorksheetState } from './../models/worksheet-state';
 import * as WorksheetActions from './worksheet.actions';
+import { HarvestState } from '../models/harvest-state';
 
 export const initialState: WorksheetState = {
   activeWorksheets: [],
@@ -11,6 +12,7 @@ export const initialState: WorksheetState = {
   },
   activeRestocks: [],
   transits: [],
+  harvestList: [],
   meta: {
     isLoading: false,
     error: '',
@@ -76,6 +78,22 @@ export const worksheetReducer = createReducer(
     meta: {
       ...state.meta,
       isLoading: true,
+    },
+  })),
+  // Harvest Details
+  on(WorksheetActions.getHarvestsSuccess, (state, { payload }) => ({
+    ...state,
+    harvestList: payload,
+    meta: {
+      ...state.meta,
+      isLoading: true,
+    },
+  })),
+  on(WorksheetActions.getHarvests, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      isLoading: false,
     },
   })),
 );

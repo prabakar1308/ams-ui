@@ -1,1 +1,23 @@
-<p>harvest-home works!</p>
+<div>
+  <mat-tab-group
+    mat-stretch-tabs="false"
+    mat-align-tabs="center"
+    (selectedTabChange)="loadData($event)"
+  >
+    <mat-tab label="Holding Tanks">
+      <!-- <div>
+                <mat-chip-set>
+                    <mat-chip></mat-chip><p> Tank Type
+                </mat-chip-set>
+            </div> -->
+      <div>
+        <app-harvest-list [unitId]="unitId"></app-harvest-list>
+      </div>
+    </mat-tab>
+    <mat-tab label="Artemia Central">
+      <div>
+        <app-harvest-list [unitId]="unitId"></app-harvest-list>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

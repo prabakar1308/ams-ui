@@ -16,9 +16,23 @@ import { HarvestCreateComponent } from './components/harvest/harvest-create/harv
 import { WorksheetNavigationComponent } from './components/worksheet-home/worksheet-navigation/worksheet-navigation.component';
 import { RestockListComponent } from './components/restock-list/restock-list.component';
 import { TransitListComponent } from './components/transit-list/transit-list.component';
+import { HarvestListComponent } from './components/harvest/harvest-list/harvest-list.component';
+import { HarvestListPopupComponent } from './components/harvest/harvest-list-popup/harvest-list-popup.component';
 
 @NgModule({
-  declarations: [WorksheetHomeComponent, WorksheetFilterComponent, WorksheetCreateComponent, WorksheetUpdateDialogComponent, HarvestHomeComponent, HarvestCreateComponent, WorksheetNavigationComponent, RestockListComponent, TransitListComponent],
+  declarations: [
+    WorksheetHomeComponent,
+    WorksheetFilterComponent,
+    WorksheetCreateComponent,
+    WorksheetUpdateDialogComponent,
+    HarvestHomeComponent,
+    HarvestCreateComponent,
+    WorksheetNavigationComponent,
+    RestockListComponent,
+    TransitListComponent,
+    HarvestListComponent,
+    HarvestListPopupComponent,
+  ],
   imports: [
     CommonModule,
     SharedModule,

@@ -22,6 +22,12 @@ import {
   getTransits,
   getTransitsFailure,
   getTransitsSuccess,
+  getHarvests,
+  getHarvestsFailure,
+  getHarvestsSuccess,
+  createTransit,
+  createTransitFailure,
+  createTransitSuccess,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
@@ -29,6 +35,7 @@ import { ActiveRestock } from '../models/restock';
 import { NotificationService } from '@app/core/services/notification.service';
 import { SEVERITY } from '@app/core/core.contants';
 import { Transit } from '../models/transit';
+import { HarvestDetails } from '../models/harvest-details';
 
 @Injectable()
 export class WorksheetEffects {
@@ -189,7 +196,62 @@ export class WorksheetEffects {
               error: res.message || 'Get transits failed',
             });
           }),
+          tap(() => this.router.navigate(['/worksheet'])),
           catchError((error) => of(getTransitsFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getHarvestList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getHarvests.type),
+      exhaustMap(({ payload: { unitId, statusIds } }) =>
+        this.WorksheetService.getHarvests(unitId, statusIds).pipe(
+          map((res: Response<HarvestDetails[]>) => {
+            console.log('Hervest data:', res);
+            if (res.status !== 201) {
+              return getHarvestsFailure({
+                error: res.message || 'Get Harvest details failed',
+              });
+            }
+            if (res.data) {
+              return getHarvestsSuccess(res.data);
+            }
+            return getHarvestsFailure({
+              error: res.message || 'Get Harvest details failed',
+            });
+          }),
+          catchError((error) => of(getHarvestsFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  createTransits$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createTransit.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.createTransit(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201) {
+              return createTransitFailure({
+                error: res.message || 'Create Transit failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Transits created successfully!',
+              );
+              return createTransitSuccess(res.data);
+            }
+            return createTransitFailure({
+              error: res.message || 'Create Transit failed',
+            });
+          }),
+          tap(() => this.router.navigate(['/worksheet/harvest'])),
+          catchError((error) => of(createTransitFailure({ error }))),
         ),
       ),
     ),
