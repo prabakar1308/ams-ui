@@ -4,13 +4,15 @@ import { Injectable } from '@angular/core';
 import { Response } from '@app/shared/models/response';
 import { DashboardResponse, InStockResponse, TankWiseStatus } from '../models/dashboard-response';
 import { map, Observable } from 'rxjs';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
-  private API_URL = 'http://localhost:3000/api/dashboard';
-  private WS_API_URL = 'http://localhost:3000/api/worksheet';
+  private host = environment.HOST;
+  private API_URL = `${this.host}/dashboard`;
+  private WS_API_URL = `${this.host}/worksheet`;
 
   constructor(private http: HttpClient) {}
 

@@ -3,15 +3,22 @@ import { Injectable } from '@angular/core';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { Response } from '@app/shared/models/response';
 import { UserDetails } from '@app/shared/models/user-details';
-import { HarvestType, MasterGeneric, MasterRange, UnitSector, WorksheetUnit } from '../models/master';
+import { environment } from '@environments/environment';
+import {
+  HarvestType,
+  MasterGeneric,
+  MasterRange,
+  UnitSector,
+  WorksheetUnit,
+} from '../models/master';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedService {
-  private API_URL = 'http://localhost:3000/api';
+  private API_URL = environment.HOST;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getWorksheetStatus() {
     return this.http.get<Response<WorksheetStatus[]>>(`${this.API_URL}/master/worksheet-status`);
