@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Response } from '@app/shared/models/response';
+import { environment } from '@environments/environment';
 import { TransitReport } from '../models/transit-response';
 import { TransitRequest } from '../models/transit-request';
 
@@ -8,7 +9,8 @@ import { TransitRequest } from '../models/transit-request';
   providedIn: 'root',
 })
 export class ReportService {
-  private WS_API_URL = 'http://localhost:3000/api/worksheet';
+  private host = environment.HOST;
+  private WS_API_URL = `${this.host}/worksheet`;
   constructor(private http: HttpClient) {}
 
   getTransitReport(payload: TransitRequest) {
