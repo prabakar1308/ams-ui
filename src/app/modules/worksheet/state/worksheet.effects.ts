@@ -196,7 +196,7 @@ export class WorksheetEffects {
               error: res.message || 'Get transits failed',
             });
           }),
-          tap(() => this.router.navigate(['/worksheet'])),
+          //tap(() => this.router.navigate(['/worksheet/'])),
           catchError((error) => of(getTransitsFailure({ error }))),
         ),
       ),

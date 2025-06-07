@@ -1,21 +1,22 @@
 <div>
   <h2 mat-dialog-title>Live Transit</h2>
-  <mat-dialog-content>
-    <mat-chip-set>
-      <div class="count">
-        <mat-chip
-          >Overall Count: {{ data.harvestData.count }} {{ data.harvestData.unit.value }}
-        </mat-chip>
-      </div>
-      <div class="pl-20 count-stock">
-        <mat-chip>
-          Count In Stock: {{ data.harvestData.countInStock }}
-          {{ data.harvestData.unit.value }}
-        </mat-chip>
-      </div>
-    </mat-chip-set>
-  </mat-dialog-content>
-
+  <div class="grid grid-cols-1 gap-4">
+    <mat-dialog-content>
+      <mat-chip-set>
+        <div class="count-stock">
+          <mat-chip
+            >Overall Count: {{ data.harvestData.count }} {{ data.harvestData.unit.value }}
+          </mat-chip>
+        </div>
+        <div class="ml-26 count-stock">
+          <mat-chip>
+            Count In Stock: {{ data.harvestData.countInStock }}
+            {{ data.harvestData.unit.value }}
+          </mat-chip>
+        </div>
+      </mat-chip-set>
+    </mat-dialog-content>
+  </div>
   <mat-dialog-content>
     @for (transit of transitDetails; track transit) {
       <mat-card class="example-card" appearance="outlined">
@@ -69,11 +70,11 @@
       Add unit Sector
       <mat-icon>add_circle</mat-icon>
     </button>
-    <div class="mt-5">
+    <div class="mt-5 count-stock">
       <mat-chip class="count">
         Counts Remaining: {{ countsRemining >= 0 ? countsRemining : '-' }}
-        {{ data.harvestData.unit.value }}</mat-chip
-      >
+        {{ data.harvestData.unit.value }}
+      </mat-chip>
       @if (countsRemining < 0) {
         <div
           class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"

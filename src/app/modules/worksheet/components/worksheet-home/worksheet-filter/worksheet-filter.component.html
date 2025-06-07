@@ -1,8 +1,66 @@
 <div class="worksheet-filter-container">
-  <h4 class="text-xl pb-2">Tank Details</h4>
-
-  <div class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-4 gap-3">
-    <div class="col-span-3 grid grid-cols-1 lg:grid-cols-3 gap-2">
+  <div class="flex w-full">
+    <div class="w-full flex-initial">
+      <h4 class="text-xl pl-4 font-serif" style="color: #165d51">Tank Details</h4>
+    </div>
+    <div class="flex flex-row justify-end items-start gap-4">
+      <div>
+        <button
+          aria-label="worksheet navigation"
+          mat-flat-button
+          [routerLink]="['/worksheet/harvest']"
+        >
+          Harvest
+        </button>
+      </div>
+      <div>
+        <button
+          aria-label="worksheet navigation"
+          [routerLink]="['/worksheet/transit']"
+          mat-flat-button
+        >
+          Transit
+        </button>
+      </div>
+      <div>
+        <button
+          aria-label="worksheet navigation"
+          [routerLink]="['/worksheet/restock']"
+          mat-flat-button
+        >
+          Restock
+        </button>
+      </div>
+      <div>
+        <button
+          mat-mini-fab
+          aria-label="worksheet refresh"
+          (click)="onRefresh()"
+          class="primary"
+          matTooltip="Refresh"
+        >
+          <mat-icon>sync</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          mat-mini-fab
+          aria-label="worksheet refresh"
+          (click)="onCreateWorksheet()"
+          [disabled]="disableCreate"
+          matTooltip="Create"
+          class="secondary"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 gap-3 outline-2 outline-offset-2 outline-[#165d51] m-4 p-3 rounded-lg"
+    style="background-color: #d1eee945"
+  >
+    <div class="grid grid-cols-4 gap-3 pt-5">
       <div class="w-full">
         <!-- <mat-radio-group
           [value]="worksheetFilter.tankTypeId"
@@ -24,7 +82,17 @@
           <mat-button-toggle class="w-1/2" [value]="2">Conventional</mat-button-toggle>
         </mat-button-toggle-group>
       </div>
-
+      <div class="w-full">
+        <mat-form-field appearance="outline" class="ams-small w-full">
+          <mat-label>Harvest Type</mat-label>
+          <mat-select value="0" (selectionChange)="onHarvestTypeChange($event.value)">
+            <mat-option value="0">All</mat-option>
+            <mat-option value="1">Instar 1</mat-option>
+            <mat-option value="2">Instar 2</mat-option>
+            <mat-option value="3">Manual</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div class="w-full">
         <mat-form-field appearance="outline" class="ams-small w-full">
           <mat-label>User</mat-label>
@@ -54,63 +122,6 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </div>
-
-    <div class="flex flex-row justify-end items-start gap-4">
-      <div>
-        <button
-          mat-mini-fab
-          aria-label="worksheet refresh"
-          (click)="onRefresh()"
-          class="primary"
-          matTooltip="Refresh"
-        >
-          <mat-icon>sync</mat-icon>
-        </button>
-      </div>
-      <div>
-        <button
-          matTooltip="Worksheet Screens"
-          mat-mini-fab
-          aria-label="worksheet navigation"
-          (click)="openBottomSheet()"
-          class="secondary"
-        >
-          <mat-icon>open_in_new</mat-icon>
-        </button>
-      </div>
-
-      <div>
-        <button
-          mat-mini-fab
-          aria-label="worksheet refresh"
-          (click)="onCreateWorksheet()"
-          [disabled]="disableCreate"
-          matTooltip="Create"
-          class="secondary"
-        >
-          <mat-icon>add_circle</mat-icon>
-        </button>
-      </div>
-      <!-- <div class="w-full">
-        <button mat-raised-button color="primary" (click)="onRefresh()" class="w-full">
-          Refresh
-          <mat-icon>sync</mat-icon>
-        </button>
-      </div> -->
-
-      <!-- <div class="w-full">
-        <button
-          mat-flat-button
-          color="secondary"
-          (click)="onCreateWorksheet()"
-          class="w-full"
-          [disabled]="disableCreate"
-        >
-          Create workflow
-          <mat-icon>add_circle</mat-icon>
-        </button>
-      </div> -->
     </div>
   </div>
 </div>

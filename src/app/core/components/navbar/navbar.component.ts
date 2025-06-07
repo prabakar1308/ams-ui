@@ -16,7 +16,7 @@ export class NavbarComponent {
   // TODO: move this to a common place
   navbarItems = [
     { name: 'Dashboard', route: '/dashboard' },
-    { name: 'Worksheet', route: '/worksheet' },
+    { name: 'Monitoring', route: '/worksheet' },
     { name: 'Master', route: '/master' },
     { name: 'Reports', route: '/reports' },
   ];
