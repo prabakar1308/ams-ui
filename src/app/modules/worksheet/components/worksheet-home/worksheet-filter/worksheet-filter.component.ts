@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
@@ -20,6 +20,7 @@ import { WorksheetNavigationComponent } from '../worksheet-navigation/worksheet-
 export class WorksheetFilterComponent implements OnInit, OnDestroy {
   @Input() disableCreate = false;
   @Input() selectedItems: WorksheetTank[] = [];
+  @Output() filterChanged = new EventEmitter<WorksheetFilter>();
 
   private _bottomSheet = inject(MatBottomSheet);
   private unSubscribe = new Subject<void>();
@@ -67,6 +68,10 @@ export class WorksheetFilterComponent implements OnInit, OnDestroy {
 
   onRefresh() {
     this.worksheetFacadeService.getActiveWorksheets(this.worksheetFilter);
+  }
+
+  onHarvestTypeChange(event: any) {
+    this.filterChanged.emit(event);
   }
 
   onCreateWorksheet() {
