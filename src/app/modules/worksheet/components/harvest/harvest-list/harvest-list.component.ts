@@ -27,7 +27,8 @@ export class HarvestListComponent {
   private unSubscribe = new Subject<void>();
   dataSource = new MatTableDataSource<HarvestDetails>();
   displayedColumns = [
-    'worksheet',
+    'tank',
+    'harvest',
     'count_measured',
     'count_remining',
     'measured_by',

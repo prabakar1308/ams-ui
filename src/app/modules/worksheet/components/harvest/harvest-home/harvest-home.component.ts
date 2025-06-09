@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Router } from '@angular/router';
 import { HarvestFilter } from '@app/shared/models/shared-state';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { HarvestDetails } from '@app/worksheet/models/harvest-details';
@@ -17,7 +18,7 @@ export class HarvestHomeComponent {
   unitId: number = 1; // Default unit ID
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
-    private sharedFacadeService: SharedFacadeService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -40,5 +41,9 @@ export class HarvestHomeComponent {
     };
     //Need to check
     this.worksheetFacadeService.getHarvests(filter);
+  }
+
+  onClickBack() {
+    this.router.navigate(['/worksheet']);
   }
 }

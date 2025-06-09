@@ -1,22 +1,34 @@
 <div class="transit-list-container">
   <div class="flex justify-between items-center m-4 pt-4">
-    <h4 class="text-xl">Today's Live Artemia</h4>
+    <h4 class="text-xl pl-4 font-serif font-bold text-[#165d51]">Today's Live Artemia</h4>
     <div class="flex items-center gap-2">
-      <!-- <mat-button-toggle-group
-        [value]="status"
-        (change)="toggleChange($event)"
-        name="status"
-        aria-label="status"
-      >
-        <mat-button-toggle [value]="statusDetails.ACTIVE">Active</mat-button-toggle>
-        <mat-button-toggle [value]="statusDetails.IN_USE">In Use</mat-button-toggle>
-        <mat-button-toggle [value]="statusDetails.COMPLETED">Completed</mat-button-toggle>
-      </mat-button-toggle-group> -->
+      <div>
+        <button
+          aria-label="Go to harvest list"
+          [routerLink]="['/worksheet/harvest']"
+          mat-mini-fab
+          matTooltip="Harvest"
+          class="secondary"
+        >
+          <mat-icon>agriculture</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          aria-label="Go to Restock Page"
+          [routerLink]="['/worksheet/restock']"
+          mat-mini-fab
+          matTooltip="Restock"
+          class="secondary"
+        >
+          <mat-icon>warehouse</mat-icon>
+        </button>
+      </div>
       <button
         mat-mini-fab
         aria-label="worksheet refresh"
         (click)="onClickBack()"
-        matTooltip="Create"
+        matTooltip="Worksheets"
         class="secondary"
       >
         <mat-icon>home</mat-icon>

@@ -8,12 +8,14 @@ import { UserDetails } from '@app/shared/models/user-details';
 import * as fromStore from '../state';
 import * as sharedAction from '../state/shared-actions';
 import { MasterData, WorksheetFilter } from '../models/shared-state';
+import { HarvestType } from '../models/master';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedFacadeService {
   worksheetStatus$: Observable<WorksheetStatus[]>;
+  harvestTypes$: Observable<HarvestType[]>;
   userData$: Observable<UserDetails[]>;
   masterData$: Observable<MasterData>;
   worksheetFilter$: Observable<WorksheetFilter>;
@@ -22,6 +24,7 @@ export class SharedFacadeService {
   constructor(private store: Store<fromStore.AppState>) {
     this.masterData$ = this.store.select(fromStore.getMasterData);
     this.worksheetStatus$ = this.store.select(fromStore.getWorksheetStatus);
+    this.harvestTypes$ = this.store.select(fromStore.getHarvestTypes);
     this.userData$ = this.store.select(fromStore.getUserData);
     this.worksheetFilter$ = this.store.select(fromStore.getWorksheetFilter);
     this.meta$ = this.store.select(fromStore.getMetaInfo);

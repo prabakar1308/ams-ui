@@ -24,6 +24,7 @@ export interface WorksheetFilter {
   userId?: number;
   statusId?: number;
   tankTypeId?: number;
+  harvestTypeId?: number;
 }
 
 export interface MasterData {

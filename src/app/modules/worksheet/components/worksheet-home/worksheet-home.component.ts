@@ -198,16 +198,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       }
     });
   }
-  onFilterChanged(event: any) {
-    // Handle the filter change here
-    if (event && event !== '0') {
-      this.dataSource.data = this.activeWorksheets.filter(
-        (worksheet) => worksheet.harvestType?.id.toString() === event,
-      );
-    } else {
-      this.dataSource.data = this.activeWorksheets;
-    }
-  }
+
   ngOnDestroy(): void {
     this.unSubscribe.next();
     this.unSubscribe.complete();

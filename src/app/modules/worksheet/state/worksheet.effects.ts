@@ -47,8 +47,8 @@ export class WorksheetEffects {
   getActiveWorksheets$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getActiveWorksheets.type),
-      exhaustMap(({ payload: { userId, tankTypeId, statusId } }) =>
-        this.WorksheetService.getActiveWorksheets(userId, tankTypeId, statusId).pipe(
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.getActiveWorksheets(payload).pipe(
           map((res: Response<WorksheetTank[]>) => {
             if (res.status !== 201) {
               return getActiveWorksheetsFailure({

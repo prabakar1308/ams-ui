@@ -116,6 +116,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
       tankTypeId: this.tankTypeId,
       statusId: data?.id,
       userId: 0,
+      harvestTypeId: 0,
     });
     this.router.navigate(['/worksheet']);
   }
@@ -197,6 +198,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
       tankTypeId: this.tankTypeId,
       statusId: 0,
       userId: data?.id,
+      harvestTypeId: 0,
     });
     this.router.navigate(['/worksheet']);
   }

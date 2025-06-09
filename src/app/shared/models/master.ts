@@ -1,8 +1,8 @@
 export interface HarvestType {
   id: number;
   value: string;
-  description: string;
-  harvestTime: number;
+  description?: string;
+  harvestTime?: number;
 }
 
 // ph, salnity, temp, tank
