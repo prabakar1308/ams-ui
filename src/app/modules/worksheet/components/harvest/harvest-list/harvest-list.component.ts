@@ -45,30 +45,26 @@ export class HarvestListComponent {
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
     private sharedFacadeService: SharedFacadeService,
+    private dialog: MatDialog,
   ) {}
   ngOnInit() {
     this.worksheetFacadeService.activeHarvestList$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
         this.dataSource.data = data;
-        console.log('Harvest data: ' + data);
       });
     //masterData$
     this.sharedFacadeService.userData$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
         this.userDetails = data;
-        console.log('User data: ' + data);
       });
     this.sharedFacadeService.masterData$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
         this.unitSectors = data.unitSectors;
-        console.log('User data: ' + data);
       });
   }
-
-  readonly dialog = inject(MatDialog);
 
   openDialog(element: HarvestDetails) {
     const data = {
@@ -79,12 +75,18 @@ export class HarvestListComponent {
     const dialogRef = this.dialog.open(HarvestListPopupComponent, { data });
 
     dialogRef.afterClosed().subscribe((result) => {
-      let filter: HarvestFilter = {
-        unitId: this.unitId || 1, // Default to 1 if unitId is not provided
-        statusIds: ['A', 'P'],
-      };
-      this.worksheetFacadeService.getHarvests(filter);
-      this.ngOnInit();
+      if (result) {
+        let filter: HarvestFilter = {
+          unitId: this.unitId || 1, // Default to 1 if unitId is not provided
+          statusIds: ['A', 'P'],
+        };
+        this.worksheetFacadeService.createTransit({ ...result, filter });
+      }
     });
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 }

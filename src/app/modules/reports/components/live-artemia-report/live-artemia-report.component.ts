@@ -15,11 +15,11 @@ import { UNIT_IDS } from '@app/shared/constants/shared.contants';
 })
 export class LiveArtemiaReportComponent {
   @Input() unitId: number = UNIT_IDS.MILLIONS;
+  @Input() dateValue = { startDate: new Date(), endDate: new Date() };
 
   private unSubscribe = new Subject<void>();
   transitReports: TransitReport[] = [];
   displayColumns = ['tank', 'date', 'transitBy', 'count', 'inCharge'];
-  dateValue = { startDate: new Date(), endDate: new Date() };
   totalCountText = '';
   dataExists = true;
   reportPayload = {
@@ -49,16 +49,16 @@ export class LiveArtemiaReportComponent {
   }
 
   ngOnChanges(): void {
-    this.initializeReportData();
-  }
-
-  initializeReportData() {
-    const currentDate = new Date();
-    const thirtyDaysBefore = new Date();
-    thirtyDaysBefore.setDate(currentDate.getDate() - 30);
-    this.dateValue = { startDate: thirtyDaysBefore, endDate: currentDate };
     this.updateReportdata();
   }
+
+  // initializeReportData() {
+  //   const currentDate = new Date();
+  //   const thirtyDaysBefore = new Date();
+  //   thirtyDaysBefore.setDate(currentDate.getDate() - 30);
+  //   this.dateValue = { startDate: thirtyDaysBefore, endDate: currentDate };
+  //   this.updateReportdata();
+  // }
 
   updateReportdata() {
     const startDate = this.formatDate(this.dateValue.startDate);

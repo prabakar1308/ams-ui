@@ -231,8 +231,8 @@ export class WorksheetEffects {
   createTransits$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createTransit.type),
-      exhaustMap(({ payload }) =>
-        this.WorksheetService.createTransit(payload).pipe(
+      exhaustMap(({ payload: { filter, ...transit } }) =>
+        this.WorksheetService.createTransit(transit).pipe(
           map((res: Response<any>) => {
             if (res.status !== 201) {
               return createTransitFailure({
@@ -244,13 +244,13 @@ export class WorksheetEffects {
                 SEVERITY.SUCCESS,
                 'Transits created successfully!',
               );
-              return createTransitSuccess(res.data);
+              return getHarvests(filter);
             }
             return createTransitFailure({
               error: res.message || 'Create Transit failed',
             });
           }),
-          tap(() => this.router.navigate(['/worksheet/harvest'])),
+          tap(() => of(getHarvests(filter))),
           catchError((error) => of(createTransitFailure({ error }))),
         ),
       ),
