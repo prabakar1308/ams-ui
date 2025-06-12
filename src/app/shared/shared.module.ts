@@ -11,6 +11,7 @@ import { DateRangePickerComponent } from './components/date-range-picker/date-ra
 import { CustomRangePanelComponent } from './components/custom-header/custom-range-panel/custom-range-panel.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { GenericTableComponent } from './components/generic-table/generic-table.component';
+import { UnderscoreTitlecasePipe } from './pipes/underscore-titlecase.pipe';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { GenericTableComponent } from './components/generic-table/generic-table.
     CustomRangePanelComponent,
     ConfirmationDialogComponent,
     GenericTableComponent,
+    UnderscoreTitlecasePipe,
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,7 @@ import { GenericTableComponent } from './components/generic-table/generic-table.
     DateRangePickerComponent,
     ConfirmationDialogComponent,
     GenericTableComponent,
+    UnderscoreTitlecasePipe,
   ],
 })
 export class SharedModule {}

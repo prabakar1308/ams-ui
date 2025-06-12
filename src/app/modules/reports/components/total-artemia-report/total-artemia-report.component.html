@@ -1,0 +1,69 @@
+<div>
+  <div></div>
+  <div>
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      @if (liveDataExists) {
+        <span class="italic text-sm"
+          >Total of
+          <span class="font-bold text-base text-green-600">{{ liveTotalCountText }}</span> transit
+          to different unit sectors between
+          <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+          <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+        >
+      } @else {
+        <span class="italic text-sm text-red-600"
+          >No records between <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+          <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong
+          >. Please change the date selection.</span
+        >
+      }
+    </div>
+    <mat-card appearance="outlined">
+      <div class="flex flex-row justify-between items-center px-4 py-2 bg-[#b9eddf] rounded-sm">
+        <span class="text-md pl-4 font-semibold font-sans">Live Artemia</span>
+      </div>
+      <mat-card-content>
+        <app-generic-table
+          [data]="liveTableData"
+          [displayedColumns]="displayColumns"
+          [totalLength]="100"
+          [pageSize]="10"
+        >
+        </app-generic-table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div>
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      @if (frozenDataExists) {
+        <span class="italic text-sm"
+          >Total of
+          <span class="font-bold text-base text-green-600">{{ frozenTotalCountText }}</span> transit
+          to different unit sectors between
+          <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+          <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+        >
+      } @else {
+        <span class="italic text-sm text-red-600"
+          >No records between <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+          <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong
+          >. Please change the date selection.</span
+        >
+      }
+    </div>
+    <mat-card appearance="outlined">
+      <div class="flex flex-row justify-between items-center px-4 py-2 bg-[#b9eddf] rounded-sm">
+        <span class="text-md pl-4 font-semibold font-sans">Frozen Artemia</span>
+      </div>
+      <mat-card-content>
+        <app-generic-table
+          [data]="frozenTableData"
+          [displayedColumns]="displayColumns"
+          [totalLength]="100"
+          [pageSize]="10"
+        >
+        </app-generic-table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

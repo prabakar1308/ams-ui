@@ -5,17 +5,30 @@ import * as fromStore from '../state';
 import * as reportActions from '../state/report.actions';
 import { TransitRequest } from '../models/transit-request';
 import { TransitReport } from '../models/transit-response';
+import { StockInput, StockInputRequest } from '../models/stock-input';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportFacadeService {
-  transitReport$: Observable<TransitReport[]>;
+  liveTransitReport$: Observable<TransitReport[]>;
+  frozenTransitReport$: Observable<TransitReport[]>;
+  stockInputReport$: Observable<StockInput>;
   constructor(private store: Store<fromStore.AppState>) {
-    this.transitReport$ = this.store.select(fromStore.getTransitReportByUnitSector);
+    this.liveTransitReport$ = this.store.select(fromStore.getLiveTransit);
+    this.frozenTransitReport$ = this.store.select(fromStore.getFrozenTransit);
+    this.stockInputReport$ = this.store.select(fromStore.getStockInputReport);
   }
 
-  getTransitReport(payload: TransitRequest) {
-    this.store.dispatch(reportActions.getTransitReport(payload));
+  getLiveTransitReport(payload: TransitRequest) {
+    this.store.dispatch(reportActions.getLiveTransitReport(payload));
+  }
+
+  getFrozenTransitReport(payload: TransitRequest) {
+    this.store.dispatch(reportActions.getFrozenTransitReport(payload));
+  }
+
+  getStockInputReport(payload: StockInputRequest) {
+    this.store.dispatch(reportActions.getStockInputReport(payload));
   }
 }

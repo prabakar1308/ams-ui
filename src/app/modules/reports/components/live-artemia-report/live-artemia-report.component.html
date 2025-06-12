@@ -1,25 +1,34 @@
 <div>
-  <div class="flex flex-col md:flex-row justify-between items-center">
-    @if (dataExists) {
-      <span class="italic text-sm pb-4"
-        >Total of
-        <span class="font-bold text-base text-green-600">{{ totalCountText }}</span> transit to
-        different unit sectors between
-        <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
-        <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
-      >
-    } @else {
-      <span class="italic text-sm text-red-600 pb-4"
-        >No records between <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
-        <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong
-        >. Please change the date selection.</span
-      >
-    }
+  <div class="flex flex-row justify-between items-center m-2 pb-2">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      @if (dataExists) {
+        <span class="italic text-sm"
+          >Total of
+          <span class="font-bold text-base text-green-600">{{ totalCountText }}</span> transit to
+          different unit sectors between
+          <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+          <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+        >
+      } @else {
+        <span class="italic text-sm text-red-600"
+          >No records between <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+          <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong
+          >. Please change the date selection.</span
+        >
+      }
+    </div>
+    <button class="secondary" mat-mini-fab (click)="toggle()">
+      <div>
+        <mat-icon class="pt-1">{{
+          expanded() ? 'keyboard_arrow_up' : 'keyboard_arrow_down'
+        }}</mat-icon>
+      </div>
+    </button>
   </div>
 
   <mat-accordion class="flex flex-col gap-4" multi>
     @for (report of transitReports; track $index) {
-      <mat-expansion-panel expanded>
+      <mat-expansion-panel [expanded]="expanded()">
         <mat-expansion-panel-header class="flex flex-row justify-between">
           <div class="flex flex-row w-1/2 items-center gap-2">
             <div class="text-lg pl-2">{{ report.unitSector.name }}</div>
