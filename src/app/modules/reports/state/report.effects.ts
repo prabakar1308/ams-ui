@@ -5,6 +5,8 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 
 import {
+  getActiveStockInputReportFailure,
+  getActiveStockInputReportSuccess,
   getFrozenTransitReport,
   getLiveTransitReport,
   getStockInputReport,
@@ -102,6 +104,30 @@ export class ReportEffects {
             });
           }),
           catchError((error) => of(getStockInputReportFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getActiveStockInputReport$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getStockInputReport.type),
+      exhaustMap(() =>
+        this.reportService.getActiveStockInputReport().pipe(
+          map((res: Response<StockInput>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return getActiveStockInputReportFailure({
+                error: res.message || 'Get active stock input report failed',
+              });
+            }
+            if (res.data) {
+              return getActiveStockInputReportSuccess(res.data);
+            }
+            return getActiveStockInputReportFailure({
+              error: res.message || 'Get active stock input report failed',
+            });
+          }),
+          catchError((error) => of(getActiveStockInputReportFailure({ error }))),
         ),
       ),
     ),

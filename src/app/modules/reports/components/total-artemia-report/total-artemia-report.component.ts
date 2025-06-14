@@ -2,6 +2,9 @@ import { Component, Input } from '@angular/core';
 import { TransitTable } from '../../models/report';
 import { TransitReport } from '../../models/transit-response';
 import { frozenCupsToTins, millionsToTins } from '../../utils';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { ReportFacadeService } from '../../services/report-facade.service';
+import { StockInputUnit } from '../../models/stock-input';
 
 @Component({
   selector: 'app-total-artemia-report',
@@ -13,17 +16,36 @@ export class TotalArtemiaReportComponent {
   @Input() liveTransits: TransitReport[] = [];
   @Input() frozenTransits: TransitReport[] = [];
   @Input() dateValue = { startDate: new Date(), endDate: new Date() };
+  private unSubscribe = new Subject<void>();
   displayColumns = ['unit_sector', 'day_shift_count', 'night_shift_count', 'total_count'];
   liveTableData: TransitTable[] = [];
   frozenTableData: TransitTable[] = [];
+  overallStocks: StockInputUnit[] = [];
+  overallActiveStocks: StockInputUnit[] = [];
   liveDataExists = true;
   liveTotalCountText = '';
   frozenDataExists = true;
   frozenTotalCountText = '';
 
+  constructor(private reportFacadeService: ReportFacadeService) {}
+
   ngOnInit() {
     this.generateLiveTableData();
     this.generateFrozenTableData();
+
+    this.reportFacadeService.stockInputReport$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((res) => {
+        const { overall } = res;
+        this.overallStocks = overall;
+      });
+
+    this.reportFacadeService.activeStockInputReport$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((res) => {
+        const { overall } = res;
+        this.overallActiveStocks = overall;
+      });
   }
 
   ngOnChanges(): void {
@@ -65,5 +87,15 @@ export class TotalArtemiaReportComponent {
       return acc + report.frozenCups;
     }, 0);
     this.frozenTotalCountText = frozenCupsToTins(totalCount);
+  }
+
+  getUnitName(item: StockInputUnit): string {
+    const { name, brand, spec } = item;
+    return `${name} ${brand ? `- ${brand}` : ''} ${spec ? ` (${spec})` : ''}`.trim();
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 }

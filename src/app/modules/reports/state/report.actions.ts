@@ -42,3 +42,13 @@ export const getStockInputReportFailure = createAction(
   '[Report] Get Stock Input Report Failure',
   (payload: { error: string }) => ({ payload }),
 );
+
+export const getActiveStockInputReport = createAction('[Report] Get Active Stock Input Report');
+export const getActiveStockInputReportSuccess = createAction(
+  '[Report] Get Active Stock Input Report Success',
+  (payload: StockInput) => ({ payload }),
+);
+export const getActiveStockInputReportFailure = createAction(
+  '[Report] Get Active Stock Input Report Failure',
+  (payload: { error: string }) => ({ payload }),
+);

@@ -23,3 +23,8 @@ export const getStockInputReport = createSelector(
   getReportFeatureState,
   (state: ReportState) => state.stockInput,
 );
+
+export const getActiveStockInputReport = createSelector(
+  getReportFeatureState,
+  (state: ReportState) => state.activeStockInput,
+);

@@ -27,4 +27,10 @@ export class ReportService {
       payload,
     );
   }
+
+  getActiveStockInputReport() {
+    return this.http.get<Response<StockInput>>(
+      `${this.WS_API_URL}/get-active-worksheet-input-report`,
+    );
+  }
 }

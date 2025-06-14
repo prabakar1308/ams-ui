@@ -6,4 +6,5 @@ export interface ReportState {
   liveTransits: TransitReport[];
   frozenTransits: TransitReport[];
   stockInput: StockInput;
+  activeStockInput: StockInput;
 }

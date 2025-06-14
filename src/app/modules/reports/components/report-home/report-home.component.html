@@ -4,12 +4,14 @@
       [value]="dateValue"
       (selectionChange)="dateChange($event)"
     ></app-date-range-picker>
-    <button mat-flat-button (click)="generateReport()" class="primary">Generate Report</button>
+    @if (selectedIndex === 0) {
+      <button mat-flat-button (click)="generatePDF()" class="primary">Generate PDF</button>
+    }
   </div>
 
   <mat-tab-group dynamicHeight (selectedIndexChange)="onIndexChange($event)">
     <mat-tab label="Total Artemia">
-      <div class="mat-elevation-z4 m-4">
+      <div class="mat-elevation-z4 m-4 p-4" id="contentToConvert">
         <app-total-artemia-report
           [liveTransits]="liveTransits"
           [frozenTransits]="frozenTransits"

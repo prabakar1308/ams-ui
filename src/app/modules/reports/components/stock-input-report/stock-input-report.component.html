@@ -15,7 +15,9 @@
       >
     }
   </div>
-  <app-stock-input-details [data]="machineryData" [title]="'Machinery'" />
-  <app-stock-input-details [data]="conventionalData" [title]="'Conventional'" />
-  <app-stock-input-details [data]="overallData" [title]="'Overall'" />
+  @if (dataExists) {
+    <app-stock-input-details [data]="machineryData" [title]="'Machinery'" />
+    <app-stock-input-details [data]="conventionalData" [title]="'Conventional'" />
+    <app-stock-input-details [data]="overallData" [title]="'Overall'" />
+  }
 </div>

@@ -1,7 +1,52 @@
-<div>
-  <div></div>
+<div class="total-artemia-report">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="col-span-4">
+      <div>
+        <app-total-artemia-chart
+          [data]="liveTableData"
+          [title]="'Live Artemia'"
+        ></app-total-artemia-chart>
+      </div>
+      <div>
+        <app-total-artemia-chart
+          [data]="frozenTableData"
+          [title]="'Frozen Artemia'"
+        ></app-total-artemia-chart>
+      </div>
+    </div>
+    <!-- <div class="h-full pb-8">
+      <mat-card appearance="outlined" class="h-full">
+        <mat-card-content>
+          <div class="flex flex-col items-start gap-2 mt-6">
+            <span class="italic text-sm"
+              >Overall Stocks used between
+              <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+              <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+            >
+            <div class="flex flex-row md:flex-col flex-wrap items-center justify-center w-full">
+              @for (item of overallStocks; track $index) {
+                <div class="lg:min-w-40">
+                  <mat-card appearance="outlined">
+                    <mat-card-content>
+                      <div class="flex flex-col justify-start items-center font-semibold bg-white">
+                        <span class="text-gray-500">{{ getUnitName(item) }}</span>
+                        <span
+                          class="h-8 w-8 bg-gray-200 rounded-lg text-center pt-1 text-[#165d51]"
+                          >{{ item.count || '-' }}</span
+                        >
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              }
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div> -->
+  </div>
   <div>
-    <div class="flex flex-col md:flex-row justify-between items-center">
+    <div class="flex flex-col md:flex-row justify-between items-center pb-3">
       @if (liveDataExists) {
         <span class="italic text-sm"
           >Total of
@@ -34,7 +79,7 @@
     </mat-card>
   </div>
   <div>
-    <div class="flex flex-col md:flex-row justify-between items-center">
+    <div class="flex flex-col md:flex-row justify-between items-center py-4">
       @if (frozenDataExists) {
         <span class="italic text-sm"
           >Total of
@@ -65,5 +110,52 @@
         </app-generic-table>
       </mat-card-content>
     </mat-card>
+  </div>
+  <div class="flex flex-col md:flex-row justify-start items-center pb-3 gap-4">
+    <div class="flex flex-col items-start gap-2 mt-6">
+      <span class="italic text-sm"
+        >Overall Stocks used between
+        <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+        <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+      >
+      <div
+        class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-start w-full"
+      >
+        @for (item of overallStocks; track $index) {
+          <div class="min-w-40">
+            <mat-card appearance="outlined">
+              <mat-card-content>
+                <div class="flex flex-col gap-2 justify-start items-center font-semibold bg-white">
+                  <span class="text-gray-500">{{ getUnitName(item) }}</span>
+                  <span class="h-8 w-8 bg-gray-200 rounded-lg text-center pt-1 text-[#165d51]">{{
+                    item.count || '-'
+                  }}</span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        }
+      </div>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="flex flex-col items-start gap-2 mt-6">
+      <span class="italic text-sm">Overall Stocks currently in stocking</span>
+      <div class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-start">
+        @for (item of overallActiveStocks; track $index) {
+          <div class="min-w-40">
+            <mat-card appearance="outlined">
+              <mat-card-content>
+                <div class="flex flex-col gap-2 justify-start items-center font-semibold bg-white">
+                  <span class="text-gray-500">{{ getUnitName(item) }}</span>
+                  <span class="h-8 w-8 bg-gray-200 rounded-lg text-center pt-1 text-[#165d51]">{{
+                    item.count || '-'
+                  }}</span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        }
+      </div>
+    </div>
   </div>
 </div>

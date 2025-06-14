@@ -37,7 +37,9 @@ export class StockInputReportComponent {
         );
 
         if (machineryData.length > 0) this.machineryData = machineryData[0].inputUnits;
+        else this.machineryData = [];
         if (conventionalData.length > 0) this.conventionalData = conventionalData[0].inputUnits;
+        else this.conventionalData = [];
         this.overallData = overall;
 
         this.dataExists =
@@ -67,5 +69,10 @@ export class StockInputReportComponent {
   getUnitName(item: StockInputUnit): string {
     const { name, brand, spec } = item;
     return `${name} ${brand ? `- ${brand}` : ''} ${spec ? ` (${spec})` : ''}`.trim();
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 }
