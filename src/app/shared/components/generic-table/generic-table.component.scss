@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+@use 'styles/scss/variables' as *;
+
+.icon {
+  @include mat.icon-overrides(
+    (
+      color: #ba1a1a,
+    )
+  );
+}

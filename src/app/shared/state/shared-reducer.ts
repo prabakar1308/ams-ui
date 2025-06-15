@@ -76,7 +76,14 @@ export const sharedReducer = createReducer(
   })),
   on(SharedActions.getMasterDataSuccess, (state, { payload }) => ({
     ...state,
-    ...payload,
+    harvestTypes: payload.harvestTypes,
+    tankTypes: payload.tankTypes,
+    units: payload.units,
+    ph: payload.ph,
+    salnity: payload.salnity,
+    temperature: payload.temperature,
+    unitSectors: payload.unitSectors,
+    worksheetUnits: payload.worksheetUnits,
     meta: {
       ...state.meta,
       isLoading: true,

@@ -4,10 +4,11 @@ import { Observable } from 'rxjs';
 
 import { MetaState } from '@app/shared/models/meta-state';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
-import { UserDetails } from '@app/shared/models/user-details';
 import * as fromStore from '../state';
 import * as sharedAction from '../state/shared-actions';
 import { MasterData, WorksheetFilter } from '../models/shared-state';
+import { UserDetails } from '../models/user-details';
+import { CreateUserRequest } from '../models/create-user';
 
 @Injectable({
   providedIn: 'root',
@@ -49,5 +50,22 @@ export class SharedFacadeService {
 
   getMasterData() {
     this.store.dispatch(sharedAction.getMasterData());
+  }
+
+  getMasterDataSuccess(response: MasterData) {
+    this.store.dispatch(sharedAction.getMasterDataSuccess(response));
+  }
+
+  createUser(request: CreateUserRequest) {
+    this.store.dispatch(sharedAction.createUser(request));
+  }
+  createUserSuccess(response: any[]) {
+    this.store.dispatch(sharedAction.createUserSuccess(response));
+  }
+  updateUser(request: any) {
+    this.store.dispatch(sharedAction.updateUser(request));
+  }
+  deleteUser(id: number) {
+    this.store.dispatch(sharedAction.deleteUser(id));
   }
 }

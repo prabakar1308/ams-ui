@@ -36,3 +36,14 @@ export interface WorksheetUnit {
   brand: string;
   specs?: string;
 }
+
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user',
+  FM_USER = 'fm_user',
+}
+
+export interface DisplayColumn {
+  id: string;
+  label: string;
+}

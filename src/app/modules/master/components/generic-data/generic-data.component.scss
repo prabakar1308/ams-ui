@@ -1,0 +1,16 @@
+.generic-container {
+  padding-top: 25px;
+  width: 1200px;
+  height: 500px;
+
+  @media (max-width: 1024px) {
+    padding: 25px; // Adjust the padding value as needed
+  }
+}
+
+.icon {
+  background-color: #147676;
+  padding: 5px 5px 0px 5px;
+  border-radius: 5px;
+  color: white;
+}
