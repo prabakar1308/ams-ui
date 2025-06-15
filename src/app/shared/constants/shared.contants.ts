@@ -52,6 +52,11 @@ export const CUSTOM_PRESETS = [
 
 export const DEFAULT_TANK_TYPE = 1; // MACHINERY
 
+export const TANK_TYPES = {
+  MACHINERY: 1,
+  CONVENTIONAL: 2,
+};
+
 export const UNIT_IDS = {
   MILLIONS: 1,
   FROZEN_CUPS: 2,

@@ -9,7 +9,22 @@ export interface AppState extends fromRoot.AppState {
 
 const getReportFeatureState = createFeatureSelector<ReportState>('report');
 
-export const getTransitReportByUnitSector = createSelector(
+export const getLiveTransit = createSelector(
   getReportFeatureState,
-  (state: ReportState) => state.transitsByUnitSector,
+  (state: ReportState) => state.liveTransits,
+);
+
+export const getFrozenTransit = createSelector(
+  getReportFeatureState,
+  (state: ReportState) => state.frozenTransits,
+);
+
+export const getStockInputReport = createSelector(
+  getReportFeatureState,
+  (state: ReportState) => state.stockInput,
+);
+
+export const getActiveStockInputReport = createSelector(
+  getReportFeatureState,
+  (state: ReportState) => state.activeStockInput,
 );

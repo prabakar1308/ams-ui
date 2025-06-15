@@ -19,6 +19,7 @@ export const initialState: SharedState = {
     statusId: 0,
     userId: 0,
     tankTypeId: DEFAULT_TANK_TYPE,
+    harvestTypeId: 0,
   },
   harvestTypes: [],
   tankTypes: [],

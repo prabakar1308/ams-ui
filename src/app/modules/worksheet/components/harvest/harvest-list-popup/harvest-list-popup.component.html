@@ -8,7 +8,7 @@
             >Overall Count: {{ data.harvestData.count }} {{ data.harvestData.unit.value }}
           </mat-chip>
         </div>
-        <div class="ml-26 count-stock">
+        <div class="count-stock">
           <mat-chip>
             Count In Stock: {{ data.harvestData.countInStock }}
             {{ data.harvestData.unit.value }}
@@ -21,7 +21,7 @@
     @for (transit of transitDetails; track transit) {
       <mat-card class="example-card" appearance="outlined">
         <mat-card-content>
-          <div class="grid grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <mat-form-field appearance="outline" class="ams-small">
               <mat-label>Unit Sector</mat-label>
               <mat-select
@@ -34,16 +34,14 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="ams-small ml-2">
+            <mat-form-field appearance="outline" class="ams-small">
               <mat-label>Staff In Charge</mat-label>
               <input
                 matInput
-                placeholder="Staff In Charge"
                 [(ngModel)]="transit.staffInCharge"
                 [pattern]="'^[a-zA-Z ]*$'"
                 [required]="true"
               />
-              <mat-hint>* Required</mat-hint>
             </mat-form-field>
             <!-- <mat-error class="ams-small" *ngIf="showError && !transit.staffInCharge">
               Staff In Charge is required
@@ -57,7 +55,6 @@
                 (change)="calculateCount()"
                 [required]="true"
               />
-              <mat-hint>* Required</mat-hint>
             </mat-form-field>
             <!-- <mat-error class="ams-small" *ngIf="showError && !transit.staffInCharge">
               Transit count is required

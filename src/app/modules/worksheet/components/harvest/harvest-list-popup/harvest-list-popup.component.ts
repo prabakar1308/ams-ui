@@ -2,11 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
-import { UserDetails } from '@app/shared/models/user-details';
-import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { TransitDetail } from '@app/worksheet/models/create-transit';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-harvest-list-popup',
@@ -15,7 +12,6 @@ import { Subject } from 'rxjs';
   styleUrl: './harvest-list-popup.component.scss',
 })
 export class HarvestListPopupComponent {
-  private unSubscribe = new Subject<void>();
   countsRemining: number = 0;
   transitCount: number = 0;
   transitDetails: TransitDetail[] = [];
@@ -43,10 +39,6 @@ export class HarvestListPopupComponent {
     this.transitDetails.push(transit);
   }
 
-  onChangeUser(event: number) {
-    //user changed action
-  }
-
   calculateCount() {
     let totalCount = 0;
     this.transitDetails.forEach((x) => {
@@ -69,11 +61,9 @@ export class HarvestListPopupComponent {
       return;
     }
 
-    this.wfService.createTransit({
+    this.dialogRef.close({
       transits: this.transitDetails,
       harvestId: this.data.harvestData.id,
     });
-
-    this.dialogRef.close();
   }
 }

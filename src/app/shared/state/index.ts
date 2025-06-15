@@ -14,6 +14,11 @@ export const getWorksheetStatus = createSelector(
   (state: SharedState) => state.worksheetStatus,
 );
 
+export const getHarvestTypes = createSelector(
+  getSharedFeatureState,
+  (state: SharedState) => state.harvestTypes,
+);
+
 export const getUserData = createSelector(
   getSharedFeatureState,
   (state: SharedState) => state.userDetails,

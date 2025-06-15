@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
@@ -9,6 +9,7 @@ import { WorksheetFilter } from '@app/shared/models/shared-state';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { HarvestType } from '@app/shared/models/master';
 import { WorksheetNavigationComponent } from '../worksheet-navigation/worksheet-navigation.component';
 
 @Component({
@@ -20,7 +21,6 @@ import { WorksheetNavigationComponent } from '../worksheet-navigation/worksheet-
 export class WorksheetFilterComponent implements OnInit, OnDestroy {
   @Input() disableCreate = false;
   @Input() selectedItems: WorksheetTank[] = [];
-  @Output() filterChanged = new EventEmitter<WorksheetFilter>();
 
   private _bottomSheet = inject(MatBottomSheet);
   private unSubscribe = new Subject<void>();
@@ -29,6 +29,7 @@ export class WorksheetFilterComponent implements OnInit, OnDestroy {
   worksheetFilter: WorksheetFilter = {};
   selectedStatus: number = 0;
   statusDetails: WorksheetStatus[] | null = null;
+  harvestTypes: HarvestType[] = [];
 
   constructor(
     private sharedFacade: SharedFacadeService,
@@ -44,6 +45,10 @@ export class WorksheetFilterComponent implements OnInit, OnDestroy {
 
     this.sharedFacade.userData$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
       this.userDetails = [{ id: 0 }, ...data];
+    });
+
+    this.sharedFacade.harvestTypes$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
+      this.harvestTypes = [{ id: 0, value: 'All' }, ...data];
     });
 
     this.sharedFacade.worksheetFilter$
@@ -71,7 +76,7 @@ export class WorksheetFilterComponent implements OnInit, OnDestroy {
   }
 
   onHarvestTypeChange(event: any) {
-    this.filterChanged.emit(event);
+    this.sharedFacade.updateWorksheetFilter({ harvestTypeId: event });
   }
 
   onCreateWorksheet() {

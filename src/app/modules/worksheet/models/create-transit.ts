@@ -1,3 +1,4 @@
+import { HarvestFilter } from '@app/shared/models/shared-state';
 import { HarvestDetails } from './harvest-details';
 import { UnitDetails } from './unit-details';
 import { UnitSector } from './unit-sector';
@@ -13,6 +14,7 @@ export interface TransitDetail {
 export interface CreateTransitRequest {
   transits: TransitDetail[];
   harvestId: number;
+  filter?: HarvestFilter;
 }
 
 export interface CreateTransitResponse {

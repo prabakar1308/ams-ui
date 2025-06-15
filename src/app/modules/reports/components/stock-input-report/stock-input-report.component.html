@@ -1,0 +1,23 @@
+<div>
+  <div class="flex flex-col md:flex-row justify-between items-center mt-4 mx-4">
+    @if (dataExists) {
+      <span class="italic text-sm"
+        >The below stock inputs used between
+        <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+        <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong> (included completed worksheets
+        only)</span
+      >
+    } @else {
+      <span class="italic text-sm text-red-600"
+        >No records between <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
+        <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong
+        >. Please change the date selection.</span
+      >
+    }
+  </div>
+  @if (dataExists) {
+    <app-stock-input-details [data]="machineryData" [title]="'Machinery'" />
+    <app-stock-input-details [data]="conventionalData" [title]="'Conventional'" />
+    <app-stock-input-details [data]="overallData" [title]="'Overall'" />
+  }
+</div>

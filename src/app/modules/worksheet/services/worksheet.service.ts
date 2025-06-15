@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Response } from '@app/shared/models/response';
 
 import { environment } from '@environments/environment';
+import { WorksheetFilter } from '@app/shared/models/shared-state';
 import { WorksheetTank } from '../models/active-worksheet';
 import { CreateWorksheetRequest, UpdateWorksheetRequest } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
@@ -20,12 +21,11 @@ export class WorksheetService {
 
   constructor(private http: HttpClient) {}
 
-  getActiveWorksheets(userId: number, tankTypeId: number, statusId: number) {
-    return this.http.post<Response<WorksheetTank[]>>(`${this.API_URL}/get-active-worksheets`, {
-      userId,
-      tankTypeId,
-      statusId,
-    });
+  getActiveWorksheets(payload: WorksheetFilter) {
+    return this.http.post<Response<WorksheetTank[]>>(
+      `${this.API_URL}/get-active-worksheets`,
+      payload,
+    );
   }
 
   createWorksheets(request: CreateWorksheetRequest) {

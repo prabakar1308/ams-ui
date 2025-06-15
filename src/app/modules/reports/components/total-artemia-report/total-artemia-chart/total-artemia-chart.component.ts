@@ -1,0 +1,170 @@
+import { Component, Input } from '@angular/core';
+import * as echarts from 'echarts/core';
+import { BarChart, LineChart, PieChart } from 'echarts/charts';
+import {
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  // Dataset
+  DatasetComponent,
+  // Built-in transform (filter, sort)
+  TransformComponent,
+  LegendComponent,
+  ToolboxComponent,
+} from 'echarts/components';
+import { LabelLayout, UniversalTransition } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
+import { Observable, of, switchMap } from 'rxjs';
+import { TransitTable } from 'app/modules/reports/models/report';
+import { fontWeight } from 'html2canvas-pro/dist/types/css/property-descriptors/font-weight';
+
+@Component({
+  selector: 'app-total-artemia-chart',
+  standalone: false,
+  templateUrl: './total-artemia-chart.component.html',
+  styleUrl: './total-artemia-chart.component.scss',
+})
+export class TotalArtemiaChartComponent {
+  @Input() data: TransitTable[] = [];
+  @Input() title: string = 'Total Artemia Report';
+
+  liveChartOption!: echarts.EChartsCoreOption;
+
+  ngOnInit() {
+    // Register the required components
+    echarts.use([
+      TitleComponent,
+      TooltipComponent,
+      GridComponent,
+      DatasetComponent,
+      TransformComponent,
+      LegendComponent,
+      ToolboxComponent,
+      PieChart,
+      BarChart,
+      LineChart,
+      LabelLayout,
+      UniversalTransition,
+      CanvasRenderer,
+    ]);
+  }
+
+  ngAfterViewInit(): void {
+    this.loadUserChart();
+  }
+
+  ngOnChanges(): void {
+    this.loadUserChart();
+  }
+
+  loadUserChart() {
+    const labelOption = {
+      show: true,
+      fontSize: 14,
+      color: '#808080',
+      fontStyle: 'italic',
+      fontWeight: 'bold',
+      formatter: '{c}',
+      position: 'top',
+    };
+
+    this.liveChartOption = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
+      },
+      legend: {
+        data: ['Day Shift', 'Night Shift', 'Total'],
+      },
+      toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'center',
+        feature: {
+          mark: { show: true },
+          // dataView: { show: true, readOnly: false },
+          magicType: { show: true, type: ['line', 'bar', 'pie'] },
+          restore: { show: true },
+          saveAsImage: { show: true },
+        },
+      },
+      xAxis: [
+        {
+          type: 'category',
+          axisTick: { show: false },
+          data: this.data.map((item) => item.unit_sector),
+          axisLabel: {
+            show: true,
+            fontSize: 14,
+            // color: '#808080',
+            // fontStyle: 'italic',
+            fontWeight: 'bold',
+          },
+          nameTextStyle: {
+            fontSize: 14,
+            fontWeight: 'bold',
+          },
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          // interval: 50000,
+          // splitNumber: 4,
+          name: 'Tins',
+          nameLocation: 'middle',
+          nameGap: 40,
+          nameTextStyle: {
+            fontSize: 14,
+            fontWeight: 'bold',
+          },
+          axisLabel: {
+            show: true,
+          },
+        },
+      ],
+      series: [
+        {
+          name: 'Day Shift',
+          type: 'bar',
+          barGap: 0,
+          label: labelOption,
+          emphasis: {
+            focus: 'series',
+          },
+          data: this.data.map((item) => this.formatCount(item.day_shift_count)),
+        },
+        {
+          name: 'Night Shift',
+          type: 'bar',
+          label: labelOption,
+          emphasis: {
+            focus: 'series',
+          },
+          data: this.data.map((item) => this.formatCount(item.night_shift_count)),
+        },
+        {
+          name: 'Total',
+          type: 'bar',
+          label: labelOption,
+          emphasis: {
+            focus: 'series',
+          },
+          data: this.data.map((item) => this.formatCount(item.total_count)),
+        },
+      ],
+    };
+  }
+
+  formatCount(value: string): number {
+    const count = parseFloat(value.toLowerCase().replace('tins', '').trim());
+    return isNaN(count) ? 0 : count;
+  }
+
+  userChartClick(event: echarts.ECElementEvent) {
+    const data = event.data as { id: number };
+  }
+}
