@@ -1,0 +1,90 @@
+<div class="create-dialog">
+  <h2 mat-dialog-title>{{ data.title }}</h2>
+  <mat-dialog-content class="mat-typography">
+    <div>
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          @for (item of data.fields; track $index) {
+            @if (item.type === 'select') {
+              <mat-form-field appearance="outline" class="ams-small ml-2 p-4">
+                <mat-label>{{ item.title }}</mat-label>
+                <mat-select [(ngModel)]="data.formData[item.name]" [required]="true">
+                  @for (option of item.options; track option) {
+                    <mat-option [value]="option.id">{{ option.name }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            } @else if (item.type === 'text') {
+              <mat-form-field appearance="outline" class="ams-small ml-2 p-4">
+                <mat-label>{{ item.title }}</mat-label>
+                <input
+                  matInput
+                  placeholder="{{ item.title }}"
+                  [(ngModel)]="data.formData[item.name]"
+                  [required]="true"
+                  #text="ngModel"
+                />
+                <mat-hint *ngIf="text.invalid && (text.dirty || text.touched)" class="warning">
+                  {{ item.title }} is required.
+                </mat-hint>
+              </mat-form-field>
+            } @else if (item.type === 'date') {
+              <mat-form-field appearance="outline" class="ams-small ml-2 p-4">
+                <mat-label>{{ item.title }}</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  [(ngModel)]="data.formData[item.name]"
+                  #date="ngModel"
+                />
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-hint *ngIf="date.invalid && (date.dirty || date.touched)" class="warning">
+                  {{ item.title }} is required.
+                </mat-hint>
+              </mat-form-field>
+            } @else if (item.type === 'disabled') {
+              <mat-form-field appearance="outline" class="ams-small ml-2 p-4">
+                <mat-label>{{ item.title }}</mat-label>
+                <input
+                  matInput
+                  placeholder="{{ item.title }}"
+                  [(ngModel)]="data.formData[item.name]"
+                  [disabled]="true"
+                />
+              </mat-form-field>
+            } @else if (item.type === 'mobile') {
+              <mat-form-field appearance="outline" class="ams-small ml-2 p-4">
+                <mat-label>Mobile Number</mat-label>
+                <input
+                  matInput
+                  placeholder="Mobile Number"
+                  [(ngModel)]="data.formData[item.name]"
+                  name="mobileNumber"
+                  [required]="true"
+                  [pattern]="'^[0-9]{10}$'"
+                  maxlength="10"
+                  #mobile="ngModel"
+                />
+                <mat-hint
+                  class="warning"
+                  *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)"
+                >
+                  <span *ngIf="mobile.errors?.['required']">Mobile number is required.</span>
+                  <span *ngIf="mobile.errors?.['pattern']"
+                    >Enter a valid 10-digit mobile number.</span
+                  >
+                </mat-hint>
+              </mat-form-field>
+            }
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-flat-button (click)="saveDetails()">{{ data.isEdit ? 'Edit' : 'Save' }}</button>
+  </mat-dialog-actions>
+</div>

@@ -13,15 +13,27 @@ import {
   getMasterDataSuccess,
   getUsersList,
   getWorksheetStatus,
+  createUser,
+  createUserFailure,
+  createUserSuccess,
+  updateUser,
+  updateUserSuccess,
+  updateUserFailure,
+  deleteUser,
+  deleteUserFailure,
+  deleteUserSuccess,
 } from './shared-actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { UserDetails } from '@app/shared/models/user-details';
+import { NotificationService } from '@app/core/services/notification.service';
+import { SEVERITY } from '@app/core/core.contants';
 
 @Injectable()
 export class SharedEffects {
   private actions$ = inject(Actions);
   private sharedService = inject(SharedService);
+  private notificationService = inject(NotificationService);
 
   getWorksheetStatus$ = createEffect(() =>
     this.actions$.pipe(
@@ -128,6 +140,80 @@ export class SharedEffects {
             // return getUsersListFailure({ error: 'Get user details failed' });
           }),
           catchError((error) => of(getUsersListFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  createUserData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createUser.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.createUser(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201) {
+              return createUserFailure({
+                error: res.message || 'Create User failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(SEVERITY.SUCCESS, 'User created successfully!');
+              return createUserSuccess(res.data);
+            }
+            return createUserFailure({
+              error: res.message || 'Create User failed',
+            });
+          }),
+          catchError((error) => of(createUserFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  updateUserData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUser.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.updateUser(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201) {
+              return updateUserFailure({
+                error: res.message || 'Update User failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(SEVERITY.SUCCESS, 'User updated successfully!');
+              return updateUserSuccess(res.data);
+            }
+            return updateUserFailure({
+              error: res.message || 'Update User failed',
+            });
+          }),
+          catchError((error) => of(updateUserFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  deleteUserData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteUser.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.deleteUser(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201) {
+              return deleteUserFailure({
+                error: res.message || 'Update User failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(SEVERITY.SUCCESS, 'User Deleted successfully!');
+              return deleteUserSuccess(res.data);
+            }
+            return deleteUserFailure({
+              error: res.message || 'Update User failed',
+            });
+          }),
+          catchError((error) => of(deleteUserFailure({ error }))),
         ),
       ),
     ),

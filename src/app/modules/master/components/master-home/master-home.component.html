@@ -1,3 +1,18 @@
-<p>master-home works!</p>
-
-<button (click)="getUsers()">Get Users</button>
+<div>
+  <mat-tab-group mat-stretch-tabs="false" (selectedTabChange)="loadData($event)">
+    <mat-tab label="User Details">
+      <div>
+        <app-generic-data
+          [title]="'User Details'"
+          [data]="userDetails"
+          (addData)="addNew()"
+          (editData)="editDetails($event)"
+          (deleteData)="deleteDetails($event)"
+        ></app-generic-data>
+      </div>
+    </mat-tab>
+    <mat-tab label="Harvest Type">
+      <div></div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

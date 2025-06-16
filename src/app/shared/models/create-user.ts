@@ -1,6 +1,4 @@
-export interface UserDetails {
-  id: number;
-  userId?: string;
+export interface CreateUserRequest {
   firstName?: string;
   lastName?: string;
   password?: string;

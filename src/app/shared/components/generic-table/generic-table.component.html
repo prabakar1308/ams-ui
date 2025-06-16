@@ -3,7 +3,33 @@
     <!-- Dynamic Column Definitions -->
     <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | underscoreTitlecase }}</th>
-      <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+
+      <td mat-cell *matCellDef="let element">
+        @if (column === 'actions') {
+          <div class="flex">
+            <button
+              mat-icon-button
+              class="primary small"
+              [matTooltip]="'Perform Edit action'"
+              (click)="onEdit(element)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              class="primary small"
+              [matTooltip]="'Perform Delete action'"
+              (click)="onDelete(element)"
+            >
+              <div class="icon">
+                <mat-icon>delete</mat-icon>
+              </div>
+            </button>
+          </div>
+        } @else {
+          {{ element[column] }}
+        }
+      </td>
     </ng-container>
 
     <!-- Header Row -->
@@ -11,6 +37,7 @@
 
     <!-- Data Rows -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
     <tr class="mat-row" *matNoDataRow>
       <td [attr.colspan]="displayedColumns.length" class="p-4 text-center font-bold">
         No records available!
