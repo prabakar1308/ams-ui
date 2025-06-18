@@ -30,9 +30,11 @@
     @for (report of transitReports; track $index) {
       <mat-expansion-panel [expanded]="expanded()">
         <mat-expansion-panel-header class="flex flex-row justify-between">
-          <div class="flex flex-row w-1/2 items-center gap-2">
-            <div class="text-lg pl-2">{{ report.unitSector.name }}</div>
-            <span class="text-sm text-gray-500 pt-1">({{ report.unitSector.location }})</span>
+          <div class="flex flex-row w-1/2 items-center md:gap-2">
+            <div class="text-sm md:text-lg md:pl-2">{{ report.unitSector.name }}</div>
+            <span class="text-xs md:text-sm text-gray-500 pt-1"
+              >({{ report.unitSector.location }})</span
+            >
           </div>
           <div class="flex justify-end w-1/2 pr-4">
             <mat-chip>{{ getTotalCount(report.millions || report.frozenCups) }}</mat-chip>
