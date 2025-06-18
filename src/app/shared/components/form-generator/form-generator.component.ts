@@ -18,16 +18,19 @@ import { FormStructure, FormValidation } from '@app/shared/models/form-structure
 import { INPUT_TYPES, TEXT_INPUT_TYPES } from '@app/shared/constants/shared.contants';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-form-generator',
   standalone: false,
   templateUrl: './form-generator.component.html',
   styleUrl: './form-generator.component.scss',
+  providers: [provideNativeDateAdapter()],
 })
 export class FormGeneratorComponent implements OnInit, OnDestroy {
   @Input() formStructure: FormStructure[] = [];
   @Input() formDetails!: GenericForm;
+  @Input() getRawData: boolean = false;
   @Output() moveBack = new EventEmitter<void>();
   @Output() formData = new EventEmitter<unknown>();
   @Output() formValueChange = new EventEmitter<unknown>();
@@ -75,7 +78,7 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
       }
 
       formGroup[control.name] = [
-        { value: control.value || '', disabled: control.hide },
+        { value: control.value || '', disabled: control.hide || control.disabled },
         controlValidators,
       ];
       // }
@@ -95,8 +98,8 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
     });
   }
 
-  isFormControlActive(name: string) {
-    return !this.dynamicForm.get(name)?.disabled;
+  isFormControlDisabled(name: string) {
+    return this.dynamicForm.get(name)?.disabled;
   }
 
   getErrorMessage(control: any): string {
@@ -214,6 +217,10 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
     if (!this.dynamicForm.valid) {
       this.dynamicForm.markAllAsTouched();
       this.notificationService.showMessage(SEVERITY.ERROR, 'The form is not valid, please check!');
+      return;
+    }
+    if (this.getRawData) {
+      this.formData.emit(this.dynamicForm.getRawValue());
       return;
     }
     this.formData.emit(this.dynamicForm.value);

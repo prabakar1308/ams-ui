@@ -17,6 +17,7 @@ export interface SharedState {
   meta: {
     isLoading: boolean;
     error: string;
+    userUpdated?: boolean;
   };
 }
 

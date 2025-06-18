@@ -12,4 +12,8 @@ export class MasterService {
   getUsers() {
     return this.http.get(`${this.API_URL}/users?limit=10&page=1`);
   }
+
+  generateUserCode() {
+    return this.http.get(`${this.API_URL}/users/generate-user-code`);
+  }
 }

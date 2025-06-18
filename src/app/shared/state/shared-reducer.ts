@@ -32,6 +32,7 @@ export const initialState: SharedState = {
   meta: {
     isLoading: false,
     error: '',
+    userUpdated: false,
   },
 };
 
@@ -73,6 +74,27 @@ export const sharedReducer = createReducer(
     worksheetFilter: {
       ...state.worksheetFilter,
       ...payload,
+    },
+  })),
+  on(SharedActions.resetUserUpdateStatus, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      userUpdated: false,
+    },
+  })),
+  on(SharedActions.updateUserSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      userUpdated: true,
+    },
+  })),
+  on(SharedActions.createUserSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      userUpdated: true,
     },
   })),
   on(SharedActions.getMasterDataSuccess, (state, { payload }) => ({

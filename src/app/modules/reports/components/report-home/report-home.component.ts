@@ -8,6 +8,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { ReportFacadeService } from '../../services/report-facade.service';
 import { UNIT_IDS } from '@app/shared/constants/shared.contants';
 import { TransitReport } from '../../models/transit-response';
+import { LoaderService } from '@app/core/services/loader.service';
 
 @Component({
   selector: 'app-report-home',
@@ -22,6 +23,7 @@ export class ReportHomeComponent {
   constructor(
     private reportFacadeService: ReportFacadeService,
     private datePipe: DatePipe,
+    private loaderService: LoaderService,
   ) {}
   unitIds = UNIT_IDS;
   selectedIndex = 0;
@@ -75,6 +77,7 @@ export class ReportHomeComponent {
   }
 
   generatePDF() {
+    this.loaderService.show();
     const screenWidth = window.innerWidth;
     const data = document.getElementById('contentToConvert');
     if (data) {
@@ -101,6 +104,7 @@ export class ReportHomeComponent {
         const height = doc.internal.pageSize.getHeight();
         doc.addImage(imgData, 'PNG', 0, 0, width, height);
         doc.save('Artemia_Report.pdf');
+        this.loaderService.hide();
 
         // const imgProps = pdf.getImageProperties(imgData);
         // const pdfWidth = pdf.internal.pageSize.getWidth();

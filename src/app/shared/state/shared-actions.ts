@@ -84,3 +84,5 @@ export const deleteUserFailure = createAction(
   '[Master] Delete User Failure',
   (payload: { error: string }) => ({ payload }),
 );
+
+export const resetUserUpdateStatus = createAction('[Master] Reset User Update Status');

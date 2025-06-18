@@ -1,5 +1,5 @@
-<div class="generic-container">
-  <div class="flex w-full">
+<div class="generic-container pt-4">
+  <div class="flex w-full items-center">
     <div class="w-full flex-initial">
       <h4 class="text-xl pl-4 font-serif" style="color: #165d51">{{ title }}</h4>
     </div>
@@ -7,7 +7,7 @@
       <div>
         <button
           mat-mini-fab
-          aria-label="worksheet refresh"
+          aria-label="Refresh"
           (click)="onRefresh()"
           class="primary"
           matTooltip="Refresh"
@@ -18,7 +18,7 @@
       <div>
         <button
           mat-mini-fab
-          aria-label="worksheet refresh"
+          aria-label="Create User"
           (click)="onAdd()"
           matTooltip="Create"
           class="secondary"
@@ -28,12 +28,12 @@
       </div>
     </div>
   </div>
-  <div>
+  <div class="pt-2">
     <mat-card appearance="outlined">
       <mat-card-content>
         <app-generic-table
           [data]="data"
-          [displayedColumns]="userDisplayColumns"
+          [displayedColumns]="displayColumns"
           [totalLength]="100"
           [pageSize]="10"
           (editData)="onEditDetails($event)"

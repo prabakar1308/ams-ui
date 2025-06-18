@@ -151,7 +151,7 @@ export class SharedEffects {
       exhaustMap(({ payload }) =>
         this.sharedService.createUser(payload).pipe(
           map((res: Response<any>) => {
-            if (res.status !== 201) {
+            if (!(res.status === 201 || res.status === 200)) {
               return createUserFailure({
                 error: res.message || 'Create User failed',
               });
@@ -175,7 +175,7 @@ export class SharedEffects {
       exhaustMap(({ payload }) =>
         this.sharedService.updateUser(payload).pipe(
           map((res: Response<any>) => {
-            if (res.status !== 201) {
+            if (!(res.status === 201 || res.status === 200)) {
               return updateUserFailure({
                 error: res.message || 'Update User failed',
               });
@@ -200,7 +200,7 @@ export class SharedEffects {
       exhaustMap(({ payload }) =>
         this.sharedService.deleteUser(payload).pipe(
           map((res: Response<any>) => {
-            if (res.status !== 201) {
+            if (!(res.status === 201 || res.status === 200)) {
               return deleteUserFailure({
                 error: res.message || 'Update User failed',
               });

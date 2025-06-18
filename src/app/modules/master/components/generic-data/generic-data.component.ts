@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UserDetails } from '@app/shared/models/user-details';
 
 @Component({
   selector: 'app-generic-data',
@@ -9,21 +8,13 @@ import { UserDetails } from '@app/shared/models/user-details';
 })
 export class GenericDataComponent {
   @Input() title!: string;
-  @Input() data!: UserDetails[];
-  @Output() refreshPage = new EventEmitter<void>();
-  @Output() addData = new EventEmitter<void>();
-  @Output() editData = new EventEmitter<void>();
-  @Output() deleteData = new EventEmitter<void>();
-  userDisplayColumns = [
-    'id',
-    'firstName',
-    'lastName',
-    'mobileNumber',
-    'address',
-    'role',
-    'userCode',
-    'actions',
-  ];
+  @Input() data!: unknown[];
+  @Input() displayColumns!: string[];
+  @Output() refreshPage = new EventEmitter<unknown>();
+  @Output() addData = new EventEmitter<unknown>();
+  @Output() editData = new EventEmitter<unknown>();
+  @Output() deleteData = new EventEmitter<unknown>();
+
   onRefresh() {
     this.refreshPage.emit();
   }
@@ -32,14 +23,10 @@ export class GenericDataComponent {
     this.addData.emit();
   }
 
-  onEditDetails(event: any) {
-    console.log('Edit user details:', event);
-    // Logic to handle editing user details
+  onEditDetails(event: unknown) {
     this.editData.emit(event);
   }
-  onDeleteDetails(event: any) {
-    console.log('Delete user details:', event);
-    // Logic to handle deleting user details
+  onDeleteDetails(event: unknown) {
     this.deleteData.emit(event);
   }
 }

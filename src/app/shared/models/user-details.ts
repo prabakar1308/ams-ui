@@ -1,3 +1,5 @@
+import { UnitSector } from './master';
+
 export interface UserDetails {
   id: number;
   userId?: string;
@@ -8,7 +10,7 @@ export interface UserDetails {
   mobileNumber?: string;
   role?: string;
   designation?: string;
-  unitSectorId?: string;
+  unitSectorId?: number | UnitSector;
   dateOfBirth?: Date;
   address?: string;
   dateOfJoining?: Date;

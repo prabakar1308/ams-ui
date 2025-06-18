@@ -19,7 +19,7 @@
         <div class="form-fields">
           <div [class]="formDetails.container" rowHeight="80px">
             <ng-container *ngFor="let control of formStructure">
-              @if (isFormControlActive(control.name)) {
+              @if (!(isFormControlDisabled(control.name) && control.hide)) {
                 <div class="w-full" [class]="control.class">
                   @if (textInputTypes.includes(control.type)) {
                     <mat-form-field appearance="outline" class="ams-small w-full">
@@ -130,6 +130,18 @@
                         >{{ getControlValue(control.name) }} {{ control.meta?.unitLabel }}</mat-chip
                       >
                     </div>
+                  } @else if (control.type === inputTypes.DATE) {
+                    <mat-form-field appearance="outline" class="ams-small w-full">
+                      <mat-label>{{ control.label }}</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="picker"
+                        [ariaLabel]="control.label"
+                        [formControlName]="control.name"
+                      />
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
                   } @else if (
                     control.type === inputTypes.DIVIDER &&
                     dynamicForm.controls[control.name].enabled

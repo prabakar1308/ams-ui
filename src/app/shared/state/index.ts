@@ -44,3 +44,7 @@ export const getMasterData = createSelector(getSharedFeatureState, (state: Share
   unitSectors: state.unitSectors,
   worksheetUnits: state.worksheetUnits,
 }));
+
+export const resetUserUpdated = createSelector(getSharedFeatureState, (state: SharedState) => {
+  return state.meta.userUpdated || false;
+});
