@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
+import { APP_DEFAULT_ROUTE } from 'app/app.constants';
 @Component({
   selector: 'app-login',
   standalone: false,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authfacade: AuthFacadeService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -23,19 +24,26 @@ export class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.authfacade.userSubject.subscribe((userData) => {
+      if (userData) {
+        this.router.navigate([APP_DEFAULT_ROUTE]);
+      }
+    });
+
+    // automatically login if user is already logged in
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      this.authfacade.userLoginSucess(JSON.parse(userData));
+      this.authfacade.userSubject.next(JSON.parse(userData));
+      this.router.navigate([APP_DEFAULT_ROUTE]);
+    }
+  }
+
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { userId, password } = this.loginForm.value;
-      this.authService.login(userId, password).subscribe({
-        next: (res) => {
-          console.log('Login successful!', res);
-          // Navigate or store token
-          this.router.navigate(['/master']);
-        },
-        error: (err) => {
-          this.errorMessage = err.error.message || 'Login failed';
-        },
-      });
+      this.authfacade.userLogin(userId, password);
     }
   }
 }

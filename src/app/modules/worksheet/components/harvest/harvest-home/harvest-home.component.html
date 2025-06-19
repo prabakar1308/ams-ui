@@ -1,0 +1,55 @@
+<div>
+  <div class="flex justify-between items-center mx-4 pt-6">
+    <h4 class="text-xl pl-4 font-serif font-bold text-[#165d51]">Harvest Details</h4>
+    <div class="flex items-center gap-2">
+      <div>
+        <button
+          aria-label="Go to transit list"
+          [routerLink]="['/worksheet/transit']"
+          mat-mini-fab
+          matTooltip="Transit"
+          class="secondary"
+        >
+          <mat-icon>local_shipping</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          aria-label="Go to Restock Page"
+          [routerLink]="['/worksheet/restock']"
+          mat-mini-fab
+          matTooltip="Restock"
+          class="secondary"
+        >
+          <mat-icon>warehouse</mat-icon>
+        </button>
+      </div>
+      <button
+        mat-mini-fab
+        aria-label="worksheet list"
+        (click)="onClickBack()"
+        matTooltip="Worksheets"
+        class="secondary"
+      >
+        <mat-icon>home</mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-tab-group
+    mat-stretch-tabs="false"
+    mat-align-tabs="center"
+    (selectedTabChange)="loadData($event)"
+    [selectedIndex]="selectedTab"
+  >
+    <mat-tab label="Holding Tanks">
+      <div>
+        <app-harvest-list [unitId]="unitId"></app-harvest-list>
+      </div>
+    </mat-tab>
+    <mat-tab label="Artemia Central">
+      <div>
+        <app-harvest-list [unitId]="unitId"></app-harvest-list>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,7 @@
+<app-form-generator
+  [formStructure]="formConfigData"
+  [formDetails]="formDetails"
+  (moveBack)="goToHomePage()"
+  (formData)="submitFormData($event)"
+  (formValueChange)="formValueChange($event)"
+/>

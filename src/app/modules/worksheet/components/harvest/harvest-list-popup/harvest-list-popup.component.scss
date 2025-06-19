@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+@use 'styles/scss/variables' as *;
+
+.count-stock {
+  @include mat.chips-overrides(
+    (
+      elevated-container-color: $light-green,
+      label-text-color: $dark-green,
+    )
+  );
+}

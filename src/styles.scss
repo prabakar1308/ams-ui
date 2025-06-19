@@ -1,4 +1,8 @@
 @use '@angular/material' as mat;
+@use 'styles/scss/variables' as *;
+@use "tailwindcss";
+@tailwind utilities;
+@import url('../node_modules/ngx-toastr/toastr.css');
 
 /* You can add global styles to this file, and also import other style files */
 html,
@@ -8,17 +12,21 @@ body {
 
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 
-mat-form-field.small {
+mat-form-field.ams-small {
     .mat-mdc-form-field-infix {
         padding: 8px 0;
 
         .mat-mdc-input-element {
             font-size: 14px;
         }
+    }
+
+    .mat-mdc-form-field-icon-suffix {
+        margin-top: -15px;
     }
 
     .mat-mdc-text-field-wrapper {
@@ -29,7 +37,7 @@ mat-form-field.small {
             font-size: 14px;
 
             &.mdc-floating-label--float-above {
-                top: 70%;
+                top: 75%;
             }
         }
     }
@@ -38,5 +46,114 @@ mat-form-field.small {
 
 
 :root {
+
+    // core
+    @include mat.core-overrides((option-label-text-size: 14px,
+        ));
+
     @include mat.progress-spinner-overrides((active-indicator-color: #eeece9, active-indicator-width: '1px'));
+
+    @include mat.select-overrides((trigger-text-size: 14px,
+        ));
+
+
+
+    @include mat.button-toggle-overrides((height: '36px',
+        ));
+
+    @include mat.card-overrides((outlined-container-color: #ffffff,
+            outlined-container-elevation: 1px 1px 10px 1px gray,
+            subtitle-text-size: 12px,
+            subtitle-text-color: #858989));
+
+    @include mat.divider-overrides((color: rgb(209, 208, 206),
+        ));
+
+    @include mat.datepicker-overrides((calendar-container-background-color: white,
+            calendar-date-in-range-state-background-color: #b9eddf));
+
+    // table
+    @include mat.table-overrides((background-color: rgb(255, 255, 255), row-item-outline-color: #dee3e3));
+
+    //mat-slider
+    @include mat.slider-overrides((inactive-track-color: rgb(173, 169, 169),
+        ));
+
+    //button
+    // @include mat.button-overrides((filled-container-color: rgb(20, 202, 193),
+    //         filled-label-text-color: rgb(241, 238, 238),
+    //     ));
+
+    // mat-button-fab
+    @include mat.fab-overrides((small-container-color: rgb(209, 238, 233),
+        ));
+
+    @include mat.table-overrides((row-item-label-text-color: #525050,
+        ));
+
+    @include mat.expansion-overrides((container-background-color: #f7f7f7,
+        ));
+
+}
+
+.warning {
+    @include mat.icon-button-overrides((icon-color: red), )
+}
+
+.primary {
+    @include mat.icon-button-overrides((icon-color: #006a6a),
+    );
+
+    @include mat.fab-overrides((small-container-color: rgb(209, 238, 233)));
+}
+
+.secondary {
+    @include mat.fab-overrides((small-container-color: #165d51,
+            small-foreground-color: rgb(209, 238, 233)));
+}
+
+.small {
+    @include mat.icon-button-overrides((state-layer-size: '30px'));
+}
+
+mat-card {
+    margin: 10px 2px;
+}
+
+.mat-mdc-slider {
+    // TODO: change this later
+    width: 100% !important;
+}
+
+.head {
+    color: $dark-green;
+}
+
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
+    border-right-style: hidden;
+}
+
+.mat-datepicker-content {
+    // added this as there is no override option available for box shadow
+    box-shadow: -2px 2px 5px #888 !important;
+}
+
+.mat-calendar {
+    height: 354px !important;
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* Mobile View Adjustments */
+@media (max-width: 768px) {
+    .mat-calendar {
+        height: auto !important;
+    }
 }

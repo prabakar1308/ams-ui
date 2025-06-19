@@ -5,11 +5,14 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "start:prod": "ng serve --configuration=production",
+    "build:prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^19.2.6",
     "@angular/cdk": "^19.2.9",
     "@angular/common": "^19.2.0",
     "@angular/compiler": "^19.2.0",
@@ -22,7 +25,16 @@
     "@ngrx/effects": "^19.1.0",
     "@ngrx/store": "^19.1.0",
     "@ngrx/store-devtools": "^19.1.0",
+    "@tailwindcss/postcss": "^4.1.4",
+    "echarts": "^5.6.0",
+    "html2canvas": "^1.4.1",
+    "html2canvas-pro": "^1.5.11",
+    "jspdf": "^3.0.1",
+    "ngx-echarts": "^19.0.0",
+    "ngx-toastr": "^19.0.0",
+    "postcss": "^8.5.3",
     "rxjs": "~7.8.0",
+    "tailwindcss": "^4.1.4",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
@@ -37,6 +49,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.5.3",
+    "roboto-fontface": "^0.10.0",
     "typescript": "~5.7.2"
   }
 }

@@ -2,7 +2,17 @@
   <mat-toolbar color="primary" role="navigation">
     <div class="navbar-container">
       <ng-container *ngIf="false; else logoContainer"></ng-container>
-      <ng-container *ngIf="false; else routerLinks"></ng-container>
+      <ng-container *ngIf="!loggedIn; else routerLinks"></ng-container>
+      <div class="flex items-center gap-2 w-1/2 justify-end pr-4" *ngIf="loggedIn">
+        <div class="user-info flex items-center gap-2 px-2 py-1 rounded bg-white/10">
+          <mat-icon>account_circle</mat-icon>
+          <span class="font-semibold text-sm text-[#707b85]">{{ userName }}</span>
+        </div>
+        <button mat-stroked-button color="accent" (click)="logoutButton()">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+      </div>
     </div>
   </mat-toolbar>
 </div>
@@ -11,12 +21,21 @@
   <mat-toolbar>
     <div class="navbar-container">
       <ng-container *ngIf="false; else logoContainer"></ng-container>
+      <div class="flex items-center gap-1 w-1/2 justify-end w-full pr-2" *ngIf="loggedIn">
+        <div class="user-info flex items-center gap-1 px-2 py-1 rounded bg-white/10">
+          <mat-icon>account_circle</mat-icon>
+          <span class="font-semibold text-sm text-[#707b85]">{{ userName }}</span>
+        </div>
+        <button mat-icon-button color="accent" (click)="logoutButton()">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
     </div>
   </mat-toolbar>
 
   <mat-toolbar>
     <div class="navbar-container">
-      <ng-container *ngIf="false; else routerLinks"></ng-container>
+      <ng-container *ngIf="!loggedIn; else routerLinks"></ng-container>
     </div>
   </mat-toolbar>
 </div>
@@ -30,13 +49,22 @@
 
 <ng-template #routerLinks>
   <div class="router-links">
-    @for (item of navbarItems; track item.name;) {
-    <a
-      routerLinkActive="active"
-      [ngClass]="{ highlight: activeUrl.includes(item.route) }"
-      [routerLink]="item.route"
-      >{{ item.name }}</a
-    >
+    @for (item of navbarItems; track item.name) {
+      <a
+        routerLinkActive="active"
+        [ngClass]="{ highlight: activeUrl.includes(item.route) }"
+        [routerLink]="item.route"
+        >{{ item.name }}</a
+      >
     }
+  </div>
+</ng-template>
+
+<ng-template #logout>
+  <div class="flex justify-end w-full">
+    <button mat-button (click)="logoutButton()">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
   </div>
 </ng-template>

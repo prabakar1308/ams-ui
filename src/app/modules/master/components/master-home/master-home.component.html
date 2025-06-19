@@ -1,3 +1,12 @@
-<p>master-home works!</p>
-
-<button (click)="getUsers()">Get Users</button>
+<div class="mt-6">
+  <mat-tab-group dynamicHeight>
+    <mat-tab label="User Details">
+      <div>
+        <app-user-details />
+      </div>
+    </mat-tab>
+    <mat-tab label="Harvest Type">
+      <div></div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

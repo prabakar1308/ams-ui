@@ -1,1 +1,146 @@
-<app-form-generator />
+<div class="worksheet-container">
+  <div>
+    <app-worksheet-filter
+      [disableCreate]="disableCreate"
+      [selectedItems]="selection.selected"
+    ></app-worksheet-filter>
+    <div>
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <section class="table-container mat-elevation-z8" tabindex="0">
+            <table mat-table [dataSource]="dataSource">
+              <!-- Checkbox Column -->
+              <ng-container matColumnDef="select" sticky>
+                <th mat-header-cell *matHeaderCellDef class="max-w-15">
+                  <mat-checkbox
+                    [disabled]="disableHeader"
+                    (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    [aria-label]="checkboxLabel()"
+                  >
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let element" class="max-w-15">
+                  <mat-checkbox
+                    [disabled]="element.worksheetId !== 0"
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? toggleRow(element) : null"
+                    [checked]="selection.isSelected(element)"
+                    [aria-label]="checkboxLabel(element)"
+                  >
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="tank" sticky>
+                <th mat-header-cell *matHeaderCellDef class="max-w-18">Tank</th>
+                <td mat-cell *matCellDef="let element" class="max-w-18">
+                  {{ element.tankNumber }}
+                </td>
+              </ng-container>
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="harvest">
+                <th mat-header-cell *matHeaderCellDef class="min-w-32">Harvest Type</th>
+                <td mat-cell *matCellDef="let element" class="min-w-32">
+                  {{ element.harvestType?.value || '-' }}
+                </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="source">
+                <th mat-header-cell *matHeaderCellDef class="min-w-32">Source</th>
+                <td mat-cell *matCellDef="let element" class="min-w-32">
+                  {{ element.inputSource || '-' }}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="user">
+                <th mat-header-cell *matHeaderCellDef class="min-w-40">Assigned User</th>
+                <td mat-cell *matCellDef="let element" class="min-w-40 grid-cols-2">
+                  <div class="flex flex-row items-center">
+                    @if (element.assignedUser) {
+                      <button
+                        class="primary small"
+                        mat-icon-button
+                        (click)="onAction(element, 'update', true)"
+                        [matTooltip]="getTooltipValue(element)"
+                      >
+                        <mat-icon>manage_accounts</mat-icon>
+                      </button>
+
+                      <p class="font-medium">{{ element.assignedUser?.value || '-' }}</p>
+                    } @else {
+                      <p>-</p>
+                    }
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef class="min-w-40">Status</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  class="min-w-40 text-[#006a6a] font-semibold"
+                >
+                  {{ element.status?.value || '-' }}
+                  <p
+                    class="font-sans text-xs"
+                    [ngClass]="{
+                      'text-red-500': element.timeDifference?.status === 'error',
+                      'text-green-500': element.timeDifference?.status === 'success',
+                      'text-yellow-500': element.timeDifference?.status === 'warning',
+                    }"
+                  >
+                    {{ element.timeDifference?.text }}
+                  </p>
+                </td>
+              </ng-container>
+
+              <!-- Star Column -->
+              <ng-container matColumnDef="action" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions" class="min-w-24">
+                  Actions
+                </th>
+                <td mat-cell *matCellDef="let element" class="min-w-24">
+                  @if (getIconName(element)) {
+                    <button
+                      class="primary small"
+                      mat-icon-button
+                      (click)="onAction(element, 'next')"
+                      [matTooltip]="getTooltipValue(element)"
+                    >
+                      <mat-icon>{{ getIconName(element) }}</mat-icon>
+                    </button>
+                  }
+                  @if (canDelete(element) && isAdmin) {
+                    <button
+                      class="warning small"
+                      mat-icon-button
+                      (click)="onAction(element, 'delete')"
+                      matTooltip="Delete"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  }
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns" class="pl-1 pr-1"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td [attr.colspan]="displayedColumns.length" class="p-4 text-center font-bold">
+                  No records available!
+                </td>
+              </tr>
+            </table>
+          </section>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

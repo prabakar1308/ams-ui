@@ -37,6 +37,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   imports: [CommonModule],
@@ -81,6 +82,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
     MatBottomSheetModule,
     MatDividerModule,
     OverlayModule,
+    ClipboardModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -1,0 +1,23 @@
+@use 'styles/scss/variables' as *;
+@use '@angular/material' as mat;
+
+
+.dashboard-container {
+
+    margin-top: 30px;
+
+    .chart-section {
+        margin-top: 30px;
+
+        .card-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .chart-container-cl {
+            height: 32rem;
+        }
+    }
+}

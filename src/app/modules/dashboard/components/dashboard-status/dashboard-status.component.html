@@ -1,1 +1,62 @@
-<p>dashboard-status works!</p>
+<div class="dashboard-status-container">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <div class="flex flex-col md:flex-row justify-between items-center w-full">
+        <span class="text-xl pl-1 font-semibold font-sans">Production</span>
+        <div class="py-2 px-4 flex flex-col md:flex-row items-center gap-1 md:gap-4">
+          <div class="flex flex-row items-center gap-2">
+            <div class="indicator bg-yellow-600"></div>
+            <span class="italic text-xs">Overall figures pending for transit.</span>
+          </div>
+          <div class="flex flex-row items-center gap-2">
+            <!-- <app-date-range-picker
+            [value]="dateValue"
+            (selectionChange)="dateChange($event)"
+          ></app-date-range-picker> -->
+            <div class="indicator bg-green-600"></div>
+            <span class="italic text-xs"
+              >Today's figures transferred to different unit sectors.</span
+            >
+          </div>
+        </div>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-1 sm:gap-4 flex-wrap data-card"
+      >
+        <mat-card *ngFor="let item of productionItems" appearance="outlined" [ngClass]="item.class">
+          <mat-card-content>
+            <div class="flex flex-col items-center">
+              <div class="icon-container">
+                <mat-icon aria-hidden="false" fontIcon="{{ item.icon }}"></mat-icon>
+              </div>
+              <div class="card-body font-sans">
+                <span>{{ item.title }}</span>
+              </div>
+              <div class="card-footer">
+                @for (value of item.values; track $index) {
+                  <a
+                    [ngClass]="value.class"
+                    class="flex items-center justify-center gap-1 link"
+                    [routerLink]="value.link ? value.link : undefined"
+                    [queryParams]="value.queryParams ? value.queryParams : undefined"
+                    (click)="value.click ? navigateItem(value.click) : null"
+                  >
+                    <span class="min-w-5 text-center">{{ value?.count }}</span>
+                    @if (value.unit) {
+                      <span>{{ value?.unit }}</span>
+                    }
+                  </a>
+                }
+                @if (item.values.length === 0) {
+                  <span class="text-gray-500">No Data</span>
+                }
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

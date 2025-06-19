@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MasterService } from '../../services/master.service';
+import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 
 @Component({
   selector: 'app-master-home',
@@ -8,15 +8,9 @@ import { MasterService } from '../../services/master.service';
   styleUrl: './master-home.component.scss',
 })
 export class MasterHomeComponent implements OnInit {
-  constructor(private masterService: MasterService) {}
+  constructor(private sharedService: SharedFacadeService) {}
 
   ngOnInit() {
-    this.getUsers();
-  }
-
-  getUsers() {
-    this.masterService.getUsers().subscribe((res) => {
-      console.log('Users:', res);
-    });
+    this.sharedService.getMasterData();
   }
 }

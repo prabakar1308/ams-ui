@@ -3,6 +3,18 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      // "@app/*": ["app/*"],
+      "@assets/*": ["assets/*"],
+      "@environments/*": ["environments/*"],
+      "@app/shared/*": ["app/shared/*"],
+      "@app/core/*": ["app/core/*"],
+      "@app/auth/*": ["app/modules/auth/*"],
+      "@app/dashboard/*": ["app/modules/dashboard/*"],
+      "@master/*": ["app/modules/master/*"],
+      "@app/worksheet/*": ["app/modules/worksheet/*"],
+    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

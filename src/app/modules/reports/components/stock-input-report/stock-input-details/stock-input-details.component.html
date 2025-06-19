@@ -1,0 +1,19 @@
+<div class="flex flex-col items-center gap-2 mt-6">
+  <h4 class="text-xl pl-4 font-serif font-bold text-[#165d51] underline">{{ title }}</h4>
+  <div class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-center">
+    @for (item of data; track $index) {
+      <div class="min-w-40">
+        <mat-card appearance="outlined">
+          <mat-card-content>
+            <div class="flex flex-col gap-2 justify-center items-center font-semibold">
+              <span class="text-gray-500">{{ getUnitName(item) }}</span>
+              <span class="h-8 w-8 bg-gray-200 rounded-lg text-center pt-1 text-[#165d51]">{{
+                item.count || '-'
+              }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
+  </div>
+</div>

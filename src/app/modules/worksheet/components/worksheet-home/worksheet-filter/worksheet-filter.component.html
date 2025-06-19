@@ -1,0 +1,186 @@
+<div class="worksheet-filter-container">
+  <div class="flex w-full flex-col md:flex-row items-center">
+    <div class="flex-initial md:w-1/4 pb-4 md:pb-0">
+      <h4 class="text-xl pl-4 font-serif font-bold text-[#165d51]">Worksheets</h4>
+    </div>
+    <div class="flex flex-row justify-center md:justify-end items-start gap-4 flex-wrap md:w-3/4">
+      <div>
+        <button
+          aria-label="Go to harvest list"
+          [routerLink]="['/worksheet/harvest']"
+          mat-mini-fab
+          matTooltip="Harvest"
+          class="secondary"
+        >
+          <mat-icon>agriculture</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          aria-label="Go to transit list"
+          [routerLink]="['/worksheet/transit']"
+          mat-mini-fab
+          matTooltip="Transit"
+          class="secondary"
+        >
+          <mat-icon>local_shipping</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          aria-label="Go to Restock Page"
+          [routerLink]="['/worksheet/restock']"
+          mat-mini-fab
+          matTooltip="Restock"
+          class="secondary"
+        >
+          <mat-icon>warehouse</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          mat-mini-fab
+          aria-label="worksheet refresh"
+          (click)="onRefresh()"
+          class="primary"
+          matTooltip="Refresh"
+        >
+          <mat-icon>sync</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          mat-mini-fab
+          aria-label="worksheet refresh"
+          (click)="onCreateWorksheet()"
+          [disabled]="disableCreate || !isAdmin"
+          matTooltip="Create"
+          class="secondary"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="outline-2 outline-offset-2 outline-[#165d51] my-4 mx-2 p-3 rounded-lg">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-5">
+      <div class="w-full">
+
+        <mat-button-toggle-group
+          [value]="worksheetFilter.tankTypeId"
+          (change)="onTankTypeChange($event)"
+          name="tankType"
+          aria-label="Tank Type"
+          class="mb-4 w-full"
+        >
+          <mat-button-toggle class="w-1/2" [value]="1">Machinery</mat-button-toggle>
+          <mat-button-toggle class="w-1/2" [value]="2">Conventional</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <div class="w-full">
+        <mat-form-field appearance="outline" class="ams-small w-full">
+          <mat-label>Harvest Type</mat-label>
+          <mat-select
+            [value]="worksheetFilter.harvestTypeId"
+            (selectionChange)="onHarvestTypeChange($event.value)"
+          >
+            @for (type of harvestTypes; track type) {
+              <mat-option [value]="type.id">{{ type.value }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="w-full">
+        <mat-form-field appearance="outline" class="ams-small w-full">
+          <mat-label>User</mat-label>
+          <mat-select
+            [value]="worksheetFilter.userId"
+            (selectionChange)="onUserChange($event.value)"
+          >
+            @for (user of userDetails; track user) {
+              <mat-option [value]="user.id"
+                >{{ user.firstName || 'All' }} {{ user.lastName }}</mat-option
+              >
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="w-full">
+        <mat-form-field appearance="outline" class="ams-small w-full">
+          <mat-label>Status</mat-label>
+
+          <mat-select
+            [value]="worksheetFilter.statusId"
+            (selectionChange)="onStatusChange($event.value)"
+          >
+            @for (option of statusDetails; track option) {
+              <mat-option [value]="option.id">{{ option.value || 'All' }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div> -->
+  <div class="mt-4 mb-6">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-5">
+          <div class="w-full">
+            <mat-button-toggle-group
+              [value]="worksheetFilter.tankTypeId"
+              (change)="onTankTypeChange($event)"
+              name="tankType"
+              aria-label="Tank Type"
+              class="mb-4 w-full"
+            >
+              <mat-button-toggle class="w-1/2" [value]="1">Machinery</mat-button-toggle>
+              <mat-button-toggle class="w-1/2" [value]="2">Conventional</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          <div class="w-full">
+            <mat-form-field appearance="outline" class="ams-small w-full">
+              <mat-label>Harvest Type</mat-label>
+              <mat-select
+                [value]="worksheetFilter.harvestTypeId"
+                (selectionChange)="onHarvestTypeChange($event.value)"
+              >
+                @for (type of harvestTypes; track type) {
+                  <mat-option [value]="type.id">{{ type.value }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="w-full">
+            <mat-form-field appearance="outline" class="ams-small w-full">
+              <mat-label>User</mat-label>
+              <mat-select
+                [value]="worksheetFilter.userId"
+                (selectionChange)="onUserChange($event.value)"
+              >
+                @for (user of userDetails; track user) {
+                  <mat-option [value]="user.id"
+                    >{{ user.firstName || 'All' }} {{ user.lastName }}</mat-option
+                  >
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="w-full">
+            <mat-form-field appearance="outline" class="ams-small w-full">
+              <mat-label>Status</mat-label>
+
+              <mat-select
+                [value]="worksheetFilter.statusId"
+                (selectionChange)="onStatusChange($event.value)"
+              >
+                @for (option of statusDetails; track option) {
+                  <mat-option [value]="option.id">{{ option.value || 'All' }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
