@@ -78,7 +78,7 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
       }
 
       formGroup[control.name] = [
-        { value: control.value || '', disabled: control.hide || control.disabled },
+        { value: control.value || '', disabled: control.hide && control.disabled },
         controlValidators,
       ];
       // }

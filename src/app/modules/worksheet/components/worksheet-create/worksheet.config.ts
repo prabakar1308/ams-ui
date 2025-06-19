@@ -164,6 +164,7 @@ export const formConfig: FormStructure[] = [
         message: 'Input count is required',
       },
     ],
+    hide: true,
   },
 
   // Input Unit
@@ -180,6 +181,7 @@ export const formConfig: FormStructure[] = [
         message: 'Input specs is required',
       },
     ],
+    hide: true,
   },
   // Restock
   {
@@ -198,6 +200,7 @@ export const formConfig: FormStructure[] = [
       },
     ],
     hide: true,
+    disabled: true,
   },
   // Assigned User
   {

@@ -144,6 +144,7 @@ export class UserDetailsComponent {
         ...data,
         value: userDetails[data.name as keyof UserDetails] || '',
         hide: data.name === FORM_CONTROL_NAMES.PASSWORD ? true : data.hide,
+        disabled: data.name === FORM_CONTROL_NAMES.PASSWORD ? true : data.disabled,
       };
     });
     this.userAction = USER_ACTIONS.EDIT;
