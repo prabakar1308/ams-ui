@@ -9,17 +9,12 @@ export interface AppState extends fromRoot.AppState {
 
 const getAuthFeatureState = createFeatureSelector<AuthState>('auth');
 
-export const getUserData = createSelector(
-  getAuthFeatureState,
-  (state: AuthState) => ({
-    userId: state.userId,
-    userRole: state.userRole,
-    accessToken: state.accessToken,
-    refreshToken: state.refreshToken,
-  })
-);
+export const getUserData = createSelector(getAuthFeatureState, (state: AuthState) => ({
+  userId: state.userId,
+  userRole: state.userRole,
+  userName: state.userName,
+  accessToken: state.accessToken,
+  refreshToken: state.refreshToken,
+}));
 
-export const getMetaInfo = createSelector(
-  getAuthFeatureState,
-  (state) => state.meta
-);
+export const getMetaInfo = createSelector(getAuthFeatureState, (state) => state.meta);

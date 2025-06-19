@@ -111,7 +111,7 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="flex flex-col md:flex-row justify-start items-center pb-3 gap-4">
+  <div class="flex flex-col md:flex-row justify-start md:justify-between items-center pb-3 gap-4">
     <div class="flex flex-col items-start gap-2 mt-6">
       <span class="italic text-sm"
         >Overall Stocks used between
@@ -137,9 +137,13 @@
         }
       </div>
     </div>
-    <mat-divider [vertical]="true"></mat-divider>
+    <!-- <div class="h-full flex items-center">
+      <mat-divider [vertical]="true" class="min-h-20"></mat-divider>
+    </div> -->
     <div class="flex flex-col items-start gap-2 mt-6">
-      <span class="italic text-sm">Overall Stocks currently in stocking</span>
+      <span class="italic text-sm"
+        >Overall Stocks currently in status of <strong>In Stocking</strong></span
+      >
       <div class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-start">
         @for (item of overallActiveStocks; track $index) {
           <div class="min-w-40">

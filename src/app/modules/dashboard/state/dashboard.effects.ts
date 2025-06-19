@@ -49,8 +49,8 @@ export class DashboardEffects {
         forkJoin([
           this.dashboardService.getHarvestCount(1, ['A', 'P']),
           this.dashboardService.getHarvestCount(2, ['A', 'P']),
-          this.dashboardService.getTransitsCount(1, 1),
-          this.dashboardService.getTransitsCount(2, 1),
+          this.dashboardService.getTransitsCount(1, 0),
+          this.dashboardService.getTransitsCount(2, 0),
           this.dashboardService.getRestockCount('A'),
           this.dashboardService.getInStockCount(1),
           this.dashboardService.getInStockCount(2),

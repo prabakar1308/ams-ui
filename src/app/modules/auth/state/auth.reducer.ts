@@ -6,6 +6,7 @@ import { AuthState } from '../models/auth-state';
 export const initialState: AuthState = {
   isAuthenticated: false,
   userRole: '',
+  userName: '',
   userId: '',
   accessToken: '',
   refreshToken: '',
@@ -29,6 +30,7 @@ export const authReducer = createReducer(
     ...state,
     userId: payload.userId,
     userRole: payload.userRole,
+    userName: payload.userName,
     accessToken: payload.accessToken,
     refreshToken: payload.refreshToken,
     isAuthenticated: true,
@@ -44,5 +46,5 @@ export const authReducer = createReducer(
       isLoading: false,
       error: payload.error,
     },
-  }))
+  })),
 );

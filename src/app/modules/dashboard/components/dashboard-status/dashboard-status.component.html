@@ -40,6 +40,8 @@
                     [ngClass]="value.class"
                     class="flex items-center justify-center gap-1 link"
                     [routerLink]="value.link ? value.link : undefined"
+                    [queryParams]="value.queryParams ? value.queryParams : undefined"
+                    (click)="value.click ? navigateItem(value.click) : null"
                   >
                     <span class="min-w-5 text-center">{{ value?.count }}</span>
                     @if (value.unit) {

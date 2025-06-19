@@ -117,7 +117,7 @@
                       <mat-icon>{{ getIconName(element) }}</mat-icon>
                     </button>
                   }
-                  @if (canDelete(element)) {
+                  @if (canDelete(element) && isAdmin) {
                     <button
                       class="warning small"
                       mat-icon-button

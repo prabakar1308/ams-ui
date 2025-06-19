@@ -27,6 +27,7 @@ export class AuthEffects {
         this.authService.login(userId, password).pipe(
           map((res: Response<AuthResponse>) => {
             if (res.status !== 200) {
+              this.notificationService.showMessage(SEVERITY.ERROR, 'Invalid Credentials!');
               return userLoginFailure({ error: res.message || 'Login failed' });
             }
             const userData = res.data;
@@ -38,11 +39,15 @@ export class AuthEffects {
               }
               return userLoginSuccess(userData);
             }
+            this.notificationService.showMessage(SEVERITY.ERROR, 'Login Failed!');
             return userLoginFailure({ error: 'Login failed' });
           }),
           // TODO: this is not working, handled in component
           tap(() => this.router.navigate(['/dashboard'])),
-          catchError((error) => of(userLoginFailure({ error }))),
+          catchError((error) => {
+            this.notificationService.showMessage(SEVERITY.ERROR, 'Invalid Credentials!');
+            return of(userLoginFailure({ error }));
+          }),
         ),
       ),
     ),

@@ -53,7 +53,7 @@
           mat-mini-fab
           aria-label="worksheet refresh"
           (click)="onCreateWorksheet()"
-          [disabled]="disableCreate"
+          [disabled]="disableCreate || !isAdmin"
           matTooltip="Create"
           class="secondary"
         >

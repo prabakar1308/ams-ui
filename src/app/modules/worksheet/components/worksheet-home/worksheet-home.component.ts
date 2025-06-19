@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
 import { UpdateWorksheetRequest } from '@app/worksheet/models/create-worksheet';
+import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
+import { ADMIN } from '@app/core/core.contants';
 
 @Component({
   selector: 'app-worksheet-home',
@@ -27,10 +29,12 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
   selection = new SelectionModel<WorksheetTank>(true, []);
   worksheetFilter: WorksheetFilter = {};
   disableCreate = true;
+  isAdmin = false;
 
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
     private sharedFacadeService: SharedFacadeService,
+    private authFacadeService: AuthFacadeService,
     private dialog: MatDialog,
     private router: Router,
   ) {}
@@ -50,6 +54,14 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
         this.worksheetFilter = data;
+      });
+
+    this.authFacadeService.userData$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((userData) => {
+        if (userData) {
+          this.isAdmin = userData.userRole === ADMIN;
+        }
       });
   }
 
@@ -102,7 +114,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       case WORKSHEET_STATUS.READY_FOR_HARVEST:
         return 'task_alt';
       case WORKSHEET_STATUS.FREE:
-        return 'add_circle';
+        return this.isAdmin ? 'add_circle' : '';
       default:
         return '';
     }

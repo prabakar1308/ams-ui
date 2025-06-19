@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HarvestFilter } from '@app/shared/models/shared-state';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { HarvestDetails } from '@app/worksheet/models/harvest-details';
@@ -15,21 +15,26 @@ import { distinctUntilChanged, filter, Subject, takeUntil } from 'rxjs';
   styleUrl: './harvest-home.component.scss',
 })
 export class HarvestHomeComponent {
-  unitId: number = 1; // Default unit ID
+  unitId: number = 1;
+  selectedTab = 0; // Default selected tab index
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
-    let filter: HarvestFilter = {
-      unitId: this.unitId,
-      statusIds: ['A', 'P'],
-    };
-    //Need to check
-    this.worksheetFacadeService.getHarvests(filter);
-
-    //this.sharedFacadeService.getUsersList();
+    this.route.queryParams.subscribe((params) => {
+      if (params['id']) {
+        this.selectedTab = Number(params['id']) - 1; // Assuming tab index is id - 1
+        this.unitId = Number(params['id']);
+      }
+      let filter: HarvestFilter = {
+        unitId: this.unitId,
+        statusIds: ['A', 'P'],
+      };
+      this.worksheetFacadeService.getHarvests(filter);
+    });
   }
 
   loadData(event: MatTabChangeEvent) {

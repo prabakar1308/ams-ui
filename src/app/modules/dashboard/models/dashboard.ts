@@ -10,5 +10,7 @@ export interface ProductionItemValue {
   count: number;
   unit?: string;
   link: string;
+  queryParams?: { [key: string]: string };
+  click?: number;
   class: string;
 }

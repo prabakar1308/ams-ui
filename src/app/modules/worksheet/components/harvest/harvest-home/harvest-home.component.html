@@ -39,6 +39,7 @@
     mat-stretch-tabs="false"
     mat-align-tabs="center"
     (selectedTabChange)="loadData($event)"
+    [selectedIndex]="selectedTab"
   >
     <mat-tab label="Holding Tanks">
       <div>

@@ -3,7 +3,16 @@
     <div class="navbar-container">
       <ng-container *ngIf="false; else logoContainer"></ng-container>
       <ng-container *ngIf="!loggedIn; else routerLinks"></ng-container>
-      <ng-container *ngIf="!loggedIn; else logout"></ng-container>
+      <div class="flex items-center gap-2 w-1/2 justify-end pr-4" *ngIf="loggedIn">
+        <div class="user-info flex items-center gap-2 px-2 py-1 rounded bg-white/10">
+          <mat-icon>account_circle</mat-icon>
+          <span class="font-semibold text-sm text-[#707b85]">{{ userName }}</span>
+        </div>
+        <button mat-stroked-button color="accent" (click)="logoutButton()">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+      </div>
     </div>
   </mat-toolbar>
 </div>
@@ -12,7 +21,15 @@
   <mat-toolbar>
     <div class="navbar-container">
       <ng-container *ngIf="false; else logoContainer"></ng-container>
-      <ng-container *ngIf="!loggedIn; else logout"></ng-container>
+      <div class="flex items-center gap-1 w-1/2 justify-end w-full pr-2" *ngIf="loggedIn">
+        <div class="user-info flex items-center gap-1 px-2 py-1 rounded bg-white/10">
+          <mat-icon>account_circle</mat-icon>
+          <span class="font-semibold text-sm text-[#707b85]">{{ userName }}</span>
+        </div>
+        <button mat-icon-button color="accent" (click)="logoutButton()">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
     </div>
   </mat-toolbar>
 

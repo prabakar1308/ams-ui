@@ -3,4 +3,5 @@ export interface AuthResponse {
   refreshToken: string;
   userId: string;
   userRole: string;
+  userName: string;
 }
