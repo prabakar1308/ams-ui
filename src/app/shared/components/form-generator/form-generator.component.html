@@ -158,9 +158,19 @@
         </div>
 
         <div class="flex justify-center pt-10">
+          @if (showDelete) {
+            <button
+              type="button"
+              class="sm:w-full md:w-32 mr-2 md:mr-8 warning"
+              mat-flat-button
+              (click)="onDelete()"
+            >
+              Delete
+            </button>
+          }
           <button
             type="button"
-            class="sm:w-full md:w-32 mr-8"
+            class="sm:w-full md:w-32 mr-2 md:mr-8"
             mat-raised-button
             (click)="onMoveBack()"
           >

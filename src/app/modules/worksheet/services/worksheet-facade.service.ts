@@ -10,6 +10,7 @@ import { WorksheetTank } from '../models/active-worksheet';
 import {
   CreateWorksheetRequest,
   TankSelection,
+  UpdateWorksheet,
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
@@ -22,6 +23,7 @@ import { CreateTransitRequest } from '../models/create-transit';
   providedIn: 'root',
 })
 export class WorksheetFacadeService {
+  currentWorksheet$: Observable<UpdateWorksheet | null>;
   activeWorksheets$: Observable<WorksheetTank[]>;
   activeRestocks$: Observable<ActiveRestock[]>;
   transits$: Observable<Transit[]>;
@@ -30,12 +32,17 @@ export class WorksheetFacadeService {
   activeHarvestList$: Observable<HarvestDetails[]>;
 
   constructor(private store: Store<fromStore.AppState>) {
+    this.currentWorksheet$ = this.store.select(fromStore.getCurrentWorksheet);
     this.activeWorksheets$ = this.store.select(fromStore.getActiveWorksheets);
     this.activeRestocks$ = this.store.select(fromStore.getActiveRestocks);
     this.transits$ = this.store.select(fromStore.getTransits);
     this.tankSelection$ = this.store.select(fromStore.getWorksheetTankDetails);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
     this.activeHarvestList$ = this.store.select(fromStore.getHarvestList);
+  }
+
+  getCurrentWorksheet(id: number) {
+    this.store.dispatch(worksheetActions.getCurrentWorksheet(id));
   }
 
   getActiveWorksheets(filterData: WorksheetFilter) {
@@ -51,11 +58,15 @@ export class WorksheetFacadeService {
   }
 
   updateWorksheets(request: UpdateWorksheetRequest) {
-    this.store.dispatch(worksheetActions.updateWorksheet(request));
+    this.store.dispatch(worksheetActions.updateWorksheets(request));
   }
 
   updateWorksheetTankSelection(data: TankSelection) {
     this.store.dispatch(worksheetActions.updateWorksheetTankDetails(data));
+  }
+
+  updateWorksheetParams(request: UpdateWorksheet) {
+    this.store.dispatch(worksheetActions.updateWorksheetParams(request));
   }
 
   //Restocks

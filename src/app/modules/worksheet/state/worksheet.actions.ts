@@ -4,6 +4,7 @@ import { HarvestFilter, WorksheetFilter } from '@app/shared/models/shared-state'
 import {
   CreateWorksheetRequest,
   TankSelection,
+  UpdateWorksheet,
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
@@ -15,6 +16,21 @@ import { CreateTransitRequest, CreateTransitResponse } from '../models/create-tr
 export const getActiveWorksheets = createAction(
   '[Worksheet] Get Active Worksheets',
   (payload: WorksheetFilter) => ({ payload }),
+);
+
+export const getCurrentWorksheet = createAction(
+  '[Worksheet] Get Current Worksheet',
+  (payload: number) => ({ payload }),
+);
+
+export const getCurrentWorksheetSucess = createAction(
+  '[Worksheet] Get Current Worksheet Success',
+  (payload: UpdateWorksheet) => ({ payload }),
+);
+
+export const getCurrentWorksheetFailure = createAction(
+  '[Worksheet] Get Current Worksheet Failure',
+  (payload: { error: string }) => ({ payload }),
 );
 
 export const getActiveWorksheetsSuccess = createAction(
@@ -44,8 +60,8 @@ export const createWorksheetFailure = createAction(
   (payload: { error: string }) => ({ payload }),
 );
 
-export const updateWorksheet = createAction(
-  '[Worksheet] Update Worksheet',
+export const updateWorksheets = createAction(
+  '[Worksheet] Update Worksheets',
   (payload: UpdateWorksheetRequest) => ({
     payload,
   }),
@@ -59,6 +75,18 @@ export const updateWorksheetFailure = createAction(
 export const updateWorksheetTankDetails = createAction(
   '[Worksheet] Update Worksheet Tank Details',
   (payload: TankSelection) => ({ payload }),
+);
+
+export const updateWorksheetParams = createAction(
+  '[Worksheet] Update Worksheet Params',
+  (payload: UpdateWorksheet) => ({
+    payload,
+  }),
+);
+
+export const updateWorksheetParamsFailure = createAction(
+  '[Worksheet] Update Worksheet Params Failure',
+  (payload: { error: string }) => ({ payload }),
 );
 
 // Restock

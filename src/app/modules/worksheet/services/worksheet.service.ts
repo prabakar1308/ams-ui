@@ -5,7 +5,11 @@ import { Response } from '@app/shared/models/response';
 import { environment } from '@environments/environment';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
 import { WorksheetTank } from '../models/active-worksheet';
-import { CreateWorksheetRequest, UpdateWorksheetRequest } from '../models/create-worksheet';
+import {
+  CreateWorksheetRequest,
+  UpdateWorksheet,
+  UpdateWorksheetRequest,
+} from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
 import { CreateHarvestRequest } from '../models/create-harvest';
 import { Transit, TransitPayload } from '../models/transit';
@@ -28,12 +32,29 @@ export class WorksheetService {
     );
   }
 
+  getWorksheetById(id: number) {
+    return this.http.get<Response<any>>(`${this.API_URL}/get-worksheet/${id}`);
+  }
+
   createWorksheets(request: CreateWorksheetRequest) {
     return this.http.post<Response<WorksheetTank[]>>(`${this.API_URL}/create-worksheets`, request);
   }
 
   updateWorksheets(request: UpdateWorksheetRequest) {
     return this.http.patch<Response<WorksheetTank[]>>(`${this.API_URL}/update-worksheets`, request);
+  }
+
+  updateWorksheetParams(request: UpdateWorksheet) {
+    return this.http.patch<Response<WorksheetTank[]>>(
+      `${this.API_URL}/update-worksheet-params`,
+      request,
+    );
+  }
+
+  deleteWorksheet(id: number) {
+    return this.http.delete<Response<WorksheetTank[]>>(
+      `${this.API_URL}/soft-delete-worksheet?id=${id}`,
+    );
   }
 
   // restock

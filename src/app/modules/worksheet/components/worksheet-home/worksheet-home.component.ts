@@ -124,7 +124,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
     const status = data && data.status ? data.status.id : WORKSHEET_STATUS.FREE;
     switch (status) {
       case WORKSHEET_STATUS.READY_FOR_STOCKING:
-        return 'Update';
+        return 'Move';
       case WORKSHEET_STATUS.READY_FOR_HARVEST:
         return 'Harvest';
       case WORKSHEET_STATUS.FREE:
@@ -135,16 +135,14 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
   }
 
   onAction(worksheet: WorksheetTank, action: string, userOnly: boolean = false) {
-    if (action === 'delete') {
-      const data = {
-        title: 'Delete Confirmation',
-        message: `Are you sure you want to delete the worksheet?`,
-      };
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
-      dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
-        if (isConfirmed) {
-          // this.deleteAccountType(accountType.value.accountTypeId);
-        }
+    if (action === 'edit') {
+      // this.deleteAccountType(accountType.value.accountTypeId);
+      this.worksheetFacadeService.updateWorksheetTankSelection({
+        tankType: this.worksheetFilter.tankTypeId,
+        tanks: [worksheet.tankNumber],
+      });
+      this.router.navigate(['worksheet/create'], {
+        queryParams: { id: worksheet.worksheetId },
       });
     } else if (action === 'next') {
       const status = worksheet && worksheet.status ? worksheet.status.id : WORKSHEET_STATUS.FREE;

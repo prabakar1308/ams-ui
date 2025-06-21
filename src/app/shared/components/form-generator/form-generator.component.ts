@@ -29,9 +29,11 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 })
 export class FormGeneratorComponent implements OnInit, OnDestroy {
   @Input() formStructure: FormStructure[] = [];
+  @Input() showDelete = false;
   @Input() formDetails!: GenericForm;
   @Input() getRawData: boolean = false;
   @Output() moveBack = new EventEmitter<void>();
+  @Output() deleteItem = new EventEmitter<void>();
   @Output() formData = new EventEmitter<unknown>();
   @Output() formValueChange = new EventEmitter<unknown>();
 
@@ -78,7 +80,7 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
       }
 
       formGroup[control.name] = [
-        { value: control.value || '', disabled: control.hide && control.disabled },
+        { value: control.value || '', disabled: control.disabled },
         controlValidators,
       ];
       // }
@@ -99,7 +101,7 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
   }
 
   isFormControlDisabled(name: string) {
-    return this.dynamicForm.get(name)?.disabled;
+    return this.dynamicForm.get(name)?.disabled || false;
   }
 
   getErrorMessage(control: any): string {
@@ -211,6 +213,10 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
 
   onMoveBack() {
     this.moveBack.emit();
+  }
+
+  onDelete() {
+    this.deleteItem.emit();
   }
 
   onSubmit() {

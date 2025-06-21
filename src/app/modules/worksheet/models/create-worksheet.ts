@@ -6,6 +6,7 @@ export interface TankSelection {
 }
 
 export interface CreateWorksheetRequest {
+  id?: number;
   harvestHours: number;
   harvestTypeId: number;
   inputCount: number;
@@ -33,6 +34,7 @@ export interface UpdateWorksheet {
   tankNumber?: number;
   statusId?: number;
   id?: number;
+  restocks?: number[];
 }
 
 export interface UpdateWorksheetRequest {

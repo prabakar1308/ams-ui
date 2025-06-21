@@ -5,6 +5,7 @@ import * as WorksheetActions from './worksheet.actions';
 import { HarvestState } from '../models/harvest-state';
 
 export const initialState: WorksheetState = {
+  currentWorksheet: null,
   activeWorksheets: [],
   createWorksheet: {
     tankType: 0,
@@ -22,6 +23,10 @@ export const initialState: WorksheetState = {
 export const worksheetReducer = createReducer(
   initialState,
   // Handle the actions here
+  on(WorksheetActions.getCurrentWorksheetSucess, (state, { payload }) => ({
+    ...state,
+    currentWorksheet: payload,
+  })),
   on(WorksheetActions.getActiveWorksheetsSuccess, (state, { payload }) => ({
     ...state,
     activeWorksheets: payload,

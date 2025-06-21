@@ -11,7 +11,7 @@ import {
   getActiveWorksheetsFailure,
   createWorksheet,
   createWorksheetFailure,
-  updateWorksheet,
+  updateWorksheets,
   updateWorksheetFailure,
   getActiveRestocks,
   getActiveRestocksFailure,
@@ -28,6 +28,11 @@ import {
   createTransit,
   createTransitFailure,
   createTransitSuccess,
+  getCurrentWorksheet,
+  getCurrentWorksheetSucess,
+  getCurrentWorksheetFailure,
+  updateWorksheetParams,
+  updateWorksheetParamsFailure,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
@@ -36,6 +41,7 @@ import { NotificationService } from '@app/core/services/notification.service';
 import { SEVERITY } from '@app/core/core.contants';
 import { Transit } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
+import { UpdateWorksheet } from '../models/create-worksheet';
 
 @Injectable()
 export class WorksheetEffects {
@@ -63,6 +69,30 @@ export class WorksheetEffects {
             });
           }),
           catchError((error) => of(getActiveWorksheetsFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getCurrentWorksheet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getCurrentWorksheet.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.getWorksheetById(payload).pipe(
+          map((res: Response<UpdateWorksheet>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return getCurrentWorksheetFailure({
+                error: res.message || 'Get worksheet by id failed',
+              });
+            }
+            if (res.data) {
+              return getCurrentWorksheetSucess(res.data);
+            }
+            return getCurrentWorksheetFailure({
+              error: res.message || 'Get worksheet by id failed',
+            });
+          }),
+          catchError((error) => of(getCurrentWorksheetFailure({ error }))),
         ),
       ),
     ),
@@ -99,7 +129,7 @@ export class WorksheetEffects {
 
   updateWorksheets$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateWorksheet.type),
+      ofType(updateWorksheets.type),
       exhaustMap(({ payload }) =>
         this.WorksheetService.updateWorksheets(payload).pipe(
           map((res: Response<WorksheetTank[]>) => {
@@ -116,6 +146,35 @@ export class WorksheetEffects {
             });
           }),
           catchError((error) => of(updateWorksheetFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  updateWorksheetParams$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateWorksheetParams.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.updateWorksheetParams(payload).pipe(
+          map((res: Response<WorksheetTank[]>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return updateWorksheetParamsFailure({
+                error: res.message || 'Update Worksheet Params failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Worksheet is updated successfully!',
+              );
+              return getActiveWorksheetsSuccess(res.data);
+            }
+            return updateWorksheetParamsFailure({
+              error: res.message || 'Update Worksheet Params failed',
+            });
+          }),
+          tap(() => this.router.navigate(['/worksheet'])),
+          catchError((error) => of(updateWorksheetParamsFailure({ error }))),
         ),
       ),
     ),

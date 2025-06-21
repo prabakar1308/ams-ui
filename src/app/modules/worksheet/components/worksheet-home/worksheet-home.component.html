@@ -119,12 +119,12 @@
                   }
                   @if (canDelete(element) && isAdmin) {
                     <button
-                      class="warning small"
+                      class="primary small"
                       mat-icon-button
-                      (click)="onAction(element, 'delete')"
-                      matTooltip="Delete"
+                      (click)="onAction(element, 'edit')"
+                      matTooltip="Edit"
                     >
-                      <mat-icon>delete</mat-icon>
+                      <mat-icon>edit</mat-icon>
                     </button>
                   }
                 </td>
