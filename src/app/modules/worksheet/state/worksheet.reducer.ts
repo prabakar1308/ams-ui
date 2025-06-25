@@ -14,6 +14,7 @@ export const initialState: WorksheetState = {
   activeRestocks: [],
   transits: [],
   harvestList: [],
+  currentHarvest: null,
   meta: {
     isLoading: false,
     error: '',
@@ -86,6 +87,10 @@ export const worksheetReducer = createReducer(
     },
   })),
   // Harvest Details
+  on(WorksheetActions.getCurrentHarvestSuccess, (state, { payload }) => ({
+    ...state,
+    currentHarvest: payload,
+  })),
   on(WorksheetActions.getHarvestsSuccess, (state, { payload }) => ({
     ...state,
     harvestList: payload,

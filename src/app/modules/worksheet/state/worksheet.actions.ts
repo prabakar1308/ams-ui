@@ -8,7 +8,7 @@ import {
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
-import { CreateHarvestRequest } from '../models/create-harvest';
+import { CreateHarvest, CreateHarvestRequest } from '../models/create-harvest';
 import { Transit, TransitPayload } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest, CreateTransitResponse } from '../models/create-transit';
@@ -120,6 +120,23 @@ export const getHarvestsFailure = createAction(
   (payload: { error: string }) => ({ payload }),
 );
 
+export const getCurrentHarvest = createAction(
+  '[Harvest] Get Current Harvests',
+  (payload: number) => ({
+    payload,
+  }),
+);
+
+export const getCurrentHarvestSuccess = createAction(
+  '[Harvest] Get Current Harvest Success',
+  (payload: HarvestDetails) => ({ payload }),
+);
+
+export const getCurrentHarvestFailure = createAction(
+  '[Harvest] Get Current Harvest Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
 export const createHarvest = createAction(
   '[Harvest] Create Harvest',
   (payload: CreateHarvestRequest) => ({
@@ -134,6 +151,20 @@ export const createHarvestSuccess = createAction(
 
 export const createHarvestFailure = createAction(
   '[Harvest] Create Harvest Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const updateHarvest = createAction('[Harvest] Update Harvest', (payload: CreateHarvest) => ({
+  payload,
+}));
+
+export const updateHarvestSuccess = createAction(
+  '[Harvest] Update Harvest Success',
+  // (payload: WorksheetTank[]) => ({ payload }),
+);
+
+export const updateHarvestFailure = createAction(
+  '[Harvest] Update Harvest Failure',
   (payload: { error: string }) => ({ payload }),
 );
 

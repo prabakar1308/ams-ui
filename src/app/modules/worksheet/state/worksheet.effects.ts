@@ -33,6 +33,12 @@ import {
   getCurrentWorksheetFailure,
   updateWorksheetParams,
   updateWorksheetParamsFailure,
+  getCurrentHarvest,
+  getCurrentHarvestFailure,
+  getCurrentHarvestSuccess,
+  updateHarvest,
+  updateHarvestSuccess,
+  updateHarvestFailure,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
@@ -231,6 +237,59 @@ export class WorksheetEffects {
           }),
           tap(() => this.router.navigate(['/worksheet/harvest'])),
           catchError((error) => of(createHarvestFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  updateHarvest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateHarvest.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.updateHarvest(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201) {
+              return updateHarvestFailure({
+                error: res.message || 'Update harvest failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Harvest is updated successfully!',
+              );
+              return updateHarvestSuccess();
+            }
+            return updateHarvestFailure({
+              error: res.message || 'Update harvest failed',
+            });
+          }),
+          tap(() => this.router.navigate(['/worksheet/harvest'])),
+          catchError((error) => of(updateHarvestFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getCurrentHarvest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getCurrentHarvest.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.getCurrentHarvest(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return getCurrentHarvestFailure({
+                error: res.message || 'Get Current harvest failed',
+              });
+            }
+            if (res.data) {
+              return getCurrentHarvestSuccess(res.data);
+            }
+            return getCurrentHarvestFailure({
+              error: res.message || 'Get Current harvest failed',
+            });
+          }),
+          catchError((error) => of(getCurrentHarvestFailure({ error }))),
         ),
       ),
     ),

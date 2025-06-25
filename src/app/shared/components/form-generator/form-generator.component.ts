@@ -13,7 +13,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
-import { Depedent, GenericForm, GenericOption } from '@app/shared/models/generic-form';
+import { Depedent, FormDetails, GenericForm, GenericOption } from '@app/shared/models/generic-form';
 import { FormStructure, FormValidation } from '@app/shared/models/form-structure';
 import { INPUT_TYPES, TEXT_INPUT_TYPES } from '@app/shared/constants/shared.contants';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
@@ -32,6 +32,7 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
   @Input() showDelete = false;
   @Input() formDetails!: GenericForm;
   @Input() getRawData: boolean = false;
+  @Input() additionalDetails: FormDetails[] = [];
   @Output() moveBack = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
   @Output() formData = new EventEmitter<unknown>();

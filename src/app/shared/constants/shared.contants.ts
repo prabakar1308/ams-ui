@@ -91,6 +91,7 @@ export const WORKSHEET_STATUS = {
 export const WORKSHEET_TABLE_STATUS = {
   ACTIVE: 'A',
   COMPLETED: 'D',
+  PARTIALLY_COMPLETED: 'P',
   IN_USE: 'U',
 };
 

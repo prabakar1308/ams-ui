@@ -72,8 +72,16 @@ export class WorksheetService {
     });
   }
 
+  getCurrentHarvest(id: number) {
+    return this.http.get<Response<HarvestDetails>>(`${this.API_URL}/get-harvest/${id}`);
+  }
+
   createHarvest(request: CreateHarvestRequest) {
     return this.http.post<Response<any>>(`${this.API_URL}/create-multiple-harvest`, request);
+  }
+
+  updateHarvest(request: CreateHarvestRequest) {
+    return this.http.post<Response<any>>(`${this.API_URL}/update-harvest`, request);
   }
 
   // Transits

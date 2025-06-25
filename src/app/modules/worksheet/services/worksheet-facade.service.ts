@@ -14,7 +14,7 @@ import {
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
-import { CreateHarvestRequest } from '../models/create-harvest';
+import { CreateHarvest, CreateHarvestRequest } from '../models/create-harvest';
 import { Transit, TransitPayload } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest } from '../models/create-transit';
@@ -30,6 +30,7 @@ export class WorksheetFacadeService {
   tankSelection$: Observable<TankSelection>;
   meta$: Observable<MetaState>;
   activeHarvestList$: Observable<HarvestDetails[]>;
+  currentHarvest$: Observable<HarvestDetails | null>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.currentWorksheet$ = this.store.select(fromStore.getCurrentWorksheet);
@@ -39,6 +40,7 @@ export class WorksheetFacadeService {
     this.tankSelection$ = this.store.select(fromStore.getWorksheetTankDetails);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
     this.activeHarvestList$ = this.store.select(fromStore.getHarvestList);
+    this.currentHarvest$ = this.store.select(fromStore.getCurrentHarvest);
   }
 
   getCurrentWorksheet(id: number) {
@@ -83,8 +85,20 @@ export class WorksheetFacadeService {
     this.store.dispatch(worksheetActions.getHarvestsSuccess(response));
   }
 
+  getCurrentHarvest(id: number) {
+    this.store.dispatch(worksheetActions.getCurrentHarvest(id));
+  }
+
+  getCurrentHarvestSuccess(response: HarvestDetails) {
+    this.store.dispatch(worksheetActions.getCurrentHarvestSuccess(response));
+  }
+
   createHarvest(request: CreateHarvestRequest) {
     this.store.dispatch(worksheetActions.createHarvest(request));
+  }
+
+  updateHarvest(request: CreateHarvest) {
+    this.store.dispatch(worksheetActions.updateHarvest(request));
   }
 
   // get transits

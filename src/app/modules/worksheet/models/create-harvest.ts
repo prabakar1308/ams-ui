@@ -1,4 +1,5 @@
 export interface CreateHarvest {
+  id?: number;
   worksheetId: number;
   count: number | string;
   countInStock?: number;

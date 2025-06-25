@@ -11,6 +11,7 @@ export interface WorksheetState {
   activeRestocks: ActiveRestock[];
   transits: Transit[];
   harvestList: HarvestDetails[];
+  currentHarvest: HarvestDetails | null;
   meta: {
     isLoading: boolean;
     error: string;

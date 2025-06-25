@@ -13,4 +13,6 @@ export interface HarvestDetails {
   status: string;
   createdAt: Date;
   updatedAt: Date;
+  restockCount?: number;
+  restockStatus?: string;
 }

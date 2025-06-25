@@ -16,6 +16,7 @@ import { HarvestListPopupComponent } from '../harvest-list-popup/harvest-list-po
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { UnitSector } from '@app/shared/models/master';
 import { HarvestFilter } from '@app/shared/models/shared-state';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-harvest-list',
@@ -46,6 +47,7 @@ export class HarvestListComponent {
     private worksheetFacadeService: WorksheetFacadeService,
     private sharedFacadeService: SharedFacadeService,
     private dialog: MatDialog,
+    private router: Router,
   ) {}
   ngOnInit() {
     this.worksheetFacadeService.activeHarvestList$
@@ -82,6 +84,13 @@ export class HarvestListComponent {
         };
         this.worksheetFacadeService.createTransit({ ...result, filter });
       }
+    });
+  }
+
+  onEdit(element: HarvestDetails) {
+    // localStorage.setItem('harvest', JSON.stringify(element));
+    this.router.navigate(['worksheet/harvest/create'], {
+      queryParams: { id: element.id },
     });
   }
 

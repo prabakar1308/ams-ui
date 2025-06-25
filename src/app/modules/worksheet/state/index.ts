@@ -38,7 +38,13 @@ export const getTransits = createSelector(
 
 export const getMetaInfo = createSelector(getWorksheetFeatureState, (state) => state.meta);
 
+// Harvest
 export const getHarvestList = createSelector(
   getWorksheetFeatureState,
   (state: WorksheetState) => state.harvestList,
+);
+
+export const getCurrentHarvest = createSelector(
+  getWorksheetFeatureState,
+  (state: WorksheetState) => state.currentHarvest,
 );
