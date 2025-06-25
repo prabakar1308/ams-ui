@@ -24,7 +24,7 @@ export class ReportHomeComponent {
     private reportFacadeService: ReportFacadeService,
     private datePipe: DatePipe,
     private loaderService: LoaderService,
-  ) {}
+  ) { }
   unitIds = UNIT_IDS;
   selectedIndex = 0;
   dateValue = { startDate: new Date(), endDate: new Date() };
@@ -81,8 +81,15 @@ export class ReportHomeComponent {
     const screenWidth = window.innerWidth;
     const data = document.getElementById('contentToConvert');
     if (data) {
+      let width = 600;
+      if (screenWidth) {
+        if (screenWidth > 1600) width = screenWidth - 400;
+        else if (screenWidth > 1200) width = screenWidth - 300;
+        else if (screenWidth > 1000) width = screenWidth - 200;
+        else if (screenWidth > 800) width = screenWidth - 100;
+      }
       html2canvas(data, {
-        width: screenWidth && screenWidth > 1200 ? screenWidth - 400 : 600,
+        width, //: screenWidth && screenWidth > 1200 ? screenWidth - 400 : 600,
         height: screenWidth < 720 ? 2200 : 1800,
         scale: 2,
       }).then((canvas) => {
