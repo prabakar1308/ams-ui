@@ -3,26 +3,6 @@
     <mat-card-content>
       <section class="table-container mat-elevation-z8" tabindex="0">
         <table mat-table [dataSource]="dataSource">
-          <!-- <ng-container matColumnDef="worksheet" sticky>
-            <th mat-header-cell *matHeaderCellDef class="max-w-45 text-center">
-              Worksheet Details
-            </th>
-            <td mat-cell *matCellDef="let element" class="max-w-45 text-center">
-              <div class="flex">
-                <mat-chip-set>
-                  <div class="harvest-type flex-1">
-                    <mat-chip>
-                      {{ element.worksheet?.tankType?.value }} :
-                      {{ element.worksheet?.tankNumber }}
-                    </mat-chip>
-                  </div>
-                  <div class="harvest-type flex-1">
-                    <mat-chip>{{ element.worksheet?.harvestType?.value }}</mat-chip>
-                  </div>
-                </mat-chip-set>
-              </div>
-            </td>
-          </ng-container> -->
 
           <!-- Tank Column -->
           <ng-container matColumnDef="tank" sticky>
@@ -62,10 +42,10 @@
             <td mat-cell *matCellDef="let element" class="min-w-35 text-center">
               <div class="flex flex-row items-center">
                 @if (element.measuredBy) {
-                  <div class="user"><mat-icon>person</mat-icon></div>
-                  <p class="font-medium">{{ element.measuredBy?.value || '-' }}</p>
+                <div class="user"><mat-icon>person</mat-icon></div>
+                <p class="font-medium">{{ element.measuredBy?.value || '-' }}</p>
                 } @else {
-                  <p>-</p>
+                <p>-</p>
                 }
               </div>
             </td>
@@ -82,24 +62,14 @@
 
           <!-- Star Column -->
           <ng-container matColumnDef="action" stickyEnd>
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              aria-label="row actions"
-              class="min-w-22 text-center"
-            >
+            <th mat-header-cell *matHeaderCellDef aria-label="row actions" class="min-w-22 text-center">
               <div class="pr-2">Actions</div>
             </th>
             <td mat-cell *matCellDef="let element" class="min-w-22">
-              <button class="primary small" mat-icon-button (click)="openDialog(element)">
+              <button class="primary small" mat-icon-button (click)="openDialog(element)" matTooltip="Transit">
                 <div><mat-icon>keyboard_double_arrow_right</mat-icon></div>
               </button>
-              <button
-                class="primary small"
-                mat-icon-button
-                (click)="onEdit(element)"
-                matTooltip="Edit"
-              >
+              <button class="primary small" mat-icon-button (click)="onEdit(element)" matTooltip="Edit">
                 <mat-icon>edit</mat-icon>
               </button>
             </td>
