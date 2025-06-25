@@ -1,4 +1,9 @@
-<div class="total-artemia-report">
+<div class="total-artemia-report -m-2">
+  <span class="flex italic text-lg justify-center w-full">
+    Artemia report from&nbsp;&nbsp;
+    <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> &nbsp; to &nbsp;
+    <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+  >
   <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
     <div class="col-span-4">
       <div>
@@ -111,7 +116,7 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="flex flex-col md:flex-row justify-start md:justify-between items-center pb-3 gap-4">
+  <div class="flex flex-col md:flex-row justify-start md:justify-between md:items-start pb-3 gap-4">
     <div class="flex flex-col items-start gap-2 mt-6">
       <span class="italic text-sm"
         >Overall Stocks used between
@@ -119,7 +124,7 @@
         <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
       >
       <div
-        class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-start w-full"
+        class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-start justify-start w-full"
       >
         @for (item of overallStocks; track $index) {
           <div class="min-w-40">
@@ -144,7 +149,9 @@
       <span class="italic text-sm"
         >Overall Stocks currently in status of <strong>In Stocking</strong></span
       >
-      <div class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-start">
+      <div
+        class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-start justify-start w-full"
+      >
         @for (item of overallActiveStocks; track $index) {
           <div class="min-w-40">
             <mat-card appearance="outlined">
