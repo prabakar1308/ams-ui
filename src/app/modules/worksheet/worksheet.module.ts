@@ -15,9 +15,10 @@ import { HarvestHomeComponent } from './components/harvest/harvest-home/harvest-
 import { HarvestCreateComponent } from './components/harvest/harvest-create/harvest-create.component';
 import { WorksheetNavigationComponent } from './components/worksheet-home/worksheet-navigation/worksheet-navigation.component';
 import { RestockListComponent } from './components/restock-list/restock-list.component';
-import { TransitListComponent } from './components/transit-list/transit-list.component';
+import { TransitListComponent } from './components/transit/transit-list/transit-list.component';
 import { HarvestListComponent } from './components/harvest/harvest-list/harvest-list.component';
 import { HarvestListPopupComponent } from './components/harvest/harvest-list-popup/harvest-list-popup.component';
+import { TransitEditDialogComponent } from './components/transit/transit-edit-dialog/transit-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { HarvestListPopupComponent } from './components/harvest/harvest-list-pop
     TransitListComponent,
     HarvestListComponent,
     HarvestListPopupComponent,
+    TransitEditDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -15,7 +15,7 @@ import {
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
 import { CreateHarvest, CreateHarvestRequest } from '../models/create-harvest';
-import { Transit, TransitPayload } from '../models/transit';
+import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest } from '../models/create-transit';
 
@@ -108,5 +108,9 @@ export class WorksheetFacadeService {
 
   createTransit(request: CreateTransitRequest) {
     this.store.dispatch(worksheetActions.createTransit(request));
+  }
+
+  updateTransit(request: { payload: TransitUpdate; days: number }) {
+    this.store.dispatch(worksheetActions.updateTransit(request));
   }
 }

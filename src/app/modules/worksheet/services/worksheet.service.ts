@@ -12,7 +12,7 @@ import {
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
 import { CreateHarvestRequest } from '../models/create-harvest';
-import { Transit, TransitPayload } from '../models/transit';
+import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest } from '../models/create-transit';
 
@@ -91,5 +91,9 @@ export class WorksheetService {
 
   createTransit(request: CreateTransitRequest) {
     return this.http.post<Response<any>>(`${this.API_URL}/create-multiple-transit`, request);
+  }
+
+  updateTransit(request: TransitUpdate) {
+    return this.http.post<Response<any>>(`${this.API_URL}/update-transit`, request);
   }
 }

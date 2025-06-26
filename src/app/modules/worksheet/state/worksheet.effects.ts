@@ -39,6 +39,8 @@ import {
   updateHarvest,
   updateHarvestSuccess,
   updateHarvestFailure,
+  updateTransit,
+  updateTransitFailure,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
@@ -370,6 +372,35 @@ export class WorksheetEffects {
           }),
           tap(() => of(getHarvests(filter))),
           catchError((error) => of(createTransitFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  updateTransit$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateTransit.type),
+      exhaustMap(({ request: { payload, days } }) =>
+        this.WorksheetService.updateTransit(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201) {
+              return updateTransitFailure({
+                error: res.message || 'Update transit failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Transit is updated successfully!',
+              );
+              return getTransits({ days });
+            }
+            return updateTransitFailure({
+              error: res.message || 'Update harvest failed',
+            });
+          }),
+          // tap(() => this.router.navigate(['/worksheet/transit'])),
+          catchError((error) => of(updateTransitFailure({ error }))),
         ),
       ),
     ),

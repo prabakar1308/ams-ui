@@ -9,7 +9,7 @@ import {
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
 import { CreateHarvest, CreateHarvestRequest } from '../models/create-harvest';
-import { Transit, TransitPayload } from '../models/transit';
+import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest, CreateTransitResponse } from '../models/create-transit';
 
@@ -185,18 +185,35 @@ export const getTransitsFailure = createAction(
 );
 
 export const createTransit = createAction(
-  '[Harvest] Create Transit',
+  '[Transit] Create Transit',
   (payload: CreateTransitRequest) => ({
     payload,
   }),
 );
 
 export const createTransitSuccess = createAction(
-  '[Harvest] Create Transit Success',
+  '[Transit] Create Transit Success',
   (payload: CreateTransitResponse[]) => ({ payload }),
 );
 
 export const createTransitFailure = createAction(
-  '[Harvest] Create Transit Failure',
+  '[Transit] Create Transit Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const updateTransit = createAction(
+  '[Transit] Update Transit',
+  (request: { payload: TransitUpdate; days: number }) => ({
+    request,
+  }),
+);
+
+export const updateTransitSuccess = createAction(
+  '[Transit] Update Transit Success',
+  // (payload: WorksheetTank[]) => ({ payload }),
+);
+
+export const updateTransitFailure = createAction(
+  '[Transit] Update Transit Failure',
   (payload: { error: string }) => ({ payload }),
 );
