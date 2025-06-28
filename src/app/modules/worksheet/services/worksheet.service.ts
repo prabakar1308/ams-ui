@@ -89,6 +89,12 @@ export class WorksheetService {
     return this.http.post<Response<Transit[]>>(`${this.API_URL}/get-transits`, payload);
   }
 
+  getTransitsByHarvestId(harvestId: number) {
+    return this.http.get<Response<Transit[]>>(
+      `${this.API_URL}/get-transits-by-harvest-id/${harvestId}`,
+    );
+  }
+
   createTransit(request: CreateTransitRequest) {
     return this.http.post<Response<any>>(`${this.API_URL}/create-multiple-transit`, request);
   }

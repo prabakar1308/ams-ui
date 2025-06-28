@@ -389,10 +389,17 @@ export class WorksheetEffects {
               });
             }
             if (res.data) {
-              this.notificationService.showMessage(
-                SEVERITY.SUCCESS,
-                'Transit is updated successfully!',
-              );
+              if (payload.isDelete) {
+                this.notificationService.showMessage(
+                  SEVERITY.WARN,
+                  'Transit is deleted successfully!',
+                );
+              } else {
+                this.notificationService.showMessage(
+                  SEVERITY.SUCCESS,
+                  'Transit is updated successfully!',
+                );
+              }
               return getTransits({ days });
             }
             return updateTransitFailure({

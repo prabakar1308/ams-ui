@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
 import { TransitDetail } from '@app/worksheet/models/create-transit';
+import { Transit } from '@app/worksheet/models/transit';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class HarvestListPopupComponent {
   countsRemining: number = 0;
   transitCount: number = 0;
   transitDetails: TransitDetail[] = [];
+  exisingTransits: Transit[] = [];
   selectedSectorId: number = 0;
   showError: boolean = false;
 
@@ -25,6 +27,7 @@ export class HarvestListPopupComponent {
     public dialogRef: MatDialogRef<HarvestListPopupComponent>,
   ) {
     this.countsRemining = this.data.harvestData.countInStock;
+    this.exisingTransits = this.data.exisingTransits;
     this.addTransit();
   }
 
@@ -39,6 +42,13 @@ export class HarvestListPopupComponent {
     this.transitDetails.push(transit);
   }
 
+  deleteTransit(index: number) {
+    if (this.transitDetails.length > 1) {
+      this.transitDetails.splice(index, 1);
+      this.calculateCount();
+    }
+  }
+
   calculateCount() {
     let totalCount = 0;
     this.transitDetails.forEach((x) => {
@@ -50,7 +60,7 @@ export class HarvestListPopupComponent {
   saveTransit() {
     // Validate transit details before saving
     const isValid = this.transitDetails.every(
-      (x) => x.count > 0 && x.staffInCharge && x.unitId && x.harvestId,
+      (x) => x.count > 0 && x.staffInCharge && x.unitSectorId && x.harvestId,
     );
     if (!isValid) {
       this.showError = true;

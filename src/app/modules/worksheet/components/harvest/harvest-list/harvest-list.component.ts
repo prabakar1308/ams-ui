@@ -17,6 +17,7 @@ import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { UnitSector } from '@app/shared/models/master';
 import { HarvestFilter } from '@app/shared/models/shared-state';
 import { Router } from '@angular/router';
+import { WorksheetService } from '@app/worksheet/services/worksheet.service';
 
 @Component({
   selector: 'app-harvest-list',
@@ -45,6 +46,7 @@ export class HarvestListComponent {
 
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
+    private worksheetService: WorksheetService,
     private sharedFacadeService: SharedFacadeService,
     private dialog: MatDialog,
     private router: Router,
@@ -69,20 +71,25 @@ export class HarvestListComponent {
   }
 
   openDialog(element: HarvestDetails) {
-    const data = {
-      harvestData: element,
-      userDetails: this.userDetails,
-      unitSectors: this.unitSectors,
-    };
-    const dialogRef = this.dialog.open(HarvestListPopupComponent, { data });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        let filter: HarvestFilter = {
-          unitId: this.unitId || 1, // Default to 1 if unitId is not provided
-          statusIds: ['A', 'P'],
+    this.worksheetService.getTransitsByHarvestId(element.id).subscribe((res) => {
+      if (res.status === 200) {
+        const data = {
+          harvestData: element,
+          userDetails: this.userDetails,
+          unitSectors: this.unitSectors,
+          exisingTransits: res.data,
         };
-        this.worksheetFacadeService.createTransit({ ...result, filter });
+        const dialogRef = this.dialog.open(HarvestListPopupComponent, { data });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            let filter: HarvestFilter = {
+              unitId: this.unitId || 1, // Default to 1 if unitId is not provided
+              statusIds: ['A', 'P'],
+            };
+            this.worksheetFacadeService.createTransit({ ...result, filter });
+          }
+        });
       }
     });
   }
