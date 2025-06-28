@@ -116,7 +116,6 @@ export class ReportHomeComponent {
 
         // const imgProps = pdf.getImageProperties(imgData);
         // const pdfWidth = pdf.internal.pageSize.getWidth();
-        // console.log(pdfWidth);
         // const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
         // pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         // pdf.save('download.pdf');
