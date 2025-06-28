@@ -24,7 +24,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ams-ui",
+            "outputPath": "dist/ams-ui/browser", 
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
