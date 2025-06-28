@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build:prod
 
 # Stage 2: Serve the app with NGINX
-FROM nginx:stable-alpine
+FROM nginx:alpine
 
 # Copy built Angular app from previous stage
 COPY --from=build /app/dist/ams-ui/browser /usr/share/nginx/html
