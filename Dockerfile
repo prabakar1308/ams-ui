@@ -7,7 +7,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build:prod
+RUN npm run build:qa
 
 # Stage 2: Serve the app with NGINX
 FROM nginx:alpine

@@ -97,6 +97,9 @@
             "production": {
               "buildTarget": "ams-ui:build:production"
             },
+            "staging": {
+              "buildTarget": "ams-ui:build:staging"
+            },
             "development": {
               "buildTarget": "ams-ui:build:development"
             }
