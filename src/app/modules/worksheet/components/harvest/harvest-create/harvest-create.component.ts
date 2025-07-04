@@ -7,6 +7,7 @@ import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { CreateHarvest } from '@app/worksheet/models/create-harvest';
 import {
+  HARVEST_TYPES,
   UNIT_IDS,
   WORKSHEET_OUTPUT_UNITS,
   WORKSHEET_STATUS,
@@ -149,9 +150,9 @@ export class HarvestCreateComponent {
                 ...data,
                 value: this.editId && this.harvest ? this.harvest.restockCount : data.value,
                 disabled:
-                  this.editId && this.harvest && this.harvest.restockStatus
+                  (this.editId && this.harvest && this.harvest.restockStatus
                     ? this.harvest.restockStatus !== WORKSHEET_TABLE_STATUS.ACTIVE
-                    : false,
+                    : false) || this.isRestockHarvest(),
                 meta: {
                   ...data.meta,
                   hint:
@@ -209,6 +210,10 @@ export class HarvestCreateComponent {
       ...this.formDetails,
       tags,
     };
+  }
+
+  isRestockHarvest() {
+    return this.worksheet.harvestType && this.worksheet.harvestType.id === HARVEST_TYPES.RESTOCKING;
   }
 
   goToHomePage() {

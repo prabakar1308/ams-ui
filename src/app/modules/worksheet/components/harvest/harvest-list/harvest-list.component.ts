@@ -1,12 +1,5 @@
-import { Component, inject, Input } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { Component, Input, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserDetails } from '@app/shared/models/user-details';
 import { HarvestDetails } from '@app/worksheet/models/harvest-details';
@@ -18,6 +11,7 @@ import { UnitSector } from '@app/shared/models/master';
 import { HarvestFilter } from '@app/shared/models/shared-state';
 import { Router } from '@angular/router';
 import { WorksheetService } from '@app/worksheet/services/worksheet.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-harvest-list',
@@ -26,6 +20,10 @@ import { WorksheetService } from '@app/worksheet/services/worksheet.service';
   styleUrl: './harvest-list.component.scss',
 })
 export class HarvestListComponent {
+  // Add input parameter
+  @Input() unitId!: number;
+  @Input() searchText: string = '';
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   private unSubscribe = new Subject<void>();
   dataSource = new MatTableDataSource<HarvestDetails>();
   displayedColumns = [
@@ -40,10 +38,6 @@ export class HarvestListComponent {
   userDetails: UserDetails[] = [];
   unitSectors: UnitSector[] = [];
 
-  // Add input parameter
-  @Input()
-  unitId!: number;
-
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
     private worksheetService: WorksheetService,
@@ -56,6 +50,7 @@ export class HarvestListComponent {
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
         this.dataSource.data = data;
+        this.dataSource.paginator = this.paginator;
       });
     //masterData$
     this.sharedFacadeService.userData$
@@ -68,6 +63,34 @@ export class HarvestListComponent {
       .subscribe((data) => {
         this.unitSectors = data.unitSectors;
       });
+  }
+
+  // Add this method to filter dataSource based on searchText
+  applyFilter() {
+    const filterValue = this.searchText.trim().toLowerCase();
+    this.dataSource.filterPredicate = (data: HarvestDetails, filter: string) => {
+      // Helper to recursively search all values, including nested objects
+      const search = (obj: any): boolean => {
+        return Object.values(obj).some((val) => {
+          if (val && typeof val === 'object') {
+            return search(val);
+          }
+          return val && val.toString().toLowerCase().includes(filter);
+        });
+      };
+      return search(data);
+    };
+    this.dataSource.filter = filterValue;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  // Call applyFilter() whenever searchText changes (e.g., from an input)
+  ngOnChanges() {
+    this.applyFilter();
+  }
+
+  onPageChange(event: PageEvent) {
+    console.log(event);
   }
 
   openDialog(element: HarvestDetails) {

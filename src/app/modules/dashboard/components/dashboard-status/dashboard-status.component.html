@@ -22,10 +22,13 @@
       </div>
     </mat-card-header>
     <mat-card-content>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-1 sm:gap-4 flex-wrap data-card"
-      >
-        <mat-card *ngFor="let item of productionItems" appearance="outlined" [ngClass]="item.class">
+      <div class="flex gap-1 justify-evenly sm:gap-4 flex-wrap data-card">
+        <mat-card
+          *ngFor="let item of productionItems"
+          appearance="outlined"
+          class="min-w-60 md:min-w-40 xl:min-w-60"
+          [ngClass]="item.class"
+        >
           <mat-card-content>
             <div class="flex flex-col items-center">
               <div class="icon-container">

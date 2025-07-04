@@ -88,6 +88,13 @@ export const WORKSHEET_STATUS = {
   FREE: 5,
 };
 
+export const HARVEST_TYPES = {
+  INSTAR1: 1,
+  INSTAR2: 2,
+  MANUAL: 3,
+  RESTOCKING: 4,
+};
+
 export const WORKSHEET_TABLE_STATUS = {
   ACTIVE: 'A',
   COMPLETED: 'D',

@@ -1,48 +1,61 @@
 <div class="restock-list-container">
   <div class="flex flex-col md:flex-row justify-between items-center mx-3 md:my-4 pt-4">
     <h4 class="text-xl pl-4 font-serif font-bold text-[#165d51]">Restock Details</h4>
-    <div class="flex items-center gap-2 my-4 md:my-0">
-      <mat-button-toggle-group
-        [value]="status"
-        (change)="toggleChange($event)"
-        name="status"
-        aria-label="status"
-      >
-        <mat-button-toggle [value]="statusDetails.ACTIVE">Active</mat-button-toggle>
-        <mat-button-toggle [value]="statusDetails.IN_USE">In Use</mat-button-toggle>
-        <mat-button-toggle [value]="statusDetails.COMPLETED">Completed</mat-button-toggle>
-      </mat-button-toggle-group>
-      <div>
+
+    <div class="w-2/3 flex flex-col md:flex-row items-center gap-2 justify-end">
+      <div class="flex items-center gap-2 my-4 md:my-0">
+        <div>
+          <button
+            aria-label="Go to harvest list"
+            [routerLink]="['/worksheet/harvest']"
+            mat-mini-fab
+            matTooltip="Harvest"
+            class="secondary"
+          >
+            <mat-icon>agriculture</mat-icon>
+          </button>
+        </div>
+        <div>
+          <button
+            aria-label="Go to transit list"
+            [routerLink]="['/worksheet/transit']"
+            mat-mini-fab
+            matTooltip="Transit"
+            class="secondary"
+          >
+            <mat-icon>local_shipping</mat-icon>
+          </button>
+        </div>
         <button
-          aria-label="Go to harvest list"
-          [routerLink]="['/worksheet/harvest']"
           mat-mini-fab
-          matTooltip="Harvest"
+          aria-label="worksheet refresh"
+          (click)="onClickBack()"
+          matTooltip="Worksheets"
           class="secondary"
         >
-          <mat-icon>agriculture</mat-icon>
+          <mat-icon>home</mat-icon>
         </button>
-      </div>
-      <div>
-        <button
-          aria-label="Go to transit list"
-          [routerLink]="['/worksheet/transit']"
-          mat-mini-fab
-          matTooltip="Transit"
-          class="secondary"
+
+        <mat-button-toggle-group
+          [value]="status"
+          (change)="toggleChange($event)"
+          name="status"
+          aria-label="status"
         >
-          <mat-icon>local_shipping</mat-icon>
-        </button>
+          <mat-button-toggle [value]="statusDetails.ACTIVE">Active</mat-button-toggle>
+          <mat-button-toggle [value]="statusDetails.IN_USE">In Use</mat-button-toggle>
+          <mat-button-toggle [value]="statusDetails.COMPLETED">Completed</mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
-      <button
-        mat-mini-fab
-        aria-label="worksheet refresh"
-        (click)="onClickBack()"
-        matTooltip="Worksheets"
-        class="secondary"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
+      <mat-form-field class="ams-small mb-0 md:-mb-5 mr-1 w-full md:w-55" appearance="outline">
+        <mat-label>Search</mat-label>
+        <input matInput type="text" [(ngModel)]="searchText" />
+        @if (searchText) {
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="searchText = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
     </div>
   </div>
   <mat-card appearance="outlined">

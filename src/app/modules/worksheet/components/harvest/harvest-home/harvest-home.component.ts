@@ -17,6 +17,7 @@ import { distinctUntilChanged, filter, Subject, takeUntil } from 'rxjs';
 export class HarvestHomeComponent {
   unitId: number = 1;
   selectedTab = 0; // Default selected tab index
+  searchText = '';
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
     private router: Router,

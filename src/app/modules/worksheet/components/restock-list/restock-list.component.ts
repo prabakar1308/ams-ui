@@ -27,6 +27,7 @@ export class RestockListComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<ActiveRestock>();
   statusDetails = WORKSHEET_TABLE_STATUS;
   status = WORKSHEET_TABLE_STATUS.ACTIVE;
+  searchText = '';
 
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
