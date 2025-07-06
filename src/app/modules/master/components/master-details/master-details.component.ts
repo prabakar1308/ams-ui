@@ -6,13 +6,14 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { USER_ACTIONS, USER_ROLES } from '@app/shared/constants/shared.contants';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { UserDetails } from '@app/shared/models/user-details';
-import { UnitSector } from '@app/shared/models/master';
+import { HarvestType, MasterGeneric, UnitSector, WorksheetUnit } from '@app/shared/models/master';
 import { CreateUserRequest } from '@app/shared/models/create-user';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
 import { MasterService } from '@master/services/master.service';
 import { FORM_CONTROL_NAMES, formConfig, formDetails, MASTER_TITLE } from './master.config';
+import { UnitDetails } from '@app/worksheet/models/unit-details';
 
 @Component({
   selector: 'app-master-details',
@@ -28,9 +29,15 @@ export class MasterDetailsComponent {
   editId: number | null = null;
   tableData: unknown[] = [];
   tableSectorData: unknown[] = [];
+  tableHarvestData: unknown[] = [];
+  tableWorksheetData: unknown[] = [];
+  tableUnitsData: unknown[] = [];
   unitSectors: UnitSector[] = [];
+  harvestTypes: HarvestType[] = [];
+  worksheetUnits: WorksheetUnit[] = [];
+  units: MasterGeneric[] = [];
   userAction = USER_ACTIONS.LIST;
-  displayColumns: string[] = [
+  displayColumnsUser: string[] = [
     'user_code',
     'name',
     'user_role',
@@ -38,11 +45,20 @@ export class MasterDetailsComponent {
     'address',
     'actions',
   ];
-  displaySectorColumns: string[] = [
+  displayColumnsSectors: string[] = [
     'unit_number',
     'unit_name',
     'description',
     'location',
+    'actions',
+  ];
+  displayColumnsHarvest: string[] = ['harvest_number', 'harvest_type', 'description', 'actions'];
+  displayColumnsUnits: string[] = ['unit_number', 'unit_value', 'description', 'actions'];
+  displayColumnsWorksheet: string[] = [
+    'unit_number',
+    'unit_name',
+    'unit_brand',
+    'unit_specs',
     'actions',
   ];
   formTitle = MASTER_TITLE;
@@ -54,9 +70,7 @@ export class MasterDetailsComponent {
     private clipboard: Clipboard,
     private notificationService: NotificationService,
     private dialog: MatDialog,
-  ) {
-    console.log('MasterDetailsComponent initialized with tabIndex:', this.tabIndex);
-  }
+  ) {}
 
   ngOnInit() {
     this.init();
@@ -72,6 +86,25 @@ export class MasterDetailsComponent {
           unit_name: sector.name,
           description: sector.description,
           location: sector.location,
+        }));
+        this.harvestTypes = data?.harvestTypes || [];
+        this.tableHarvestData = this.harvestTypes.map((harvest) => ({
+          harvest_number: harvest.id,
+          harvest_type: harvest.value,
+          description: harvest.description,
+        }));
+        this.worksheetUnits = data?.worksheetUnits || [];
+        this.tableWorksheetData = this.worksheetUnits.map((unit) => ({
+          unit_number: unit.id,
+          unit_name: unit.value,
+          unit_brand: unit.brand,
+          unit_specs: unit.specs,
+        }));
+        this.units = data?.units || [];
+        this.tableUnitsData = this.units.map((unit) => ({
+          unit_number: unit.id,
+          unit_value: unit.value,
+          description: unit.description,
         }));
         this.formConfigData = this.formConfigData.map((data) => {
           switch (data.name) {

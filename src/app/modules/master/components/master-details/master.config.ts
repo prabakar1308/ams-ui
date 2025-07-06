@@ -195,6 +195,8 @@ export const formConfig: FormStructure[] = [
 ];
 export const MASTER_TITLE = {
   USER: 'User Details',
-  UNIT: 'Unit Sectors',
+  UNIT_SECTOR: 'Unit Sectors',
   HARVEST_TYPE: 'Harvest Types',
+  UNITS: 'Units Details',
+  WORKSHEET_UNIT: 'Worksheet Unit Details',
 };

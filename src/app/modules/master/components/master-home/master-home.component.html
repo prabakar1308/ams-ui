@@ -5,7 +5,16 @@
         <app-master-details [tabIndex]="tabIndex" />
       </div>
     </mat-tab>
-    <mat-tab [label]="masterTitle.UNIT">
+    <mat-tab [label]="masterTitle.UNIT_SECTOR">
+      <div><app-master-details [tabIndex]="tabIndex" /></div>
+    </mat-tab>
+    <mat-tab [label]="masterTitle.HARVEST_TYPE">
+      <div><app-master-details [tabIndex]="tabIndex" /></div>
+    </mat-tab>
+    <mat-tab [label]="masterTitle.WORKSHEET_UNIT">
+      <div><app-master-details [tabIndex]="tabIndex" /></div>
+    </mat-tab>
+    <mat-tab [label]="masterTitle.UNITS">
       <div><app-master-details [tabIndex]="tabIndex" /></div>
     </mat-tab>
   </mat-tab-group>

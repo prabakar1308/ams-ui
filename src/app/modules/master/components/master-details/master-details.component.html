@@ -4,7 +4,7 @@
       <app-generic-data
         [title]="formTitle.USER"
         [data]="tableData"
-        [displayColumns]="displayColumns"
+        [displayColumns]="displayColumnsUser"
         (refreshPage)="getUsers()"
         (addData)="addNew()"
         (editData)="editDetails($event)"
@@ -12,9 +12,36 @@
       ></app-generic-data>
     } @else if (tabIndex === 1) {
       <app-generic-data
-        [title]="formTitle.UNIT"
+        [title]="formTitle.UNIT_SECTOR"
         [data]="tableSectorData"
-        [displayColumns]="displaySectorColumns"
+        [displayColumns]="displayColumnsSectors"
+        (addData)="addNew()"
+        (editData)="editDetails($event)"
+        (deleteData)="deleteDetails($event)"
+      ></app-generic-data>
+    } @else if (tabIndex === 2) {
+      <app-generic-data
+        [title]="formTitle.HARVEST_TYPE"
+        [data]="tableHarvestData"
+        [displayColumns]="displayColumnsHarvest"
+        (addData)="addNew()"
+        (editData)="editDetails($event)"
+        (deleteData)="deleteDetails($event)"
+      ></app-generic-data>
+    } @else if (tabIndex === 3) {
+      <app-generic-data
+        [title]="formTitle.WORKSHEET_UNIT"
+        [data]="tableWorksheetData"
+        [displayColumns]="displayColumnsWorksheet"
+        (addData)="addNew()"
+        (editData)="editDetails($event)"
+        (deleteData)="deleteDetails($event)"
+      ></app-generic-data>
+    } @else if (tabIndex === 4) {
+      <app-generic-data
+        [title]="formTitle.UNITS"
+        [data]="tableUnitsData"
+        [displayColumns]="displayColumnsUnits"
         (addData)="addNew()"
         (editData)="editDetails($event)"
         (deleteData)="deleteDetails($event)"
