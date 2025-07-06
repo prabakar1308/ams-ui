@@ -1,0 +1,32 @@
+<div>
+  @if (userAction === userActions.LIST) {
+    @if (tabIndex === 0) {
+      <app-generic-data
+        [title]="formTitle.USER"
+        [data]="tableData"
+        [displayColumns]="displayColumns"
+        (refreshPage)="getUsers()"
+        (addData)="addNew()"
+        (editData)="editDetails($event)"
+        (deleteData)="deleteDetails($event)"
+      ></app-generic-data>
+    } @else if (tabIndex === 1) {
+      <app-generic-data
+        [title]="formTitle.UNIT"
+        [data]="tableSectorData"
+        [displayColumns]="displaySectorColumns"
+        (addData)="addNew()"
+        (editData)="editDetails($event)"
+        (deleteData)="deleteDetails($event)"
+      ></app-generic-data>
+    }
+  } @else if (userAction === userActions.ADD || userAction === userActions.EDIT) {
+    <app-form-generator
+      [formStructure]="formConfigData"
+      [formDetails]="formDetails"
+      [getRawData]="true"
+      (moveBack)="moveBack()"
+      (formData)="submitFormData($event)"
+    />
+  }
+</div>

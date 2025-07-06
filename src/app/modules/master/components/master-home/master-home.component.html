@@ -1,12 +1,12 @@
 <div class="mt-6">
-  <mat-tab-group dynamicHeight>
-    <mat-tab label="User Details">
+  <mat-tab-group dynamicHeight (selectedTabChange)="onTabChange($event)">
+    <mat-tab [label]="masterTitle.USER">
       <div>
-        <app-user-details />
+        <app-master-details [tabIndex]="tabIndex" />
       </div>
     </mat-tab>
-    <mat-tab label="Harvest Type">
-      <div></div>
+    <mat-tab [label]="masterTitle.UNIT">
+      <div><app-master-details [tabIndex]="tabIndex" /></div>
     </mat-tab>
   </mat-tab-group>
 </div>
