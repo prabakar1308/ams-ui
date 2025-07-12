@@ -19,7 +19,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { DashboardService } from '@app/dashboard/services/dashboard.service';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
-import { DEFAULT_TANK_TYPE } from '@app/shared/constants/shared.contants';
+import { DEFAULT_TANK_TYPE, WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -196,7 +196,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
     const data = event.data as { id: number };
     this.sharedFacadeService.updateWorksheetFilter({
       tankTypeId: this.tankTypeId,
-      statusId: 0,
+      statusId: data?.id ? 0 : WORKSHEET_STATUS.FREE,
       userId: data?.id,
       harvestTypeId: 0,
     });

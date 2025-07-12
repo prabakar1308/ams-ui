@@ -31,7 +31,7 @@ export class WorksheetUpdateDialogComponent implements OnInit, OnDestroy {
     this.selectedUserId = this.data.worksheet ? this.data.worksheet.assignedUser?.id || 0 : 0;
 
     this.sharedFacade.userData$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
-      this.userDetails = [{ id: 0 }, ...data];
+      this.userDetails = [...data];
     });
   }
 

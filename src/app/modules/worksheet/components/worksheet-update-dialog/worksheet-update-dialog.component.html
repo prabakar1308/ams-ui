@@ -18,9 +18,7 @@
         <mat-label>User</mat-label>
         <mat-select [value]="selectedUserId" (selectionChange)="onUserChange($event.value)">
           @for (user of userDetails; track user) {
-            <mat-option [value]="user.id"
-              >{{ user.firstName || 'All' }} {{ user.lastName }}</mat-option
-            >
+            <mat-option [value]="user.id">{{ user.firstName }} {{ user.lastName }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
