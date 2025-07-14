@@ -1,3 +1,3 @@
 export const environment = {
-  HOST: 'http://localhost:3000/api', // Replace with your actual API URL
+  HOST: 'https://dev-api.gmh-ams.in/api', // Replace with your actual API URL
 };
