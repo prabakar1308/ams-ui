@@ -29,3 +29,4 @@ export const FM_USER_NAVBAR_ITEMS = [
 export const FM_USER = 'fm_user';
 export const USER = 'user';
 export const ADMIN = 'admin';
+export const SUPER_ADMIN = 'super_admin';

@@ -1,3 +1,3 @@
 export const environment = {
-  HOST: 'https://gms-api-dev-374265160517.asia-south1.run.app/api', // Replace with your actual API URL
+  HOST: 'http://localhost:3000/api', // Replace with your actual API URL
 };

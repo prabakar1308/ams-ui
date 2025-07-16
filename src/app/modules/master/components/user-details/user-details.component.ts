@@ -22,7 +22,7 @@ import { FORM_CONTROL_NAMES, formConfig, formDetails } from './user.config';
 })
 export class UserDetailsComponent {
   private unSubscribe = new Subject<void>();
-  formConfigData = formConfig;
+  formConfigData = [...formConfig];
   formDetails = formDetails;
   userActions = USER_ACTIONS;
   editId: number | null = null;
@@ -45,20 +45,7 @@ export class UserDetailsComponent {
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
         this.unitSectors = data?.unitSectors || [];
-        this.formConfigData = this.formConfigData.map((data) => {
-          switch (data.name) {
-            case FORM_CONTROL_NAMES.UNIT_SECTOR:
-              return {
-                ...data,
-                options: this.unitSectors.map((type) => ({
-                  label: `${type.name} (${type.location})`,
-                  value: type.id,
-                })),
-              };
-            default:
-              return data;
-          }
-        });
+        this.initializeFormConfig();
       });
 
     // Update user details when user is created or updated
@@ -74,6 +61,24 @@ export class UserDetailsComponent {
       });
   }
 
+  initializeFormConfig() {
+    this.formConfigData = [...formConfig];
+    this.formConfigData = this.formConfigData.map((data) => {
+      switch (data.name) {
+        case FORM_CONTROL_NAMES.UNIT_SECTOR:
+          return {
+            ...data,
+            options: this.unitSectors.map((type) => ({
+              label: `${type.name} (${type.location})`,
+              value: type.id,
+            })),
+          };
+        default:
+          return data;
+      }
+    });
+  }
+
   getUsers() {
     this.masterService.getUsers().subscribe((res: any) => {
       this.tableData = res?.data?.data.map((user: UserDetails) => {
@@ -81,8 +86,10 @@ export class UserDetailsComponent {
           ...user,
           user_code: user.userCode,
           name: `${user.firstName} ${user.lastName}`,
-          user_role: USER_ROLES.filter((role) => role.value === user.role)[0]?.label || 'N/A',
+          user_role:
+            USER_ROLES.filter((role) => role.value === user.role)[0]?.label || 'Super Admin',
           mobile_number: user.mobileNumber,
+          enableEdit: user.role !== 'super_admin',
         };
       });
     });

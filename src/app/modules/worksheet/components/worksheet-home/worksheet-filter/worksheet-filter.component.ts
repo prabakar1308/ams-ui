@@ -11,7 +11,7 @@ import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { HarvestType } from '@app/shared/models/master';
 import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
-import { ADMIN } from '@app/core/core.contants';
+import { ADMIN, SUPER_ADMIN } from '@app/core/core.contants';
 import { WorksheetNavigationComponent } from '../worksheet-navigation/worksheet-navigation.component';
 
 @Component({
@@ -66,7 +66,7 @@ export class WorksheetFilterComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((userData) => {
         if (userData) {
-          this.isAdmin = userData.userRole === ADMIN;
+          this.isAdmin = userData.userRole === ADMIN || userData.userRole === SUPER_ADMIN;
         }
       });
   }
