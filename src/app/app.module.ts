@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { reducer } from './state';
 import { AuthModule } from '@app/auth/auth.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -27,6 +28,12 @@ import { AuthModule } from '@app/auth/auth.module';
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     AuthModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
