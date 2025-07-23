@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PRODUCTION_ITEMS, PRODUCTION_ITEMS_ID } from '@app/dashboard/constants/dashboard';
 import { ProductionItem } from '@app/dashboard/models/dashboard';
@@ -13,7 +13,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
   templateUrl: './dashboard-status.component.html',
   styleUrl: './dashboard-status.component.scss',
 })
-export class DashboardStatusComponent implements OnInit {
+export class DashboardStatusComponent implements OnInit, OnDestroy {
   private unSubscribe = new Subject<void>();
   productionItems: ProductionItem[] = PRODUCTION_ITEMS;
   dateValue: string = '';
@@ -109,10 +109,14 @@ export class DashboardStatusComponent implements OnInit {
 
   dateChange(event: unknown): void {
     const date: { start: string; end: string } = event as { start: string; end: string };
-    console.log(date);
     if (date) {
       const { start, end } = date;
       this.dateValue = start;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 }

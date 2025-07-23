@@ -8,13 +8,19 @@ import { SharedModule } from '@app/shared/shared.module';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
-import { DashboardReportsComponent } from './components/dashboard-reports/dashboard-reports.component';
 import { DashboardStatusComponent } from './components/dashboard-status/dashboard-status.component';
 import { dashboardReducer } from './state/dashboard.reducer';
 import { DashboardEffects } from './state/dashboard.effects';
+import { DashboardTanksComponent } from './components/dashboard-tanks/dashboard-tanks.component';
+import { TankListComponent } from './components/dashboard-tanks/tank-list/tank-list.component';
 
 @NgModule({
-  declarations: [DashboardHomeComponent, DashboardReportsComponent, DashboardStatusComponent],
+  declarations: [
+    DashboardHomeComponent,
+    DashboardStatusComponent,
+    DashboardTanksComponent,
+    TankListComponent,
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
