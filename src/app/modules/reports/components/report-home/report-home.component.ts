@@ -111,7 +111,21 @@ export class ReportHomeComponent {
         const width = doc.internal.pageSize.getWidth();
         const height = doc.internal.pageSize.getHeight();
         doc.addImage(imgData, 'PNG', 0, 0, width, height);
-        doc.save('Artemia_Report.pdf');
+        // Append date and time to PDF name
+        const now = new Date();
+        const dateStr = [
+          now.getFullYear(),
+          String(now.getMonth() + 1).padStart(2, '0'),
+          String(now.getDate()).padStart(2, '0'),
+        ].join('-');
+        const timeStr = [
+          String(now.getHours()).padStart(2, '0'),
+          String(now.getMinutes()).padStart(2, '0'),
+          String(now.getSeconds()).padStart(2, '0'),
+        ].join('-');
+        const fileName = `Artemia_Report_${dateStr}_${timeStr}.pdf`;
+
+        doc.save(fileName);
         this.loaderService.hide();
 
         // const imgProps = pdf.getImageProperties(imgData);

@@ -5,6 +5,7 @@ import { Response } from '@app/shared/models/response';
 import { DashboardResponse, InStockResponse, TankWiseStatus } from '../models/dashboard-response';
 import { map, Observable } from 'rxjs';
 import { environment } from '@environments/environment';
+import { DashboardTank } from '../models/dashboard-tank';
 
 @Injectable({
   providedIn: 'root',
@@ -47,6 +48,12 @@ export class DashboardService {
   getInStockCount(tankTypeId: number) {
     return this.http.get<Response<InStockResponse[]>>(
       `${this.WS_API_URL}/get-worksheets-instock-count?tankTypeId=${tankTypeId}`,
+    );
+  }
+
+  getTankListWithStatus(tankTypeId: number) {
+    return this.http.get<Response<DashboardTank[]>>(
+      `${this.API_URL}/tank-list-with-status/${tankTypeId}`,
     );
   }
 

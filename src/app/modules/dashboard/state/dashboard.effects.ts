@@ -5,12 +5,18 @@ import { forkJoin, of } from 'rxjs';
 
 import { DashboardService } from '../services/dashboard.service';
 import {
+  getConventionalTanks,
+  getConventionalTanksSuccess,
   getDashboardData,
   getDashboardDataFailure,
   getDashboardDataSuccess,
+  getMachineryTanks,
+  getMachineryTanksSuccess,
   getProductionData,
   getProductionDataSuccess,
+  getTanksFailure,
 } from './dashboard.actions';
+import { TANK_TYPES } from '@app/shared/constants/shared.contants';
 
 @Injectable()
 export class DashboardEffects {
@@ -97,6 +103,44 @@ export class DashboardEffects {
             // return getUsersListFailure({ error: 'Get user details failed' });
           }),
           catchError((error) => of(getDashboardDataFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getMachineryTanks$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getMachineryTanks.type),
+      switchMap(() =>
+        this.dashboardService.getTankListWithStatus(TANK_TYPES.MACHINERY).pipe(
+          map((res) => {
+            if (res.status !== 200 && res.status !== 201) {
+              return getTanksFailure({
+                error: res.message || 'Get machinery tanks failed',
+              });
+            }
+            return getMachineryTanksSuccess(res.data);
+          }),
+          catchError((error) => of(getTanksFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getConventionalTanks$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getConventionalTanks.type),
+      switchMap(() =>
+        this.dashboardService.getTankListWithStatus(TANK_TYPES.CONVENTIONAL).pipe(
+          map((res) => {
+            if (res.status !== 200 && res.status !== 201) {
+              return getTanksFailure({
+                error: res.message || 'Get conventional tanks failed',
+              });
+            }
+            return getConventionalTanksSuccess(res.data);
+          }),
+          catchError((error) => of(getTanksFailure({ error }))),
         ),
       ),
     ),

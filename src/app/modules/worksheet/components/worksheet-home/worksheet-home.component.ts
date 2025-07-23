@@ -2,18 +2,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 import { WORKSHEET_STATUS, WORKSHEET_UPDATE_ACTION } from '@app/shared/constants/shared.contants';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { WorksheetUpdateDialogComponent } from '../worksheet-update-dialog/worksheet-update-dialog.component';
-import { Router } from '@angular/router';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
 import { UpdateWorksheetRequest } from '@app/worksheet/models/create-worksheet';
 import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
-import { ADMIN } from '@app/core/core.contants';
+import { ADMIN, SUPER_ADMIN } from '@app/core/core.contants';
 
 @Component({
   selector: 'app-worksheet-home',
@@ -60,7 +60,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((userData) => {
         if (userData) {
-          this.isAdmin = userData.userRole === ADMIN;
+          this.isAdmin = userData.userRole === ADMIN || userData.userRole === SUPER_ADMIN;
         }
       });
   }

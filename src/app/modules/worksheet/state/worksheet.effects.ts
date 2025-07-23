@@ -237,7 +237,7 @@ export class WorksheetEffects {
               error: res.message || 'Create harvest failed',
             });
           }),
-          tap(() => this.router.navigate(['/worksheet/harvest'])),
+          tap(() => this.router.navigate(['/worksheet'])),
           catchError((error) => of(createHarvestFailure({ error }))),
         ),
       ),

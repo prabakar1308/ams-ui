@@ -2,11 +2,14 @@
   <div>
     <app-dashboard-status></app-dashboard-status>
   </div>
+  <div>
+    <app-dashboard-tanks />
+  </div>
   <div class="chart-section">
     <mat-card appearance="outlined">
       <mat-card-header>
         <div class="card-header">
-          <span class="text-xl pl-1 font-semibold font-sans">Tank Status</span>
+          <span class="text-md md:text-xl pl-1 pt-1 font-semibold font-sans">Tank Status</span>
           <mat-button-toggle-group
             [value]="tankTypeId"
             (change)="toggleChange($event)"

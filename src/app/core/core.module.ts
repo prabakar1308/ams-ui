@@ -8,7 +8,11 @@ import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [NavbarComponent, LoaderComponent],
-  imports: [CommonModule, CoreRoutingModule, SharedModule],
+  imports: [
+    CommonModule, // Ensure CommonModule is correctly imported
+    CoreRoutingModule,
+    SharedModule,
+  ],
   exports: [NavbarComponent, LoaderComponent],
 })
 export class CoreModule {}

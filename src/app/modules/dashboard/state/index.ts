@@ -20,3 +20,13 @@ export const getProductionData = createSelector(
 );
 
 export const getMetaInfo = createSelector(getDashboardFeatureState, (state) => state.meta);
+
+export const getMachineryTanks = createSelector(
+  getDashboardFeatureState,
+  (state: DashboardState) => state.machineryTanks,
+);
+
+export const getConventionalTanks = createSelector(
+  getDashboardFeatureState,
+  (state: DashboardState) => state.conventionalTanks,
+);

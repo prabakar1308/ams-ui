@@ -32,6 +32,8 @@ export const TEXT_INPUT_TYPES = [
   INPUT_TYPES.FILE,
 ];
 
+export const SUPER_ADMIN_ROLE = 'super_admin';
+
 export const USER_ROLES = [
   {
     value: 'admin',
