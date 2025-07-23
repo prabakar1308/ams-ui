@@ -10,9 +10,10 @@ import { MatCardModule } from '@angular/material/card';
 import { SharedModule } from '@app/shared/shared.module';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { MaterialModule } from '@app/shared/material/material.module';
+import { WorksheetUnitDetailsComponent } from './components/worksheet-unit-details/worksheet-unit-details.component';
 
 @NgModule({
-  declarations: [MasterHomeComponent, GenericDataComponent, UserDetailsComponent],
+  declarations: [MasterHomeComponent, GenericDataComponent, UserDetailsComponent, WorksheetUnitDetailsComponent],
   imports: [
     CommonModule,
     MasterRoutingModule,

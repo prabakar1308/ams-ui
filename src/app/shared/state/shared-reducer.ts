@@ -112,4 +112,18 @@ export const sharedReducer = createReducer(
       isLoading: true,
     },
   })),
+  on(SharedActions.updateWorksheetUnitSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      userUpdated: true,
+    },
+  })),
+  on(SharedActions.createWorksheetUnitSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      userUpdated: true,
+    },
+  })),
 );

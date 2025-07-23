@@ -3,6 +3,7 @@ import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { UserDetails } from '@app/shared/models/user-details';
 import { MasterData, WorksheetFilter } from '../models/shared-state';
 import { CreateUserRequest } from '../models/create-user';
+import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
 
 export const getWorksheetStatus = createAction('[Shared] Get Worksheet Status');
 
@@ -86,3 +87,35 @@ export const deleteUserFailure = createAction(
 );
 
 export const resetUserUpdateStatus = createAction('[Master] Reset User Update Status');
+
+export const createWorksheetUnit = createAction(
+  '[Master] Create WorksheetUnit',
+  (payload: CreateWorksheetUnitRequest) => ({
+    payload,
+  }),
+);
+
+export const createWorksheetUnitSuccess = createAction(
+  '[Master] Create WorksheetUnit Success',
+  (payload: any[]) => ({
+    payload,
+  }),
+);
+
+export const createWorksheetUnitFailure = createAction(
+  '[Master] Create WorksheetUnit Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+export const updateWorksheetUnit = createAction(
+  '[Master] Update WorksheetUnit',
+  (payload: any) => ({
+    payload,
+  }),
+);
+
+export const updateWorksheetUnitSuccess = createAction(
+  '[Master] Update WorksheetUnit Success',
+  (payload: any[]) => ({
+    payload,
+  }),
+);
