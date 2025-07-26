@@ -18,6 +18,7 @@ export interface SharedState {
     isLoading: boolean;
     error: string;
     userUpdated?: boolean;
+    worksheetUnitUpdated?: boolean;
   };
 }
 

@@ -23,6 +23,7 @@ export class SharedFacadeService {
   worksheetFilter$: Observable<WorksheetFilter>;
   meta$: Observable<MetaState>;
   resetUserUpdated$: Observable<boolean>;
+  resetWorksheetUnitUpdated$: Observable<boolean>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.masterData$ = this.store.select(fromStore.getMasterData);
@@ -32,6 +33,7 @@ export class SharedFacadeService {
     this.worksheetFilter$ = this.store.select(fromStore.getWorksheetFilter);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
     this.resetUserUpdated$ = this.store.select(fromStore.resetUserUpdated);
+    this.resetWorksheetUnitUpdated$ = this.store.select(fromStore.resetWorksheetUnitUpdated);
   }
 
   getWorksheetStatus() {
@@ -86,5 +88,8 @@ export class SharedFacadeService {
   }
   updateWorksheetUnit(request: any) {
     this.store.dispatch(sharedAction.updateWorksheetUnit(request));
+  }
+  resetWorksheetUnitUpdateStatus() {
+    this.store.dispatch(sharedAction.resetWorksheetUnitUpdateStatus());
   }
 }

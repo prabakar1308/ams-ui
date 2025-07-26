@@ -28,6 +28,16 @@ export class WorksheetUnitDetailsComponent {
 
   ngOnInit() {
     this.getWorksheetUnitDetails();
+    this.sharedService.resetWorksheetUnitUpdated$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.sharedService.resetWorksheetUnitUpdateStatus();
+          this.userAction = USER_ACTIONS.LIST;
+          this.editId = null;
+          this.sharedService.getMasterData();
+        }
+      });
   }
   getWorksheetUnitDetails() {
     this.sharedService.masterData$
@@ -40,6 +50,7 @@ export class WorksheetUnitDetailsComponent {
           value_name: unit.value,
           brand_name: unit.brand,
           specification: unit.specs,
+          enableEdit: true,
         }));
       });
   }
