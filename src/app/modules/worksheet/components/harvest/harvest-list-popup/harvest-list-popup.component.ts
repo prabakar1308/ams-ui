@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
+import { UnitSector } from '@app/shared/models/master';
 import { TransitDetail } from '@app/worksheet/models/create-transit';
 import { Transit } from '@app/worksheet/models/transit';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
@@ -16,6 +17,8 @@ export class HarvestListPopupComponent {
   countsRemining: number = 0;
   transitCount: number = 0;
   transitDetails: TransitDetail[] = [];
+  selectedUnitSectors: UnitSector[] = [];
+  allUnitSectors: any[] = [];
   exisingTransits: Transit[] = [];
   selectedSectorId: number = 0;
   showError: boolean = false;
@@ -27,11 +30,23 @@ export class HarvestListPopupComponent {
     public dialogRef: MatDialogRef<HarvestListPopupComponent>,
   ) {
     this.countsRemining = this.data.harvestData.countInStock;
+    this.allUnitSectors = this.data.unitSectors.map((sector: any) => ({
+      ...sector,
+      isSelected: false,
+    }));
     this.exisingTransits = this.data.exisingTransits;
+    this.selectedUnitSectors = [];
+    if (this.exisingTransits && this.exisingTransits.length > 0) {
+      //need to add code for existing transits
+    }
+
     this.addTransit();
   }
 
   addTransit() {
+    console.log(this.transitDetails);
+    //Adding code for selected unit sector
+    this.resetUnitSectorSelection();
     let transit: TransitDetail = {
       count: 0,
       harvestId: this.data.harvestData.id,
@@ -46,6 +61,7 @@ export class HarvestListPopupComponent {
     if (this.transitDetails.length > 1) {
       this.transitDetails.splice(index, 1);
       this.calculateCount();
+      this.resetUnitSectorSelection();
     }
   }
 
@@ -75,5 +91,19 @@ export class HarvestListPopupComponent {
       transits: this.transitDetails,
       harvestId: this.data.harvestData.id,
     });
+  }
+  resetUnitSectorSelection() {
+    this.allUnitSectors.forEach((s: UnitSector) => {
+      s.isSelected = false; // Reset selection state for all sectors
+    });
+    if (this.transitDetails.length > 0) {
+      this.allUnitSectors.forEach((s: UnitSector) => {
+        this.transitDetails.forEach((x) => {
+          if (s.id === x.unitSectorId) {
+            s.isSelected = true;
+          }
+        });
+      });
+    }
   }
 }

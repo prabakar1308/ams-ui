@@ -28,6 +28,7 @@ export interface UnitSector {
   name: string;
   description: string;
   location?: string;
+  isSelected?: boolean; // Added to track selection state
 }
 
 export interface WorksheetUnit {
@@ -35,6 +36,10 @@ export interface WorksheetUnit {
   value: string;
   brand: string;
   specs?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  createdBy?: string;
+  updatedBy?: string;
 }
 
 export interface DisplayColumn {

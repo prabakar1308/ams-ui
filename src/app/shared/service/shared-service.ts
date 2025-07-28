@@ -12,6 +12,7 @@ import {
   WorksheetUnit,
 } from '../models/master';
 import { CreateUserRequest } from '../models/create-user';
+import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
 
 @Injectable({
   providedIn: 'root',
@@ -59,5 +60,11 @@ export class SharedService {
   }
   deleteUser(id: number) {
     return this.http.delete<Response<any>>(`${this.API_URL}/users/delete-user?id=${id}`);
+  }
+  createWorksheetUnit(request: CreateWorksheetUnitRequest) {
+    return this.http.post<Response<any>>(`${this.API_URL}/master/worksheet-unit`, request);
+  }
+  updateWorksheetUnit(request: any[]) {
+    return this.http.patch<Response<any>>(`${this.API_URL}/master/worksheet-unit`, request);
   }
 }

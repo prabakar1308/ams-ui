@@ -10,6 +10,7 @@ import { MasterData, WorksheetFilter } from '../models/shared-state';
 import { HarvestType } from '../models/master';
 import { UserDetails } from '../models/user-details';
 import { CreateUserRequest } from '../models/create-user';
+import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class SharedFacadeService {
   worksheetFilter$: Observable<WorksheetFilter>;
   meta$: Observable<MetaState>;
   resetUserUpdated$: Observable<boolean>;
+  resetWorksheetUnitUpdated$: Observable<boolean>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.masterData$ = this.store.select(fromStore.getMasterData);
@@ -31,6 +33,7 @@ export class SharedFacadeService {
     this.worksheetFilter$ = this.store.select(fromStore.getWorksheetFilter);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
     this.resetUserUpdated$ = this.store.select(fromStore.resetUserUpdated);
+    this.resetWorksheetUnitUpdated$ = this.store.select(fromStore.resetWorksheetUnitUpdated);
   }
 
   getWorksheetStatus() {
@@ -76,5 +79,17 @@ export class SharedFacadeService {
 
   resetUserUpdateStatus() {
     this.store.dispatch(sharedAction.resetUserUpdateStatus());
+  }
+  createWorksheetUnit(request: CreateWorksheetUnitRequest) {
+    this.store.dispatch(sharedAction.createWorksheetUnit(request));
+  }
+  createWorksheetUnitSuccess(response: any[]) {
+    this.store.dispatch(sharedAction.createWorksheetUnitSuccess(response));
+  }
+  updateWorksheetUnit(request: any) {
+    this.store.dispatch(sharedAction.updateWorksheetUnit(request));
+  }
+  resetWorksheetUnitUpdateStatus() {
+    this.store.dispatch(sharedAction.resetWorksheetUnitUpdateStatus());
   }
 }

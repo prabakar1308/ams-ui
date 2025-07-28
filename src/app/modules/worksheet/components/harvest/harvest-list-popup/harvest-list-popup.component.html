@@ -50,11 +50,16 @@
                 <mat-label>Unit Sector</mat-label>
                 <mat-select
                   [value]="transit.unitSectorId"
-                  (selectionChange)="transit.unitSectorId = $event.value"
+                  (selectionChange)="
+                    transit.unitSectorId = $event.value; resetUnitSectorSelection()
+                  "
+                  [(ngModel)]="transit.unitSectorId"
                   required
                 >
-                  @for (sector of data.unitSectors; track sector) {
-                    <mat-option [value]="sector.id">{{ sector.name }}</mat-option>
+                  @for (sector of allUnitSectors; track sector) {
+                    <mat-option [value]="sector.id" [disabled]="sector.isSelected">{{
+                      sector.name
+                    }}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>

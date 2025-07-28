@@ -22,6 +22,11 @@ import {
   deleteUser,
   deleteUserFailure,
   deleteUserSuccess,
+  createWorksheetUnit,
+  createWorksheetUnitFailure,
+  createWorksheetUnitSuccess,
+  updateWorksheetUnit,
+  updateWorksheetUnitSuccess,
 } from './shared-actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
@@ -214,6 +219,60 @@ export class SharedEffects {
             });
           }),
           catchError((error) => of(deleteUserFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  createWorksheetUnitData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createWorksheetUnit.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.createWorksheetUnit(payload).pipe(
+          map((res: Response<any>) => {
+            if (!(res.status === 201 || res.status === 200)) {
+              return createWorksheetUnitFailure({
+                error: res.message || 'Create Worksheet Unit failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Worksheet Unit created successfully!',
+              );
+              return createWorksheetUnitSuccess(res.data);
+            }
+            return createWorksheetUnitFailure({
+              error: res.message || 'Create Worksheet Unit failed',
+            });
+          }),
+          catchError((error) => of(createWorksheetUnitFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  updateWorksheetUnitData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateWorksheetUnit.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.updateWorksheetUnit(payload).pipe(
+          map((res: Response<any>) => {
+            if (!(res.status === 201 || res.status === 200)) {
+              return createWorksheetUnitFailure({
+                error: res.message || 'Update Worksheet Unit failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Worksheet Unit updated successfully!',
+              );
+              return updateWorksheetUnitSuccess(res.data);
+            }
+            return createWorksheetUnitFailure({
+              error: res.message || 'Update Worksheet Unit failed',
+            });
+          }),
+          catchError((error) => of(createWorksheetUnitFailure({ error }))),
         ),
       ),
     ),
