@@ -19,6 +19,7 @@ export interface CreateWorksheetRequest {
   statusId?: number;
   tanks: number[];
   restocks?: number[];
+  generatedAt?: Date;
 }
 
 export interface UpdateWorksheet {
@@ -35,6 +36,7 @@ export interface UpdateWorksheet {
   statusId?: number;
   id?: number;
   restocks?: number[];
+  generatedAt?: Date;
 }
 
 export interface UpdateWorksheetRequest {

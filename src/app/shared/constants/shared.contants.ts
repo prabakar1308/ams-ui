@@ -6,6 +6,7 @@ export const INPUT_TYPES = {
   CHECKBOX: 'checkbox',
   SELECT: 'select',
   DATE: 'date',
+  DATETIME: 'date_time',
   TIME: 'time',
   FILE: 'file',
   BUTTON_TOGGLE: 'button_toggle',

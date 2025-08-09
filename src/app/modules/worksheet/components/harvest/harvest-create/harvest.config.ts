@@ -70,4 +70,11 @@ export const formConfig: FormStructure[] = [
       hint: 'Add restock count in millions',
     },
   },
+  {
+    class: LAYOUT_CLASSES.DEFAULT,
+    type: INPUT_TYPES.DATETIME,
+    label: 'Created At',
+    name: 'generatedAt',
+    value: null,
+  },
 ];

@@ -11,6 +11,7 @@ export interface CreateHarvest {
   unitSectorId?: number;
   transitCount?: number | string;
   divider?: string;
+  generatedAt?: Date;
 }
 
 export interface CreateHarvestRequest {
