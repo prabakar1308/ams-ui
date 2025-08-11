@@ -125,20 +125,20 @@ export const resetWorksheetUnitUpdateStatus = createAction(
 );
 
 export const resetUserPassword = createAction(
-  '[Master] Reset User Password',
+  '[User] Reset User Password',
   (payload: ResetUserPassword) => ({
     payload,
   }),
 );
 
 export const resetUserPasswordSuccess = createAction(
-  '[Master] Reset User Password Success',
+  '[User] Reset User Password Success',
   (payload: any[]) => ({
     payload,
   }),
 );
 
 export const resetUserPasswordFailure = createAction(
-  '[Master] Reset User Password Failure',
+  '[User] Reset User Password Failure',
   (payload: { error: string }) => ({ payload }),
 );
