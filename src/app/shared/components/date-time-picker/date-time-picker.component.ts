@@ -1,5 +1,5 @@
 import { Component, forwardRef, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl } from '@angular/forms';
 import { MatTimepickerSelected } from '@angular/material/timepicker';
 
 @Component({
@@ -17,6 +17,7 @@ import { MatTimepickerSelected } from '@angular/material/timepicker';
 export class DateTimePickerComponent implements ControlValueAccessor {
   @Input() label: string = 'Select date';
   @Input() disabled = false;
+  @Input() value: Date | null = null;
 
   date: Date | null = null;
 

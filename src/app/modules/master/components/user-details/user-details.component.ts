@@ -63,20 +63,20 @@ export class UserDetailsComponent {
 
   initializeFormConfig() {
     this.formConfigData = [...formConfig];
-    this.formConfigData = this.formConfigData.map((data) => {
-      switch (data.name) {
-        case FORM_CONTROL_NAMES.UNIT_SECTOR:
-          return {
-            ...data,
-            options: this.unitSectors.map((type) => ({
-              label: `${type.name} (${type.location})`,
-              value: type.id,
-            })),
-          };
-        default:
-          return data;
-      }
-    });
+    // this.formConfigData = this.formConfigData.map((data) => {
+    //   switch (data.name) {
+    //     case FORM_CONTROL_NAMES.UNIT_SECTOR:
+    //       return {
+    //         ...data,
+    //         options: this.unitSectors.map((type) => ({
+    //           label: `${type.name} (${type.location})`,
+    //           value: type.id,
+    //         })),
+    //       };
+    //     default:
+    //       return data;
+    //   }
+    // });
   }
 
   getUsers() {
@@ -117,6 +117,7 @@ export class UserDetailsComponent {
     } else {
       this.sharedService.createUser({
         ...payload,
+        password: 'welcome123', // Default password for new users
       });
       this.clipboard.copy(payload.password || '');
       this.notificationService.showMessage(SEVERITY.SUCCESS, 'Password copied to clipboard');

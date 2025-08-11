@@ -159,6 +159,7 @@
                     <app-date-time-picker
                       [label]="control.label"
                       [formControlName]="control.name"
+                      [value]="getControlValue(control.name)"
                     ></app-date-time-picker>
                   } @else if (
                     control.type === inputTypes.DIVIDER &&

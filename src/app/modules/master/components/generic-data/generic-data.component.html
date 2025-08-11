@@ -34,8 +34,7 @@
         <app-generic-table
           [data]="data"
           [displayedColumns]="displayColumns"
-          [totalLength]="100"
-          [pageSize]="10"
+          [showPagination]="true"
           (editData)="onEditDetails($event)"
           (deleteData)="onDeleteDetails($event)"
         >

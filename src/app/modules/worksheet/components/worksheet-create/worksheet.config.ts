@@ -17,6 +17,7 @@ export const FORM_CONTROL_NAMES = {
   PH: 'ph',
   SALNITY: 'salnity',
   TEMPERATURE: 'temperature',
+  GENERATED_AT: 'generatedAt',
 };
 
 export const formDetails = {

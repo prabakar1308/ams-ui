@@ -29,13 +29,13 @@ export const formWsConfig: FormStructure[] = [
     label: 'Brand Name',
     name: 'brand',
     value: '',
-    validations: [
-      {
-        name: 'required',
-        validator: 'required',
-        message: 'Brand Name is required',
-      },
-    ],
+    // validations: [
+    //   {
+    //     name: 'required',
+    //     validator: 'required',
+    //     message: 'Brand Name is required',
+    //   },
+    // ],
   },
   {
     class: LAYOUT_CLASSES.NONE,
@@ -43,12 +43,12 @@ export const formWsConfig: FormStructure[] = [
     label: 'Specification',
     name: 'specs',
     value: '',
-    validations: [
-      {
-        name: 'required',
-        validator: 'required',
-        message: 'Specification Name is required',
-      },
-    ],
+    // validations: [
+    //   {
+    //     name: 'required',
+    //     validator: 'required',
+    //     message: 'Specification Name is required',
+    //   },
+    // ],
   },
 ];

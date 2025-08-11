@@ -176,17 +176,19 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       userOnly,
     };
     const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
-    dialogRef.afterClosed().subscribe((result: boolean | number) => {
+    dialogRef.afterClosed().subscribe((result: { userId?: number; generatedAt?: Date }) => {
       if (result) {
         let updatedData: UpdateWorksheetRequest = {
           worksheets: [
             {
               id: worksheet.worksheetId,
               statusId: WORKSHEET_STATUS.IN_STOCKING,
+              generatedAt: result.generatedAt,
             },
             {
               id: worksheet.worksheetId,
-              userId: result as number,
+              userId: result.userId as number,
+              generatedAt: result.generatedAt,
             },
           ],
           updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE_STATUS,

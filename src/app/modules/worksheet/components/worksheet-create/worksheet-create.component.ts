@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { combineLatest, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { combineLatest, distinctUntilChanged, generate, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -82,6 +82,8 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
         ]) => {
           this.activeRestocks = activeRestocks;
           const { tanks, tankType } = tankSelection;
+
+          console.log(currentWorksheet, 'currentWorksheet');
 
           if (!tankType) {
             this.selectedTankType = tankType || DEFAULT_TANK_TYPE;
@@ -261,6 +263,12 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
                   })),
                 };
 
+              case FORM_CONTROL_NAMES.GENERATED_AT:
+                return {
+                  ...data,
+                  value:
+                    this.editId && currentWorksheet ? currentWorksheet.generatedAt : data.value,
+                };
               default:
                 return data;
             }
@@ -335,6 +343,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
       harvestHours: requestData.harvestHours ? +requestData.harvestHours : 0,
       statusId: WORKSHEET_STATUS.READY_FOR_STOCKING,
       id: this.editId || undefined,
+      generatedAt: requestData.generatedAt || new Date(),
     };
 
     if (this.editId) this.worksheetFacadeService.updateWorksheetParams(requestData);
