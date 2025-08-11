@@ -48,8 +48,27 @@ export class DateTimePickerComponent implements ControlValueAccessor {
   }
 
   onTimeSelected(event: MatTimepickerSelected<Date>) {
-    this.date = event.value;
+    if (this.date) {
+      // Update only the time part of this.date
+      const selected = event.value;
+      this.date.setHours(
+        selected.getHours(),
+        selected.getMinutes(),
+        selected.getSeconds() || 0,
+        selected.getMilliseconds() || 0,
+      );
+    } else {
+      this.date = event.value;
+    }
     this.emitChange();
+
+    // Remove focus from the time input after selection
+    setTimeout(() => {
+      const timeInput = document.querySelector('input[type="text"]');
+      if (timeInput) {
+        (timeInput as HTMLElement).blur();
+      }
+    }, 0);
   }
 
   emitChange() {

@@ -6,6 +6,7 @@ export const FORM_CONTROL_NAMES = {
   UNIT_ID: 'unitId',
   MEASURED_BY: 'measuredBy',
   RESTOCK_COUNT: 'restockCount',
+  GENERATED_AT: 'generatedAt',
 };
 
 export const formDetails = {

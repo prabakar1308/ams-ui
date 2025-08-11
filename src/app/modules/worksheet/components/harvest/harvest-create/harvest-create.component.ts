@@ -165,6 +165,11 @@ export class HarvestCreateComponent {
                 },
               };
 
+            case FORM_CONTROL_NAMES.GENERATED_AT:
+              return {
+                ...data,
+                value: this.editId && this.harvest ? this.harvest.generatedAt : data.value,
+              };
             default:
               return data;
           }
