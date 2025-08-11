@@ -17,6 +17,7 @@ export const FORM_CONTROL_NAMES = {
   PH: 'ph',
   SALNITY: 'salnity',
   TEMPERATURE: 'temperature',
+  GENERATED_AT: 'generatedAt',
 };
 
 export const formDetails = {
@@ -201,6 +202,13 @@ export const formConfig: FormStructure[] = [
     ],
     hide: true,
     disabled: true,
+  },
+  {
+    class: LAYOUT_CLASSES.DEFAULT,
+    type: INPUT_TYPES.DATETIME,
+    label: 'Created At',
+    name: 'generatedAt',
+    value: null,
   },
   // Assigned User
   {

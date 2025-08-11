@@ -1,8 +1,8 @@
 <div class="generic-table-container mat-elevation-z8 table-responsive">
-  <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
+  <table mat-table [dataSource]="dataSource" class="mat-table">
     <!-- Dynamic Column Definitions -->
     <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | underscoreTitlecase }}</th>
+      <th mat-header-cell *matHeaderCellDef>{{ column | underscoreTitlecase }}</th>
 
       <td mat-cell *matCellDef="let element">
         @if (column === 'actions' && element.enableEdit) {
@@ -44,10 +44,13 @@
   </table>
 
   <!-- Pagination -->
-  <!-- <mat-paginator
-      [length]="totalLength"
-      [pageSize]="pageSize"
+  @if (showPagination) {
+    <mat-paginator
+      [length]="data.length"
+      [pageSize]="10"
       [pageSizeOptions]="[5, 10, 25, 50]"
-      (page)="onPageChange($event)">
-    </mat-paginator> -->
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
+  }
 </div>

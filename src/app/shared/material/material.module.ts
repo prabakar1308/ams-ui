@@ -25,6 +25,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
@@ -50,6 +51,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     MatInputModule,
     MatAutocompleteModule,
     MatDatepickerModule,
+    MatTimepickerModule,
     MatFormFieldModule,
     MatRadioModule,
     MatSelectModule,

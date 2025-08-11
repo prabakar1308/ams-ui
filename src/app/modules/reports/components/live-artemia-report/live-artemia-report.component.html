@@ -52,8 +52,6 @@
             <app-generic-table
               [data]="getShiftData(report.shifts.dayShift.transits)"
               [displayedColumns]="displayColumns"
-              [totalLength]="100"
-              [pageSize]="10"
             >
             </app-generic-table>
           </mat-card-content>
@@ -70,8 +68,6 @@
             <app-generic-table
               [data]="getShiftData(report.shifts.nightShift.transits)"
               [displayedColumns]="displayColumns"
-              [totalLength]="100"
-              [pageSize]="10"
             >
             </app-generic-table>
           </mat-card-content>

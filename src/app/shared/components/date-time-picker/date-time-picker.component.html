@@ -1,0 +1,20 @@
+<div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+  <mat-form-field appearance="outline" class="ams-small w-full">
+    <mat-label>{{ label }}</mat-label>
+    <input
+      matInput
+      [matDatepicker]="datepicker"
+      (dateChange)="onDateChange($event)"
+      [value]="date"
+    />
+    <mat-datepicker #datepicker />
+    <mat-datepicker-toggle [for]="datepicker" matSuffix />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="ams-small w-full">
+    <mat-label>Time</mat-label>
+    <input matInput [matTimepicker]="timepicker" [value]="date" />
+    <mat-timepicker #timepicker (selected)="onTimeSelected($event)" interval="15min" />
+    <mat-timepicker-toggle [for]="timepicker" matSuffix />
+  </mat-form-field>
+</div>

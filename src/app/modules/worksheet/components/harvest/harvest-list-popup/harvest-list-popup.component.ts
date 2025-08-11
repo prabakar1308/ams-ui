@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
@@ -22,6 +23,7 @@ export class HarvestListPopupComponent {
   exisingTransits: Transit[] = [];
   selectedSectorId: number = 0;
   showError: boolean = false;
+  generatedAt = new FormControl<Date | null>(null);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -44,7 +46,6 @@ export class HarvestListPopupComponent {
   }
 
   addTransit() {
-    console.log(this.transitDetails);
     //Adding code for selected unit sector
     this.resetUnitSectorSelection();
     let transit: TransitDetail = {
@@ -53,6 +54,7 @@ export class HarvestListPopupComponent {
       staffInCharge: '',
       unitId: this.data.harvestData.unit.id,
       unitSectorId: 0,
+      generatedAt: this.generatedAt.value || undefined,
     };
     this.transitDetails.push(transit);
   }

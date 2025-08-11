@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
@@ -6,6 +7,7 @@ import { UnitSector } from '@app/shared/models/master';
 import { TransitDetail } from '@app/worksheet/models/create-transit';
 import { Transit, TransitUpdate } from '@app/worksheet/models/transit';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
+import { generate } from 'rxjs';
 
 @Component({
   selector: 'app-transit-edit-dialog',
@@ -19,6 +21,7 @@ export class TransitEditDialogComponent {
   transitDetails!: TransitUpdate;
   selectedSectorId: number = 0;
   showError: boolean = false;
+  generatedAt = new FormControl<Date | null>(null);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { transit: Transit; unitSectors: UnitSector[] },
@@ -38,7 +41,9 @@ export class TransitEditDialogComponent {
       staffInCharge: this.data.transit.staffInCharge || '',
       unitSectorId: this.data.transit.unitSector.id,
       harvestId: this.data.transit.harvestId || 0,
+      generatedAt: this.data.transit.generatedAt || undefined,
     };
+    this.generatedAt.setValue(this.data.transit.generatedAt || null);
   }
 
   calculateCount() {
@@ -59,6 +64,10 @@ export class TransitEditDialogComponent {
       return;
     }
 
-    this.dialogRef.close({ ...this.transitDetails, countInStock: this.countsRemaining });
+    this.dialogRef.close({
+      ...this.transitDetails,
+      countInStock: this.countsRemaining,
+      generatedAt: this.generatedAt.value,
+    });
   }
 }

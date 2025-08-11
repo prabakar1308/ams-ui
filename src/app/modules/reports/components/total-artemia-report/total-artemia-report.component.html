@@ -73,12 +73,7 @@
         <span class="text-md pl-4 font-semibold font-sans">Live Artemia</span>
       </div>
       <mat-card-content>
-        <app-generic-table
-          [data]="liveTableData"
-          [displayedColumns]="displayColumns"
-          [totalLength]="100"
-          [pageSize]="10"
-        >
+        <app-generic-table [data]="liveTableData" [displayedColumns]="displayColumns">
         </app-generic-table>
       </mat-card-content>
     </mat-card>
@@ -106,12 +101,7 @@
         <span class="text-md pl-4 font-semibold font-sans">Frozen Artemia</span>
       </div>
       <mat-card-content>
-        <app-generic-table
-          [data]="frozenTableData"
-          [displayedColumns]="displayColumns"
-          [totalLength]="100"
-          [pageSize]="10"
-        >
+        <app-generic-table [data]="frozenTableData" [displayedColumns]="displayColumns">
         </app-generic-table>
       </mat-card-content>
     </mat-card>

@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { UserDetails } from '@app/shared/models/user-details';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-worksheet-update-dialog',
@@ -18,6 +19,7 @@ export class WorksheetUpdateDialogComponent implements OnInit, OnDestroy {
   selection = new SelectionModel<any>(true, []);
   selectAllCheck = false;
   selectedUserId: number | null = null;
+  form: FormGroup;
   userDetails: UserDetails[] | null = null;
   private unSubscribe = new Subject<void>();
 
@@ -25,7 +27,11 @@ export class WorksheetUpdateDialogComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<WorksheetUpdateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private sharedFacade: SharedFacadeService,
-  ) {}
+  ) {
+    this.form = new FormGroup({
+      generatedAt: new FormControl(this.data.worksheet.generatedAt),
+    });
+  }
 
   ngOnInit() {
     this.selectedUserId = this.data.worksheet ? this.data.worksheet.assignedUser?.id || 0 : 0;
@@ -59,8 +65,14 @@ export class WorksheetUpdateDialogComponent implements OnInit, OnDestroy {
     );
   }
 
+  update(): void {
+    this.dialogRef.close({
+      userId: this.selectedUserId,
+      generatedAt: this.form.get('generatedAt')?.value,
+    });
+  }
+
   ngOnDestroy(): void {
-    console.log('destroyed');
     this.unSubscribe.next();
     this.unSubscribe.complete();
   }

@@ -9,6 +9,7 @@ export interface TransitDetail {
   count: number;
   unitId: number;
   staffInCharge: string;
+  generatedAt?: Date;
 }
 
 export interface CreateTransitRequest {
@@ -28,4 +29,5 @@ export interface CreateTransitResponse {
   staffInCharge: string;
   createdAt: Date;
   updatedAt: Date;
+  generatedAt?: Date;
 }

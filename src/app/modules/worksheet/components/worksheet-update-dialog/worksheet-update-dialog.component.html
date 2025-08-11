@@ -24,6 +24,16 @@
       </mat-form-field>
     </div>
     @if (!data.userOnly) {
+      <div class="w-full p-2 pb-0 pt-4">
+        <form [formGroup]="form">
+          <app-date-time-picker
+            formControlName="generatedAt"
+            [label]="'Created Date'"
+            [value]="data.worksheet.generatedAt"
+          ></app-date-time-picker>
+        </form>
+      </div>
+
       <div class="md:min-w-md sm:min-w-sm">
         <mat-selection-list (selectionChange)="onChange($event)">
           @for (param of data.worksheet.parameters; track param) {
@@ -53,12 +63,7 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button (click)="dialogRef.close(false)">Cancel</button>
-    <button
-      mat-flat-button
-      (click)="dialogRef.close(selectedUserId)"
-      cdkFocusInitial
-      [disabled]="disableUpdate"
-    >
+    <button mat-flat-button (click)="update()" cdkFocusInitial [disabled]="disableUpdate">
       Update
     </button>
   </mat-dialog-actions>

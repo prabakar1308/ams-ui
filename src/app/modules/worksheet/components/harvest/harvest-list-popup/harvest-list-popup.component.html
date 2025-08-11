@@ -2,42 +2,37 @@
   <h2 mat-dialog-title>Live Transit</h2>
   <div class="grid grid-cols-1 gap-4">
     <mat-dialog-content>
-      <mat-chip-set>
-        <div class="count-stock">
+      <mat-chip-set class="flex align-center justify-center">
+        <div class="count-stock flex justify-center">
           <mat-chip
             >Overall Count: {{ data.harvestData.count }} {{ data.harvestData.unit.value }}
           </mat-chip>
         </div>
-        <div class="count-stock">
+        <div class="count-stock flex justify-center">
           <mat-chip>
             Count In Stock: {{ data.harvestData.countInStock }}
             {{ data.harvestData.unit.value }}
           </mat-chip>
         </div>
       </mat-chip-set>
-      <mat-chip-set>
-        <div class="flex flex-col">
-          <div class="font-bold p-2 pt-0">Existing Transits</div>
-          <!-- <div>
-            @for (folder of exisingTransits; track folder) {
-              <mat-chip>
-                <div>{{ folder.unitSector.name }} - {{ folder.transitCount }}</div>
-              </mat-chip>
-            }
-          </div> -->
-          <div class="flex flex-col px-0 gap-2 pl-2 md:gap-2 w-full">
-            @for (item of exisingTransits; track $index) {
-              <div class="flex flex-row text-gray-500 text-sm gap-1">
-                <div>{{ item.unitSector.name }} ({{ item.unitSector.location }}) :</div>
+      @if (exisingTransits.length) {
+        <mat-chip-set>
+          <div class="flex flex-col">
+            <div class="font-bold p-2 pt-0">Existing Transits</div>
+            <div class="flex flex-col px-0 gap-2 pl-2 md:gap-2 w-full">
+              @for (item of exisingTransits; track $index) {
+                <div class="flex flex-row text-gray-500 text-sm gap-1">
+                  <div>{{ item.unitSector.name }} ({{ item.unitSector.location }}) :</div>
 
-                <div class="font-bold">
-                  {{ item.transitCount }}
+                  <div class="font-bold">
+                    {{ item.transitCount }}
+                  </div>
                 </div>
-              </div>
-            }
+              }
+            </div>
           </div>
-        </div>
-      </mat-chip-set>
+        </mat-chip-set>
+      }
     </mat-dialog-content>
   </div>
   <mat-dialog-content>
@@ -106,24 +101,30 @@
         </mat-card-content>
       </mat-card>
     }
-    <button mat-button matTooltip="Add another" class="secondary" (click)="addTransit()">
-      Add unit Sector
-      <mat-icon>add_circle</mat-icon>
-    </button>
+    <div class="flex flex-col md:flex-row justify-between gap-4 py-4">
+      <button mat-button matTooltip="Add another" class="secondary" (click)="addTransit()">
+        Add unit Sector
+        <mat-icon>add_circle</mat-icon>
+      </button>
 
-    <div class="mt-5 count-stock">
-      <mat-chip class="count">
-        Counts Remaining: {{ countsRemining >= 0 ? countsRemining : '-' }}
-        {{ data.harvestData.unit.value }}
-      </mat-chip>
-      @if (countsRemining < 0) {
-        <div
-          class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-          role="alert"
-        >
-          Given count is greater that current count in stock.
-        </div>
-      }
+      <div class="count-stock flex justify-center">
+        <mat-chip>
+          Counts Remaining: {{ countsRemining >= 0 ? countsRemining : '-' }}
+          {{ data.harvestData.unit.value }}
+        </mat-chip>
+      </div>
+    </div>
+
+    @if (countsRemining < 0) {
+      <div
+        class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        role="alert"
+      >
+        Given count is greater that current count in stock.
+      </div>
+    }
+    <div class="pt-4">
+      <app-date-time-picker [label]="'Created Date'" [formControl]="generatedAt" />
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>

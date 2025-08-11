@@ -6,6 +6,7 @@ export const FORM_CONTROL_NAMES = {
   UNIT_ID: 'unitId',
   MEASURED_BY: 'measuredBy',
   RESTOCK_COUNT: 'restockCount',
+  GENERATED_AT: 'generatedAt',
 };
 
 export const formDetails = {
@@ -69,5 +70,12 @@ export const formConfig: FormStructure[] = [
     meta: {
       hint: 'Add restock count in millions',
     },
+  },
+  {
+    class: LAYOUT_CLASSES.DEFAULT,
+    type: INPUT_TYPES.DATETIME,
+    label: 'Created At',
+    name: 'generatedAt',
+    value: null,
   },
 ];

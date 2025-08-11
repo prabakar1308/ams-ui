@@ -14,6 +14,7 @@ export interface Transit {
     name?: string;
     location?: string;
   };
+  generatedAt?: Date;
 }
 
 export interface TransitUpdate {
@@ -24,6 +25,7 @@ export interface TransitUpdate {
   countInStock?: number;
   harvestId?: number;
   isDelete?: boolean;
+  generatedAt?: Date;
 }
 
 export interface TransitPayload {

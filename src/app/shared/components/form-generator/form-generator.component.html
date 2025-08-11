@@ -155,6 +155,12 @@
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
+                  } @else if (control.type === inputTypes.DATETIME) {
+                    <app-date-time-picker
+                      [label]="control.label"
+                      [formControlName]="control.name"
+                      [value]="getControlValue(control.name)"
+                    ></app-date-time-picker>
                   } @else if (
                     control.type === inputTypes.DIVIDER &&
                     dynamicForm.controls[control.name].enabled
