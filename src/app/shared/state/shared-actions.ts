@@ -1,6 +1,6 @@
 import { createAction } from '@ngrx/store';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
-import { UserDetails } from '@app/shared/models/user-details';
+import { ResetUserPassword, UserDetails } from '@app/shared/models/user-details';
 import { MasterData, WorksheetFilter } from '../models/shared-state';
 import { CreateUserRequest } from '../models/create-user';
 import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
@@ -122,4 +122,23 @@ export const updateWorksheetUnitSuccess = createAction(
 
 export const resetWorksheetUnitUpdateStatus = createAction(
   '[Master] Reset Worksheet Unit Update Status',
+);
+
+export const resetUserPassword = createAction(
+  '[Master] Reset User Password',
+  (payload: ResetUserPassword) => ({
+    payload,
+  }),
+);
+
+export const resetUserPasswordSuccess = createAction(
+  '[Master] Reset User Password Success',
+  (payload: any[]) => ({
+    payload,
+  }),
+);
+
+export const resetUserPasswordFailure = createAction(
+  '[Master] Reset User Password Failure',
+  (payload: { error: string }) => ({ payload }),
 );

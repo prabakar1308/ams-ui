@@ -12,6 +12,10 @@
           <mat-icon>logout</mat-icon>
           Logout
         </button>
+        <button mat-stroked-button color="accent" (click)="loadResetPasswordDialog()">
+          <mat-icon>lock_reset</mat-icon>
+          Reset Password
+        </button>
       </div>
     </div>
   </mat-toolbar>
@@ -30,6 +34,10 @@
         </div>
         <button mat-icon-button color="accent" (click)="logoutButton()">
           <mat-icon>logout</mat-icon>
+        </button>
+        <button mat-stroked-button color="accent" (click)="loadResetPasswordDialog()">
+          <mat-icon>lock_reset</mat-icon>
+          Reset Password
         </button>
       </div>
     </div>
@@ -69,4 +77,29 @@
       Logout
     </button>
   </div>
+</ng-template>
+
+<ng-template #resetPasswordDialog>
+  <h3 mat-dialog-title>Reset Password</h3>
+  <mat-dialog-content class="mt-5">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>New Password</mat-label>
+      <input matInput [(ngModel)]="newPassword" type="password" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full mt-2">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput [(ngModel)]="confirmPassword" type="password" required />
+    </mat-form-field>
+    <h5 class="text-sky-800">
+      <i>
+        <b>Note:&nbsp;</b>Kindly save your password once updated succcessfully, It never be
+        retrieved in future.
+      </i>
+    </h5>
+    <mat-error *ngIf="passwordError" color="warn">{{ passwordError }}</mat-error>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="resetPassword()">Submit</button>
+  </mat-dialog-actions>
 </ng-template>

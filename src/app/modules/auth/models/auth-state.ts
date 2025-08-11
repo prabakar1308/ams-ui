@@ -5,6 +5,7 @@ export interface AuthState {
   userId: string;
   accessToken: string;
   refreshToken: string;
+  userCode: string;
   meta: {
     isLoading: boolean;
     error: string;

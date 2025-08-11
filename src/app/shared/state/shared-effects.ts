@@ -27,6 +27,9 @@ import {
   createWorksheetUnitSuccess,
   updateWorksheetUnit,
   updateWorksheetUnitSuccess,
+  resetUserPassword,
+  resetUserPasswordFailure,
+  resetUserPasswordSuccess,
 } from './shared-actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
@@ -273,6 +276,33 @@ export class SharedEffects {
             });
           }),
           catchError((error) => of(createWorksheetUnitFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  resetUserPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(resetUserPassword.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.resetUserPassword(payload).pipe(
+          map((res: Response<any>) => {
+            if (!(res.status === 201 || res.status === 200)) {
+              return resetUserPasswordFailure({
+                error: res.message || 'Reset password failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Password reset successfully!',
+              );
+              return resetUserPasswordSuccess(res.data);
+            }
+            return resetUserPasswordFailure({
+              error: res.message || 'Reset password failed',
+            });
+          }),
+          catchError((error) => of(resetUserPasswordFailure({ error }))),
         ),
       ),
     ),
