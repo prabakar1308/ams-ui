@@ -22,9 +22,24 @@
             </mat-form-field>
           </div>
           <div>
-            <mat-form-field appearance="outline" class="ams-small">
+            <mat-form-field appearance="outline" class="ams-small password-field">
               <mat-label>Password</mat-label>
-              <input type="password" matInput formControlName="password" />
+              <input
+                [type]="hidePassword ? 'password' : 'text'"
+                matInput
+                formControlName="password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword"
+                tabindex="-1"
+                type="button"
+              >
+                <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
             </mat-form-field>
           </div>
 
