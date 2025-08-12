@@ -64,7 +64,8 @@ export class DateTimePickerComponent implements ControlValueAccessor {
 
     // Remove focus from the time input after selection
     setTimeout(() => {
-      const timeInput = document.querySelector('input[type="text"]');
+      const timeInput = document.querySelector('.mat-timepicker-input');
+      console.log(timeInput);
       if (timeInput) {
         (timeInput as HTMLElement).blur();
       }

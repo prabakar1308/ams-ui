@@ -7,7 +7,11 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
-import { WORKSHEET_STATUS, WORKSHEET_UPDATE_ACTION } from '@app/shared/constants/shared.contants';
+import {
+  HARVEST_TYPES,
+  WORKSHEET_STATUS,
+  WORKSHEET_UPDATE_ACTION,
+} from '@app/shared/constants/shared.contants';
 import { WorksheetUpdateDialogComponent } from '../worksheet-update-dialog/worksheet-update-dialog.component';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
@@ -28,6 +32,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<WorksheetTank>();
   selection = new SelectionModel<WorksheetTank>(true, []);
   worksheetFilter: WorksheetFilter = {};
+  worksheetStatus = WORKSHEET_STATUS;
   disableCreate = true;
   isAdmin = false;
 
@@ -102,8 +107,19 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
+  navigateToRestock(data: WorksheetTank) {
+    if (data && data.worksheetId) {
+      localStorage.setItem('restock-worksheet-id', JSON.stringify(data));
+      this.router.navigate(['worksheet/restock']);
+    }
+  }
+
   canDelete(data: WorksheetTank): boolean {
     return data && data.status?.id === WORKSHEET_STATUS.READY_FOR_STOCKING;
+  }
+
+  isRestockType(data: WorksheetTank): boolean {
+    return data && data.harvestType?.id === HARVEST_TYPES.RESTOCKING;
   }
 
   getIconName(data: WorksheetTank) {
