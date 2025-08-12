@@ -154,10 +154,29 @@ mat-card {
     -webkit-overflow-scrolling: touch;
 }
 
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+    padding: 0px 8px !important;
+}
+
 
 /* Mobile View Adjustments */
 @media (max-width: 768px) {
     .mat-calendar {
         height: auto !important;
+    }
+
+    .mdc-data-table__cell,
+    .mdc-data-table__header-cell {
+        padding: 0px 4px !important;
+    }
+
+    .mat-mdc-row,
+    .mdc-data-table__content {
+        font-size: 12px !important;
+    }
+
+    .material-icons {
+        font-size: 20px !important;
     }
 }

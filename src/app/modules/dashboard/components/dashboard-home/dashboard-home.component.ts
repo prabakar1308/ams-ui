@@ -81,7 +81,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           },
           series: [
             {
-              color: ['#faeb98', '#a2fa98', '#e9dff7', '#d0f3fc'],
+              color: ['#fff085', '#b8e6fe', '#b9f8cf', '#ebe6e7'],
               name: '',
               type: 'pie',
               radius: ['30%', '70%'],
@@ -161,14 +161,14 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
                     id: item.id,
                     value: item.value,
                     itemStyle: {
-                      color: '#d0f3fc',
+                      color: '#ebe6e7',
                     },
                   };
                 return {
                   id: item.id,
                   value: item.value,
                   itemStyle: {
-                    color: '#a3e7de',
+                    color: '#c6a3e7',
                   },
                 };
               }),

@@ -9,6 +9,8 @@ import { ReportFacadeService } from '../../services/report-facade.service';
 import { UNIT_IDS } from '@app/shared/constants/shared.contants';
 import { TransitReport } from '../../models/transit-response';
 import { LoaderService } from '@app/core/services/loader.service';
+import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
+import { UnitSector } from '@app/shared/models/master';
 
 @Component({
   selector: 'app-report-home',
@@ -24,12 +26,17 @@ export class ReportHomeComponent {
     private reportFacadeService: ReportFacadeService,
     private datePipe: DatePipe,
     private loaderService: LoaderService,
+    private sharedService: SharedFacadeService,
   ) {}
   unitIds = UNIT_IDS;
   selectedIndex = 0;
   dateValue = { startDate: new Date(), endDate: new Date() };
   liveTransits: TransitReport[] = [];
+  filteredLiveTransits: TransitReport[] = [];
   frozenTransits: TransitReport[] = [];
+  filteredFrozenTransits: TransitReport[] = [];
+  unitSectors: UnitSector[] = [];
+  selectedUnitSector: number | null = 0;
 
   ngOnInit() {
     const currentDate = new Date();
@@ -40,13 +47,42 @@ export class ReportHomeComponent {
 
     this.reportFacadeService.liveTransitReport$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
-      .subscribe((res) => (this.liveTransits = res));
+      .subscribe((res) => {
+        this.liveTransits = res;
+        this.filteredLiveTransits = res;
+      });
 
     this.reportFacadeService.frozenTransitReport$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
-      .subscribe((res) => (this.frozenTransits = res));
+      .subscribe((res) => {
+        this.frozenTransits = res;
+        this.filteredFrozenTransits = res;
+      });
 
     this.reportFacadeService.getActiveStockInputReport();
+
+    this.sharedService.masterData$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((data) => {
+        this.unitSectors = data?.unitSectors
+          ? [{ id: 0, name: 'All', description: '' }, ...data.unitSectors]
+          : [];
+      });
+  }
+
+  onUnitSectorChange(unitSectorId: number) {
+    console.log('Selected Unit Sector ID:', unitSectorId);
+    if (unitSectorId === 0) {
+      this.filteredLiveTransits = this.liveTransits;
+      this.filteredFrozenTransits = this.frozenTransits;
+    } else {
+      this.filteredLiveTransits = this.liveTransits.filter(
+        (transit) => transit.unitSector.id === unitSectorId,
+      );
+      this.filteredFrozenTransits = this.frozenTransits.filter(
+        (transit) => transit.unitSector.id === unitSectorId,
+      );
+    }
   }
 
   onIndexChange(index: number) {

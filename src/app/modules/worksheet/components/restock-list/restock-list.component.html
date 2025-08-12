@@ -49,7 +49,7 @@
       </div>
       <mat-form-field class="ams-small mb-0 md:-mb-5 mr-1 w-full md:w-55" appearance="outline">
         <mat-label>Search</mat-label>
-        <input matInput type="text" [(ngModel)]="searchText" />
+        <input matInput type="text" [(ngModel)]="searchText" (input)="applyFilter($event)" />
         @if (searchText) {
           <button matSuffix mat-icon-button aria-label="Clear" (click)="searchText = ''">
             <mat-icon>close</mat-icon>
@@ -58,6 +58,27 @@
       </mat-form-field>
     </div>
   </div>
+  @if (worksheetDetails) {
+    <div class="bg-[#e3e9e8] min-h-12 w-full rounded-xl my-6">
+      <div class="flex flex-row items-center justify-between h-full p-3">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-3 text-sm">
+          <p class="text-[#165d51]">
+            Tank:
+            <span class="font-bold"
+              >{{ worksheetDetails.tankType?.value }} #{{ worksheetDetails.tankNumber }}</span
+            >
+          </p>
+          <p class="text-[#165d51]">
+            Status: <span class="font-bold">{{ worksheetDetails.status?.value }}</span>
+          </p>
+          <p class="text-[#165d51]">
+            Total: <span class="font-bold">{{ worksheetDetails.inputSource }}</span>
+          </p>
+        </div>
+        <button mat-stroked-button color="accent" (click)="clearFilter()">Clear</button>
+      </div>
+    </div>
+  }
   <mat-card appearance="outlined">
     <mat-card-content>
       <section class="table-container mat-elevation-z8" tabindex="0">

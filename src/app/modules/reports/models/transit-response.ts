@@ -1,5 +1,5 @@
 export interface TransitReport {
-  unitSector: { name: string; location: string };
+  unitSector: { id: number; name: string; location: string };
   totalTransitCount: number;
   millions: number;
   frozenCups: number;
@@ -23,6 +23,7 @@ export interface Transit {
   transitCount: string;
   staffInCharge?: string;
   unitSector: {
+    id?: number;
     name?: string;
     location?: string;
   };
