@@ -12,6 +12,7 @@ export class GenericTableComponent implements OnInit {
   @Input() data: unknown[] = []; // Input data for the table
   @Input() displayedColumns: string[] = []; // Columns to display
   @Input() showPagination: boolean = false; // Flag to show/hide pagination
+  @Input() sticky: string = ''; // Flag for sticky headers
   @Output() editData = new EventEmitter<void>();
   @Output() deleteData = new EventEmitter<void>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;

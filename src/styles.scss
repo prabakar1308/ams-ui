@@ -159,6 +159,10 @@ mat-card {
     padding: 0px 8px !important;
 }
 
+.mat-mdc-row {
+    height: 60px;
+}
+
 
 /* Mobile View Adjustments */
 @media (max-width: 768px) {
@@ -174,6 +178,10 @@ mat-card {
     .mat-mdc-row,
     .mdc-data-table__content {
         font-size: 12px !important;
+    }
+
+    .mat-mdc-row {
+        height: 40px;
     }
 
     .material-icons {

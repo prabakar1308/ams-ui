@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
@@ -19,6 +19,7 @@ import { FORM_CONTROL_NAMES, formConfig, formDetails } from './user.config';
   standalone: false,
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class UserDetailsComponent {
   private unSubscribe = new Subject<void>();
@@ -29,7 +30,7 @@ export class UserDetailsComponent {
   tableData: unknown[] = [];
   unitSectors: UnitSector[] = [];
   userAction = USER_ACTIONS.LIST;
-  displayColumns = ['user_code', 'name', 'user_role', 'mobile_number', 'address', 'actions'];
+  displayColumns = ['name', 'user_code', 'user_role', 'mobile_number', 'address', 'actions'];
 
   constructor(
     public sharedService: SharedFacadeService,

@@ -10,6 +10,7 @@ export class GenericDataComponent {
   @Input() title!: string;
   @Input() data!: unknown[];
   @Input() displayColumns!: string[];
+  @Input() sticky = '';
   @Output() refreshPage = new EventEmitter<unknown>();
   @Output() addData = new EventEmitter<unknown>();
   @Output() editData = new EventEmitter<unknown>();

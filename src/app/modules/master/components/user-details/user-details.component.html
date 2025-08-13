@@ -1,9 +1,10 @@
-<div>
+<div class="user-details-container">
   @if (userAction === userActions.LIST) {
     <app-generic-data
       [title]="'User Details'"
       [data]="tableData"
       [displayColumns]="displayColumns"
+      [sticky]="'name'"
       (refreshPage)="getUsers()"
       (addData)="addNew()"
       (editData)="editDetails($event)"

@@ -58,9 +58,17 @@ export class TotalArtemiaChartComponent {
   }
 
   loadUserChart() {
+    const screenWidth = window.innerWidth;
+    let axisFontSize = 14;
+    if (screenWidth < 600) {
+      axisFontSize = 8;
+    } else if (screenWidth < 900) {
+      axisFontSize = 12;
+    }
+
     const labelOption = {
       show: true,
-      fontSize: 14,
+      fontSize: axisFontSize,
       color: '#808080',
       fontStyle: 'italic',
       fontWeight: 'bold',
@@ -77,6 +85,10 @@ export class TotalArtemiaChartComponent {
       },
       legend: {
         data: ['Day Shift', 'Night Shift', 'Total'],
+        fontSize: axisFontSize,
+        textStyle: {
+          fontSize: axisFontSize,
+        },
       },
       toolbox: {
         show: true,
@@ -98,13 +110,13 @@ export class TotalArtemiaChartComponent {
           data: this.data.map((item) => item.unit_sector),
           axisLabel: {
             show: true,
-            fontSize: 14,
+            fontSize: axisFontSize,
             // color: '#808080',
             // fontStyle: 'italic',
             fontWeight: 'bold',
           },
           nameTextStyle: {
-            fontSize: 14,
+            fontSize: axisFontSize,
             fontWeight: 'bold',
           },
         },
@@ -118,7 +130,7 @@ export class TotalArtemiaChartComponent {
           nameLocation: 'middle',
           nameGap: 40,
           nameTextStyle: {
-            fontSize: 14,
+            fontSize: axisFontSize,
             fontWeight: 'bold',
           },
           axisLabel: {

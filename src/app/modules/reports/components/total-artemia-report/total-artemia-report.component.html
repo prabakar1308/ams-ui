@@ -1,8 +1,8 @@
 <div class="total-artemia-report -m-2">
-  <span class="flex italic text-sm md:text-lg justify-center w-full">
-    Artemia report from&nbsp;&nbsp;
-    <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> &nbsp; to &nbsp;
-    <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+  <span class="flex italic text-sm md:text-lg justify-center w-full text-wrap text-[#165d51]">
+    <span class="text-nowrap">Artemia report from</span>
+    <strong class="px-1 text-nowrap">{{ dateValue.startDate | date: 'mediumDate' }}</strong> to
+    <strong class="px-1 text-nowrap">{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
   >
   <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
     <div class="col-span-4">
@@ -51,7 +51,7 @@
     </div> -->
   </div>
   <div>
-    <div class="flex flex-col md:flex-row justify-between items-center pb-3">
+    <div class="flex flex-col md:flex-row justify-between items-center py-3">
       @if (liveDataExists) {
         <span class="italic text-sm"
           >Total of

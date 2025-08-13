@@ -2,9 +2,9 @@
   <div class="flex flex-col md:flex-row justify-between items-center mx-3 md:my-4 pt-4">
     <h4 class="text-xl pl-4 font-serif font-bold text-[#165d51]">Restock Details</h4>
 
-    <div class="w-2/3 flex flex-col md:flex-row items-center gap-2 justify-end">
-      <div class="flex items-center gap-2 my-4 md:my-0">
-        <div>
+    <div class="w-2/3 flex flex-col md:flex-row items-center gap-4 mt-2 justify-end">
+      <div class="flex flex-col md:flex-row items-center gap-4 md:my-0">
+        <div class="flex flex-row gap-2">
           <button
             aria-label="Go to harvest list"
             [routerLink]="['/worksheet/harvest']"
@@ -14,8 +14,7 @@
           >
             <mat-icon>agriculture</mat-icon>
           </button>
-        </div>
-        <div>
+
           <button
             aria-label="Go to transit list"
             [routerLink]="['/worksheet/transit']"
@@ -25,17 +24,17 @@
           >
             <mat-icon>local_shipping</mat-icon>
           </button>
-        </div>
-        <button
-          mat-mini-fab
-          aria-label="worksheet refresh"
-          (click)="onClickBack()"
-          matTooltip="Worksheets"
-          class="secondary"
-        >
-          <mat-icon>home</mat-icon>
-        </button>
 
+          <button
+            mat-mini-fab
+            aria-label="worksheet refresh"
+            (click)="onClickBack()"
+            matTooltip="Worksheets"
+            class="secondary"
+          >
+            <mat-icon>home</mat-icon>
+          </button>
+        </div>
         <mat-button-toggle-group
           [value]="status"
           (change)="toggleChange($event)"

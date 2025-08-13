@@ -102,7 +102,14 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
               emphasis: {
                 focus: 'self',
               },
-              data: data,
+              data: data.map((item) => {
+                if (item.value === 0)
+                  return {
+                    ...item,
+                    value: '',
+                  };
+                return item;
+              }),
             },
           ],
         });

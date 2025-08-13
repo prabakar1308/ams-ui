@@ -1,16 +1,29 @@
 @use '@angular/material' as mat;
 @use 'styles/scss/variables' as *;
 
-// Customize the entire app. Change :root to your selector if you want to scope the styles.
-.create-dialog {
-  @include mat.dialog-overrides(
-    (
-      container-color: orange,
-      subhead-color: $dark-green,
-    )
-  );
-}
+.user-details-container {
 
-.warning {
-  color: $warning-color;
+  // Customize the entire app. Change :root to your selector if you want to scope the styles.
+  .create-dialog {
+    @include mat.dialog-overrides((container-color: orange,
+        subhead-color: $dark-green,
+      ));
+  }
+
+  .warning {
+    color: $warning-color;
+  }
+
+  .generic-table-container {
+
+    table {
+      min-width: 650px !important;
+    }
+
+    .mat-mdc-paginator {
+      min-width: 650px !important;
+    }
+  }
+
+
 }

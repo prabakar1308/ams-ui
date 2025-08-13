@@ -13,3 +13,10 @@
     @include mat.chips-overrides((container-height: 22px,
         ));
 }
+
+// Set height to 380px for mobile screens
+@media (max-width: 767px) {
+    .form-generator-container {
+        padding: 0.5rem;
+    }
+}

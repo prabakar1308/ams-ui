@@ -29,10 +29,10 @@ export class HarvestListComponent {
   displayedColumns = [
     'tank',
     'harvest',
-    'count_measured',
-    'count_remining',
-    'measured_by',
     'createdDate',
+    'measured_by',
+    'count_measured',
+    'count_remaining',
     'action',
   ];
   userDetails: UserDetails[] = [];

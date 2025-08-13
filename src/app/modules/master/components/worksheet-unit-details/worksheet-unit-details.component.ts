@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { USER_ACTIONS } from '@app/shared/constants/shared.contants';
+import { UNIT_IDS, USER_ACTIONS } from '@app/shared/constants/shared.contants';
 import { WorksheetUnit } from '@app/shared/models/master';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { distinctUntilChanged, from, Subject, takeUntil } from 'rxjs';
@@ -43,15 +43,16 @@ export class WorksheetUnitDetailsComponent {
     this.sharedService.masterData$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
-        console.log('Master data updated:', data);
         this.worksheetUnitDetails = data?.worksheetUnits || [];
-        this.tableData = this.worksheetUnitDetails.map((unit) => ({
-          ...unit,
-          value_name: unit.value,
-          brand_name: unit.brand,
-          specification: unit.specs,
-          enableEdit: true,
-        }));
+        this.tableData = this.worksheetUnitDetails
+          .filter((unit) => unit.id !== UNIT_IDS.MILLIONS && unit.id !== UNIT_IDS.FROZEN_CUPS)
+          .map((unit) => ({
+            ...unit,
+            value_name: unit.value,
+            brand_name: unit.brand,
+            specification: unit.specs,
+            enableEdit: true,
+          }));
       });
   }
 
