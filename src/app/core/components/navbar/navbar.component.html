@@ -4,13 +4,11 @@
       <ng-container *ngIf="false; else logoContainer"></ng-container>
       <ng-container *ngIf="!loggedIn; else routerLinks"></ng-container>
       <div class="flex items-center gap-2 w-1/2 justify-end pr-4" *ngIf="loggedIn">
-        <div class="user-info flex items-center gap-2 px-2 py-1 rounded bg-white/10">
-          <mat-icon>account_circle</mat-icon>
-          <span class="font-semibold text-sm text-[#707b85]">{{ userName }}</span>
-        </div>
-        <button mat-stroked-button color="accent" (click)="logoutButton()">
-          <mat-icon>logout</mat-icon>
-          Logout
+        <button matButton [matMenuTriggerFor]="menu" class="cursor-pointer">
+          <div class="user-info flex items-center gap-2 px-2 py-1 rounded bg-white/10">
+            <mat-icon>account_circle</mat-icon>
+            <span class="font-semibold text-sm text-[#707b85]">{{ userName }}</span>
+          </div>
         </button>
       </div>
     </div>
@@ -22,14 +20,13 @@
     <div class="navbar-container">
       <ng-container *ngIf="false; else logoContainer"></ng-container>
       <div class="flex items-center gap-1 w-1/2 justify-end w-full pr-2" *ngIf="loggedIn">
-        <div class="user-info flex items-center gap-1 px-2 py-1 rounded bg-white/10">
-          <mat-icon>account_circle</mat-icon>
-          <span class="font-semibold text-sm text-[#707b85] truncate max-w-30 md:max-w-50">{{
-            userName
-          }}</span>
-        </div>
-        <button mat-icon-button color="accent" (click)="logoutButton()">
-          <mat-icon>logout</mat-icon>
+        <button matButton [matMenuTriggerFor]="menu" class="cursor-pointer">
+          <div class="user-info flex items-center gap-1 px-2 py-1 rounded bg-white/10">
+            <mat-icon>account_circle</mat-icon>
+            <span class="font-semibold text-sm text-[#707b85] truncate max-w-30 md:max-w-50">{{
+              userName
+            }}</span>
+          </div>
         </button>
       </div>
     </div>
@@ -40,6 +37,13 @@
       <ng-container *ngIf="!loggedIn; else routerLinks"></ng-container>
     </div>
   </mat-toolbar>
+
+  <mat-menu #menu="matMenu" class="ml-4">
+    <button mat-menu-item (click)="logoutButton()"><mat-icon>logout</mat-icon>Logout</button>
+    <button mat-menu-item (click)="loadResetPasswordDialog()">
+      <mat-icon>lock_reset</mat-icon>Reset Password
+    </button>
+  </mat-menu>
 </div>
 
 <ng-template #logoContainer>
@@ -69,4 +73,45 @@
       Logout
     </button>
   </div>
+</ng-template>
+
+<ng-template #resetPasswordDialog>
+  <h3 mat-dialog-title>Reset Password</h3>
+  <mat-dialog-content class="mt-5">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>New Password</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newPassword"
+        [type]="hidePassword ? 'password' : 'text'"
+        required
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePassword"
+        tabindex="-1"
+        type="button"
+      >
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full mt-2">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput [(ngModel)]="confirmPassword" type="password" required />
+    </mat-form-field>
+    <mat-error *ngIf="passwordError" color="warn">{{ passwordError }}</mat-error>
+    <h5 class="text-sky-800 mt-2">
+      <i>
+        <b>Note:&nbsp;</b>Kindly save your password once updated succcessfully, It never be
+        retrieved in future.
+      </i>
+    </h5>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="resetPassword()">Submit</button>
+  </mat-dialog-actions>
 </ng-template>

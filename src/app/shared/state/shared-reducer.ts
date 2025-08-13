@@ -133,4 +133,11 @@ export const sharedReducer = createReducer(
       worksheetUnitUpdated: true,
     },
   })),
+  on(SharedActions.resetUserPasswordSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      resetPassword: true,
+    },
+  })),
 );

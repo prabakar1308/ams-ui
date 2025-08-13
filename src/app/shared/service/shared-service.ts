@@ -67,4 +67,7 @@ export class SharedService {
   updateWorksheetUnit(request: any[]) {
     return this.http.patch<Response<any>>(`${this.API_URL}/master/worksheet-unit`, request);
   }
+  resetUserPassword(request: any[]) {
+    return this.http.patch<Response<any>>(`${this.API_URL}/users/reset-password`, request);
+  }
 }

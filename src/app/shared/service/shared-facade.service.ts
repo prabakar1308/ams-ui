@@ -8,7 +8,7 @@ import * as fromStore from '../state';
 import * as sharedAction from '../state/shared-actions';
 import { MasterData, WorksheetFilter } from '../models/shared-state';
 import { HarvestType } from '../models/master';
-import { UserDetails } from '../models/user-details';
+import { ResetUserPassword, UserDetails } from '../models/user-details';
 import { CreateUserRequest } from '../models/create-user';
 import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
 
@@ -91,5 +91,8 @@ export class SharedFacadeService {
   }
   resetWorksheetUnitUpdateStatus() {
     this.store.dispatch(sharedAction.resetWorksheetUnitUpdateStatus());
+  }
+  resetUserPassword(request: ResetUserPassword) {
+    this.store.dispatch(sharedAction.resetUserPassword(request));
   }
 }

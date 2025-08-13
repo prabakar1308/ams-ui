@@ -17,3 +17,8 @@ export interface UserDetails {
   remarks?: string;
   userCode?: string;
 }
+
+export interface ResetUserPassword {
+  userId: string;
+  newPassword: string;
+}

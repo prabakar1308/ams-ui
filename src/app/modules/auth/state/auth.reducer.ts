@@ -10,6 +10,7 @@ export const initialState: AuthState = {
   userId: '',
   accessToken: '',
   refreshToken: '',
+  userCode: '',
   meta: {
     isLoading: false,
     error: '',
@@ -33,6 +34,7 @@ export const authReducer = createReducer(
     userName: payload.userName,
     accessToken: payload.accessToken,
     refreshToken: payload.refreshToken,
+    userCode: payload.userCode,
     isAuthenticated: true,
     meta: {
       ...state.meta,
