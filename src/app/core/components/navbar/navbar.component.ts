@@ -31,6 +31,7 @@ export class NavbarComponent {
   passwordError: string = '';
   userId: string = '';
   @ViewChild('resetPasswordDialog') resetPasswordDialog!: TemplateRef<any>;
+  hidePassword = true;
 
   constructor(
     private router: Router,
