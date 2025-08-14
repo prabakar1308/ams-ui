@@ -175,7 +175,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
                   id: item.id,
                   value: item.value,
                   itemStyle: {
-                    color: '#c6a3e7',
+                    color: '#e7e3a3',
                   },
                 };
               }),

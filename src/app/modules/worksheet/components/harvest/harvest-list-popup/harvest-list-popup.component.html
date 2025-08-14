@@ -77,7 +77,7 @@
                   matInput
                   placeholder="Count"
                   [(ngModel)]="transit.count"
-                  (change)="calculateCount()"
+                  (input)="calculateCount()"
                   [required]="true"
                 />
               </mat-form-field>

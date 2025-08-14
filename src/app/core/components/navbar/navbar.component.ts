@@ -25,6 +25,7 @@ export class NavbarComponent {
   private unSubscribe = new Subject<void>();
   activeUrl = '';
   userName = '';
+  userRole = '';
   navbarItems = NAVBAR_ITEMS;
   newPassword: string = '';
   confirmPassword: string = '';
@@ -51,6 +52,7 @@ export class NavbarComponent {
     this.authFacadeService.userData$.pipe(takeUntil(this.unSubscribe)).subscribe((userData) => {
       if (userData) {
         this.userName = userData.userName || '';
+        this.userRole = userData.userRole;
         this.userId = userData.userCode || '';
         if (userData.userRole === FM_USER) {
           this.navbarItems = FM_USER_NAVBAR_ITEMS;

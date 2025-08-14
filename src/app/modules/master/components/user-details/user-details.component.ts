@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Clipboard } from '@angular/cdk/clipboard';
+// import { Clipboard } from '@angular/cdk/clipboard';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 import { USER_ACTIONS, USER_ROLES } from '@app/shared/constants/shared.contants';
@@ -9,8 +9,8 @@ import { UserDetails } from '@app/shared/models/user-details';
 import { UnitSector } from '@app/shared/models/master';
 import { CreateUserRequest } from '@app/shared/models/create-user';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
-import { SEVERITY } from '@app/core/core.contants';
-import { NotificationService } from '@app/core/services/notification.service';
+// import { SEVERITY } from '@app/core/core.contants';
+// import { NotificationService } from '@app/core/services/notification.service';
 import { MasterService } from '@master/services/master.service';
 import { FORM_CONTROL_NAMES, formConfig, formDetails } from './user.config';
 
@@ -35,8 +35,8 @@ export class UserDetailsComponent {
   constructor(
     public sharedService: SharedFacadeService,
     private masterService: MasterService,
-    private clipboard: Clipboard,
-    private notificationService: NotificationService,
+    // private clipboard: Clipboard,
+    // private notificationService: NotificationService,
     private dialog: MatDialog,
   ) {}
 
@@ -64,20 +64,6 @@ export class UserDetailsComponent {
 
   initializeFormConfig() {
     this.formConfigData = [...formConfig];
-    // this.formConfigData = this.formConfigData.map((data) => {
-    //   switch (data.name) {
-    //     case FORM_CONTROL_NAMES.UNIT_SECTOR:
-    //       return {
-    //         ...data,
-    //         options: this.unitSectors.map((type) => ({
-    //           label: `${type.name} (${type.location})`,
-    //           value: type.id,
-    //         })),
-    //       };
-    //     default:
-    //       return data;
-    //   }
-    // });
   }
 
   getUsers() {
@@ -120,8 +106,8 @@ export class UserDetailsComponent {
         ...payload,
         password: 'welcome123', // Default password for new users
       });
-      this.clipboard.copy(payload.password || '');
-      this.notificationService.showMessage(SEVERITY.SUCCESS, 'Password copied to clipboard');
+      // this.clipboard.copy(payload.password || '');
+      // this.notificationService.showMessage(SEVERITY.SUCCESS, 'Password copied to clipboard');
     }
   }
 

@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+
 import { WORKSHEET_TABLE_STATUS } from '@app/shared/constants/shared.contants';
 import { UnitSector } from '@app/shared/models/master';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
+import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { Transit } from '@app/worksheet/models/transit';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { TransitEditDialogComponent } from '../transit-edit-dialog/transit-edit-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-transit-list',
@@ -114,16 +115,10 @@ export class TransitListComponent {
     };
     const dialogRef = this.dialog.open(TransitEditDialogComponent, {
       data,
-      minWidth: '600px',
     });
 
     dialogRef.afterClosed().subscribe((payload) => {
       if (payload) {
-        console.log(payload);
-        // let filter: HarvestFilter = {
-        //   unitId: this.unitId || 1, // Default to 1 if unitId is not provided
-        //   statusIds: ['A', 'P'],
-        // };
         this.worksheetFacadeService.updateTransit({ payload, days: this.selectedValue });
       }
     });

@@ -1,3 +1,4 @@
+import { ADMIN } from '@app/core/core.contants';
 import { INPUT_TYPES, LAYOUT_CLASSES, USER_ROLES } from '@app/shared/constants/shared.contants';
 import { FormStructure } from '@app/shared/models/form-structure';
 
@@ -94,7 +95,7 @@ export const formConfig: FormStructure[] = [
     type: INPUT_TYPES.SELECT,
     label: 'Role',
     name: FORM_CONTROL_NAMES.ROLE,
-    value: 'user', // default as user,
+    value: ADMIN, // default as admin,
     isMultiple: false,
     options: USER_ROLES,
     validations: [

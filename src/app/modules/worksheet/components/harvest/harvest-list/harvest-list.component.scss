@@ -4,7 +4,7 @@
 .table-container {
   max-width: 100%;
   overflow-y: auto;
-  height: calc(100vh - 300px);
+  // height: calc(100vh - 300px);
 
   .mat-mdc-row {
     height: 60px;
@@ -37,43 +37,28 @@
     white-space: nowrap;
   }
 
-  @include mat.chips-overrides(
-    (
-      container-height: 22px,
-    )
-  );
+  @include mat.chips-overrides((container-height: 22px,
+    ));
 }
 
 :root {
-  @include mat.dialog-overrides(
-    (
-      container-min-width: 600px,
-    )
-  );
+  @include mat.dialog-overrides((container-min-width: 600px,
+    ));
 }
 
 .tank-type {
-  @include mat.chips-overrides(
-    (
-      elevated-container-color: $dark-green,
+  @include mat.chips-overrides((elevated-container-color: $dark-green,
       label-text-color: $white,
-    )
-  );
+    ));
 }
 
 .harvest-type {
-  @include mat.chips-overrides(
-    (
-      elevated-container-color: $light-green,
+  @include mat.chips-overrides((elevated-container-color: $light-green,
       label-text-color: $dark-green,
-    )
-  );
+    ));
 }
 
 .user {
-  @include mat.icon-overrides(
-    (
-      color: $dark-green,
-    )
-  );
+  @include mat.icon-overrides((color: $dark-green,
+    ));
 }

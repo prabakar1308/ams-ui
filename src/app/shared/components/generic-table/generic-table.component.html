@@ -6,9 +6,19 @@
       [matColumnDef]="column"
       [sticky]="sticky === column"
     >
-      <th mat-header-cell *matHeaderCellDef>{{ column | underscoreTitlecase }}</th>
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        [ngClass]="{ 'sticky-border-right': sticky === column }"
+      >
+        {{ column | underscoreTitlecase }}
+      </th>
 
-      <td mat-cell *matCellDef="let element">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [ngClass]="{ 'sticky-border-right': sticky === column }"
+      >
         @if (column === 'actions' && element.enableEdit) {
           <div class="flex">
             <button

@@ -58,6 +58,7 @@
             <app-generic-table
               [data]="getShiftData(report.shifts.dayShift.transits)"
               [displayedColumns]="displayColumns"
+              [sticky]="'tank'"
             >
             </app-generic-table>
           </mat-card-content>
@@ -76,6 +77,7 @@
             <app-generic-table
               [data]="getShiftData(report.shifts.nightShift.transits)"
               [displayedColumns]="displayColumns"
+              [sticky]="'tank'"
             >
             </app-generic-table>
           </mat-card-content>

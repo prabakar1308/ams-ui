@@ -164,6 +164,8 @@ mat-card {
 }
 
 
+
+
 /* Mobile View Adjustments */
 @media (max-width: 768px) {
     .mat-calendar {
@@ -186,5 +188,37 @@ mat-card {
 
     .material-icons {
         font-size: 20px !important;
+    }
+
+    .sticky-border-left {
+        position: relative;
+        text-align: center !important;
+    }
+
+    .sticky-border-left::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background: #e5e7eb; // Tailwind's border-gray-200 or your desired color
+        z-index: 2;
+    }
+
+    .sticky-border-right {
+        position: relative;
+    }
+
+    .sticky-border-right::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background: #e5e7eb; // Tailwind's border-gray-200 or your desired color
+        z-index: 2;
+        margin-right: 8px;
     }
 }
