@@ -12,6 +12,8 @@ import { HarvestFilter } from '@app/shared/models/shared-state';
 import { Router } from '@angular/router';
 import { WorksheetService } from '@app/worksheet/services/worksheet.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
+import { ADMIN, SUPER_ADMIN } from '@app/core/core.contants';
 
 @Component({
   selector: 'app-harvest-list',
@@ -37,11 +39,14 @@ export class HarvestListComponent {
   ];
   userDetails: UserDetails[] = [];
   unitSectors: UnitSector[] = [];
+  isAdmin = false;
+  currentUserId: number = 0;
 
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
     private worksheetService: WorksheetService,
     private sharedFacadeService: SharedFacadeService,
+    private authFacadeService: AuthFacadeService,
     private dialog: MatDialog,
     private router: Router,
   ) {}
@@ -62,6 +67,15 @@ export class HarvestListComponent {
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
         this.unitSectors = data.unitSectors;
+      });
+
+    this.authFacadeService.userData$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((userData) => {
+        if (userData) {
+          this.isAdmin = userData.userRole === ADMIN || userData.userRole === SUPER_ADMIN;
+          this.currentUserId = parseInt(userData.userId);
+        }
       });
   }
 
@@ -91,6 +105,10 @@ export class HarvestListComponent {
 
   onPageChange(event: PageEvent) {
     console.log(event);
+  }
+
+  canAccessAction(data: HarvestDetails): boolean {
+    return this.isAdmin || data.measuredBy?.id === this.currentUserId;
   }
 
   openDialog(element: HarvestDetails) {

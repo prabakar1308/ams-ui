@@ -3,6 +3,7 @@ export interface Transit {
   harvestId?: number;
   createdAt: Date;
   createdBy: string;
+  createdById?: number;
   harvestCount: string;
   transitCount: string;
   count?: number;

@@ -12,6 +12,8 @@ import { ConfirmationDialogComponent } from '@app/shared/components/confirmation
 import { Transit } from '@app/worksheet/models/transit';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 import { TransitEditDialogComponent } from '../transit-edit-dialog/transit-edit-dialog.component';
+import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
+import { ADMIN, SUPER_ADMIN } from '@app/core/core.contants';
 
 @Component({
   selector: 'app-transit-list',
@@ -52,10 +54,13 @@ export class TransitListComponent {
       value: 29,
     },
   ];
+  isAdmin = false;
+  currentUserId: number = 0;
 
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
     private sharedFacadeService: SharedFacadeService,
+    private authFacadeService: AuthFacadeService,
     private router: Router,
     private dialog: MatDialog,
   ) {}
@@ -71,6 +76,19 @@ export class TransitListComponent {
       .subscribe((data) => {
         this.unitSectors = data.unitSectors;
       });
+
+    this.authFacadeService.userData$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((userData) => {
+        if (userData) {
+          this.isAdmin = userData.userRole === ADMIN || userData.userRole === SUPER_ADMIN;
+          this.currentUserId = parseInt(userData.userId);
+        }
+      });
+  }
+
+  canAccessAction(data: Transit): boolean {
+    return this.isAdmin || data.createdById === this.currentUserId;
   }
 
   toggleChange(event: MatButtonToggleChange) {

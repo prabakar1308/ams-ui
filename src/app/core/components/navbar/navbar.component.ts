@@ -12,6 +12,7 @@ import {
 } from '@app/core/core.contants';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +24,7 @@ export class NavbarComponent {
   @Input() loggedIn = false;
   @Output() logout = new EventEmitter<unknown>();
   private unSubscribe = new Subject<void>();
+  appVersion = environment.version || '1.0.0'; // Fallback version if not available
   activeUrl = '';
   userName = '';
   userRole = '';

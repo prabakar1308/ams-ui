@@ -35,6 +35,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
   worksheetStatus = WORKSHEET_STATUS;
   disableCreate = true;
   isAdmin = false;
+  currentUserId: number = 0;
 
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
@@ -66,6 +67,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       .subscribe((userData) => {
         if (userData) {
           this.isAdmin = userData.userRole === ADMIN || userData.userRole === SUPER_ADMIN;
+          this.currentUserId = parseInt(userData.userId);
         }
       });
   }
@@ -134,6 +136,10 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       default:
         return '';
     }
+  }
+
+  canAccessAction(data: WorksheetTank): boolean {
+    return this.isAdmin || data.assignedUser?.id === this.currentUserId;
   }
 
   getTooltipValue(data: WorksheetTank) {

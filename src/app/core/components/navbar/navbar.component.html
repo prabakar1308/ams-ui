@@ -42,6 +42,10 @@
   </mat-toolbar>
 
   <mat-menu #menu="matMenu" class="ml-4">
+    <button mat-menu-item>
+      <mat-icon>info</mat-icon>
+      Version: {{ appVersion }}
+    </button>
     <button mat-menu-item (click)="logoutButton()"><mat-icon>logout</mat-icon>Logout</button>
     <button mat-menu-item (click)="loadResetPasswordDialog()">
       <mat-icon>lock_reset</mat-icon>Reset Password

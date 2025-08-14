@@ -79,6 +79,8 @@
                   [(ngModel)]="transit.count"
                   (input)="calculateCount()"
                   [required]="true"
+                  [min]="1"
+                  type="number"
                 />
               </mat-form-field>
               <!-- <mat-error class="ams-small" *ngIf="showError && !transit.staffInCharge">

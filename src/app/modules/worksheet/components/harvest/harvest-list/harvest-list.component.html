@@ -81,14 +81,16 @@
               >
                 <div><mat-icon>keyboard_double_arrow_right</mat-icon></div>
               </button>
-              <button
-                class="primary small"
-                mat-icon-button
-                (click)="onEdit(element)"
-                matTooltip="Edit"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
+              @if (canAccessAction(element)) {
+                <button
+                  class="primary small"
+                  mat-icon-button
+                  (click)="onEdit(element)"
+                  matTooltip="Edit"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              }
             </td>
           </ng-container>
 
