@@ -91,13 +91,17 @@
     justify-content: space-evenly;
 
     a {
-      padding: 22px 10px !important;
+      padding: 10px !important;
+      font-size: 14px !important;
     }
   }
 }
-.mat-mdc-dialog-content > :first-child {
-  margin-top: 5px; /* or any value you prefer */
+
+.mat-mdc-dialog-content> :first-child {
+  margin-top: 5px;
+  /* or any value you prefer */
 }
+
 .mat-mdc-menu-item {
   color: #118985;
 }

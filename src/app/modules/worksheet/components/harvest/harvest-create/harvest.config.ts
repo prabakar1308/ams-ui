@@ -77,5 +77,8 @@ export const formConfig: FormStructure[] = [
     label: 'Created At',
     name: 'generatedAt',
     value: null,
+    meta: {
+      disableFutureDates: true,
+    },
   },
 ];

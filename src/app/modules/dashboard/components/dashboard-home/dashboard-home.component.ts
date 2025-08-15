@@ -129,6 +129,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   }
 
   loadUserChart() {
+    const screenWidth = window.innerWidth;
     this.userChartOption$ = this.dashboardService.getUsersByTankWise(this.tankTypeId).pipe(
       switchMap((data: TankWiseStatus[]) => {
         return of({
@@ -148,9 +149,14 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
             data: data.map((item) => item.name),
             axisLabel: {
               show: true,
-              width: 100, //fixed number of pixels
-              overflow: 'truncate', // or 'break' to continue in a new line
               interval: 0,
+              rotate: screenWidth > 1024 ? 0 : 30, // or 45 for more tilt
+              width: 100,
+              overflow: 'truncate', // or 'break'
+              formatter: function (value: string) {
+                // Optionally break long names into two lines
+                return value.length > 12 ? value.slice(0, 12) + '\n' + value.slice(12) : value;
+              },
             },
           },
           yAxis: {

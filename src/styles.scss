@@ -160,14 +160,22 @@ mat-card {
 }
 
 .mat-mdc-row {
-    height: 60px;
+    height: 60px !important;
+}
+
+.mat-button-toggle-group {
+    max-height: 40px;
+}
+
+.mat-mdc-form-field {
+    min-width: 90px !important;
 }
 
 
 
 
 /* Mobile View Adjustments */
-@media (max-width: 768px) {
+@media (max-width: 967px) {
     .mat-calendar {
         height: auto !important;
     }
@@ -183,7 +191,7 @@ mat-card {
     }
 
     .mat-mdc-row {
-        height: 40px;
+        height: 40px !important;
     }
 
     .material-icons {

@@ -13,6 +13,7 @@ import { HarvestType } from '@app/shared/models/master';
 import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
 import { ADMIN, SUPER_ADMIN } from '@app/core/core.contants';
 import { WorksheetNavigationComponent } from '../worksheet-navigation/worksheet-navigation.component';
+import { WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
 
 @Component({
   selector: 'app-worksheet-filter',
@@ -44,7 +45,10 @@ export class WorksheetFilterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // subscriptions
     this.sharedFacade.worksheetStatus$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
-      this.statusDetails = [{ id: 0 }, ...data];
+      this.statusDetails = [
+        { id: 0 },
+        ...data.filter((item) => item.id !== WORKSHEET_STATUS.COMPLETED),
+      ];
     });
 
     this.sharedFacade.userData$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {

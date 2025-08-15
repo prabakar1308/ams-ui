@@ -221,7 +221,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
             worksheets: [
               {
                 id: worksheet.worksheetId,
-                userId: result as number,
+                userId: result.userId as number,
               },
             ],
             updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE,

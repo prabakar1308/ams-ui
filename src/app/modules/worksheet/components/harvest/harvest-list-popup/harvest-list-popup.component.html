@@ -126,7 +126,11 @@
       </div>
     }
     <div class="pt-4">
-      <app-date-time-picker [label]="'Created Date'" [formControl]="generatedAt" />
+      <app-date-time-picker
+        [label]="'Created Date'"
+        [formControl]="generatedAt"
+        [disableFutureDates]="true"
+      />
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>

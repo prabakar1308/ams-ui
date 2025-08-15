@@ -17,8 +17,9 @@ import { MatTimepickerSelected } from '@angular/material/timepicker';
 export class DateTimePickerComponent implements ControlValueAccessor {
   @Input() label: string = 'Select date';
   @Input() disabled = false;
+  @Input() disableFutureDates: boolean | undefined = false;
   @Input() value: Date | null = null;
-
+  today = new Date();
   date: Date | null = null;
 
   private onChange = (_: any) => {};
@@ -75,5 +76,31 @@ export class DateTimePickerComponent implements ControlValueAccessor {
   emitChange() {
     this.onChange(this.date);
     this.onTouched();
+  }
+
+  get maxTime(): Date | null {
+    if (!this.date) return null;
+    const today = new Date();
+    // Check if selected date is today
+    if (
+      this.date.getFullYear() === today.getFullYear() &&
+      this.date.getMonth() === today.getMonth() &&
+      this.date.getDate() === today.getDate()
+    ) {
+      return today;
+    }
+    return null;
+  }
+
+  disableTime(): boolean {
+    if (this.date) {
+      const today = new Date();
+      // Remove time part for comparison
+      const selected = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
+      const now = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      // Disable time if selected date is in the future
+      return selected > now;
+    }
+    return false;
   }
 }

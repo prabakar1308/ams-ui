@@ -160,6 +160,7 @@
                       [label]="control.label"
                       [formControlName]="control.name"
                       [value]="getControlValue(control.name)"
+                      [disableFutureDates]="control.meta?.disableFutureDates"
                     ></app-date-time-picker>
                   } @else if (
                     control.type === inputTypes.DIVIDER &&

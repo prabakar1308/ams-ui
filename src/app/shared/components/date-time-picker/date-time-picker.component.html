@@ -6,6 +6,7 @@
       [matDatepicker]="datepicker"
       (dateChange)="onDateChange($event)"
       [value]="date"
+      [max]="disableFutureDates ? today : null"
     />
     <mat-datepicker #datepicker />
     <mat-datepicker-toggle [for]="datepicker" matSuffix />
@@ -13,7 +14,13 @@
 
   <mat-form-field appearance="outline" class="ams-small w-full">
     <mat-label>Time</mat-label>
-    <input matInput [matTimepicker]="timepicker" [value]="date" />
+    <input
+      matInput
+      [matTimepicker]="timepicker"
+      [value]="date"
+      [matTimepickerMax]="maxTime"
+      [disabled]="disableTime()"
+    />
     <mat-timepicker #timepicker (selected)="onTimeSelected($event)" interval="15min" />
     <mat-timepicker-toggle [for]="timepicker" matSuffix />
   </mat-form-field>
