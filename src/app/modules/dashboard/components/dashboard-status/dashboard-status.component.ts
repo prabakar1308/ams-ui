@@ -63,9 +63,17 @@ export class DashboardStatusComponent implements OnInit, OnDestroy {
               break;
             case PRODUCTION_ITEMS_ID.RESTOCK:
               item.values.push({
-                count: res.restock,
+                count: res.activeRestock,
                 unit: 'Millions',
                 link: '/worksheet/restock',
+                queryParams: { type: 'A' },
+                class: 'text-teal-600',
+              });
+              item.values.push({
+                count: res.inUseRestock,
+                unit: 'Millions',
+                link: '/worksheet/restock',
+                queryParams: { type: 'U' },
                 class: 'text-teal-600',
               });
               break;

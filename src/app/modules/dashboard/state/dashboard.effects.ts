@@ -58,6 +58,7 @@ export class DashboardEffects {
           this.dashboardService.getTransitsCount(1, 0),
           this.dashboardService.getTransitsCount(2, 0),
           this.dashboardService.getRestockCount('A'),
+          this.dashboardService.getRestockCount('U'),
           this.dashboardService.getInStockCount(1),
           this.dashboardService.getInStockCount(2),
         ]).pipe(
@@ -74,7 +75,8 @@ export class DashboardEffects {
               frozenAvailableRes,
               liveCompletedRes,
               frozenCompletedRes,
-              restockRes,
+              activeRestockRes,
+              inUseRestockRes,
               instockMachineryRes,
               instockConventionalRes,
             ] = response;
@@ -87,7 +89,8 @@ export class DashboardEffects {
               const frozenAvailable = frozenAvailableRes.data;
               const liveCompleted = liveCompletedRes.data;
               const frozenCompleted = frozenCompletedRes.data;
-              const restock = restockRes.data;
+              const activeRestock = activeRestockRes.data;
+              const inUseRestock = inUseRestockRes.data;
               const instockMachinery = instockMachineryRes.data;
               const instockConventional = instockConventionalRes.data;
               return getProductionDataSuccess({
@@ -95,7 +98,8 @@ export class DashboardEffects {
                 frozenAvailable,
                 frozenCompleted,
                 liveCompleted,
-                restock,
+                activeRestock,
+                inUseRestock,
                 instockMachinery,
                 instockConventional,
               });

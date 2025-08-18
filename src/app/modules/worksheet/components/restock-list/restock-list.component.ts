@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WORKSHEET_TABLE_STATUS } from '@app/shared/constants/shared.contants';
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { ActiveRestock } from '@app/worksheet/models/restock';
@@ -34,13 +34,20 @@ export class RestockListComponent implements OnInit, OnDestroy {
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      if (params['type']) {
+        this.status =
+          params['type'] === 'U' ? WORKSHEET_TABLE_STATUS.IN_USE : WORKSHEET_TABLE_STATUS.ACTIVE;
+      }
+    });
+
     const worksheet = localStorage.getItem('restock-worksheet-id');
     if (worksheet) {
       this.worksheetDetails = JSON.parse(worksheet);
-      this.status = WORKSHEET_TABLE_STATUS.IN_USE;
     }
 
     this.worksheetFacadeService.getActiveRestocks(this.status);

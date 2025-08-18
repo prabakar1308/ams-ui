@@ -4,6 +4,7 @@ export interface ProductionItem {
   title: string;
   values: ProductionItemValue[];
   class?: string;
+  description?: string;
 }
 
 export interface ProductionItemValue {
