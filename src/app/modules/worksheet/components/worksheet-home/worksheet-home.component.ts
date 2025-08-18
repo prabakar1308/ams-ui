@@ -196,6 +196,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       title: `Tank ${worksheet.tankNumber}`,
       worksheet,
       userOnly,
+      isAdmin: this.isAdmin,
     };
     const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
     dialogRef.afterClosed().subscribe((result: { userId?: number; generatedAt?: Date }) => {

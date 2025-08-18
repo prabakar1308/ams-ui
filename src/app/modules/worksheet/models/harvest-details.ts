@@ -10,6 +10,7 @@ export interface HarvestDetails {
   countInStock: number;
   unit?: UnitDetails;
   measuredBy?: { id: number; value: string };
+  remarks?: string;
   status: string;
   createdAt: Date;
   updatedAt: Date;

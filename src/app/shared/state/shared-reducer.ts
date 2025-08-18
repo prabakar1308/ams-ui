@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { SharedState } from '@app/shared/models/shared-state';
 import * as SharedActions from './shared-actions';
 import { DEFAULT_TANK_TYPE } from '../constants/shared.contants';
+import { FM_USER } from '@app/core/core.contants';
 
 const defaultRangeValues = {
   id: 0,
@@ -56,7 +57,7 @@ export const sharedReducer = createReducer(
   })),
   on(SharedActions.getUsersListSuccess, (state, { payload }) => ({
     ...state,
-    userDetails: payload,
+    userDetails: payload.filter((user) => user.role !== FM_USER),
     meta: {
       ...state.meta,
       isLoading: true,

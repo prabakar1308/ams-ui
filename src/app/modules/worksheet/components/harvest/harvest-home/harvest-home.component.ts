@@ -39,7 +39,6 @@ export class HarvestHomeComponent {
   }
 
   loadData(event: MatTabChangeEvent) {
-    console.log(event);
     this.unitId = event.index + 1; // Assuming unitId is based on the index of the tab
     let filter: HarvestFilter = {
       unitId: event.index + 1,

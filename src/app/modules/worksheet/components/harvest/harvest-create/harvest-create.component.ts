@@ -170,6 +170,12 @@ export class HarvestCreateComponent {
                 ...data,
                 value: this.editId && this.harvest ? this.harvest.generatedAt : data.value,
               };
+
+            case FORM_CONTROL_NAMES.REMARKS:
+              return {
+                ...data,
+                value: this.editId && this.harvest ? this.harvest.remarks : data.value,
+              };
             default:
               return data;
           }
@@ -210,6 +216,7 @@ export class HarvestCreateComponent {
     if (this.worksheet.tankType) tags.push(this.worksheet.tankType.value);
     if (this.worksheet.tankNumber) tags.push(`Tank ${this.worksheet.tankNumber}`);
     if (this.worksheet.harvestType) tags.push(this.worksheet.harvestType.value);
+    if (this.worksheet.inputSource) tags.push(this.worksheet.inputSource);
 
     this.formDetails = {
       ...this.formDetails,
@@ -218,7 +225,11 @@ export class HarvestCreateComponent {
   }
 
   isRestockHarvest() {
-    return this.worksheet.harvestType && this.worksheet.harvestType.id === HARVEST_TYPES.RESTOCKING;
+    return (
+      this.worksheet &&
+      this.worksheet.harvestType &&
+      this.worksheet.harvestType.id === HARVEST_TYPES.RESTOCKING
+    );
   }
 
   goToHomePage() {

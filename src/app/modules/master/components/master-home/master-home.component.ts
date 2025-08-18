@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 
 @Component({
@@ -7,10 +7,14 @@ import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
   templateUrl: './master-home.component.html',
   styleUrl: './master-home.component.scss',
 })
-export class MasterHomeComponent implements OnInit {
+export class MasterHomeComponent implements OnInit, OnDestroy {
   constructor(private sharedService: SharedFacadeService) {}
 
   ngOnInit() {
+    this.sharedService.getMasterData();
+  }
+
+  ngOnDestroy() {
     this.sharedService.getMasterData();
   }
 }

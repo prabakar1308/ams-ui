@@ -7,6 +7,7 @@ export const FORM_CONTROL_NAMES = {
   MEASURED_BY: 'measuredBy',
   RESTOCK_COUNT: 'restockCount',
   GENERATED_AT: 'generatedAt',
+  REMARKS: 'remarks',
 };
 
 export const formDetails = {
@@ -70,6 +71,13 @@ export const formConfig: FormStructure[] = [
     meta: {
       hint: 'Add restock count in millions',
     },
+  },
+  {
+    class: LAYOUT_CLASSES.DEFAULT,
+    type: INPUT_TYPES.TEXT,
+    label: 'Remarks',
+    name: 'remarks',
+    value: '',
   },
   {
     class: LAYOUT_CLASSES.DEFAULT,

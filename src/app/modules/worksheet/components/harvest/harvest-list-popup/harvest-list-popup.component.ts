@@ -54,7 +54,6 @@ export class HarvestListPopupComponent {
       staffInCharge: '',
       unitId: this.data.harvestData.unit.id,
       unitSectorId: 0,
-      generatedAt: this.generatedAt.value || undefined,
     };
     this.transitDetails.push(transit);
   }
@@ -92,6 +91,7 @@ export class HarvestListPopupComponent {
     this.dialogRef.close({
       transits: this.transitDetails,
       harvestId: this.data.harvestData.id,
+      generatedAt: this.generatedAt.value || undefined,
     });
   }
   resetUnitSectorSelection() {

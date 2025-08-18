@@ -63,6 +63,8 @@ export class TotalArtemiaChartComponent {
     if (screenWidth < 600) {
       axisFontSize = 8;
     } else if (screenWidth < 900) {
+      axisFontSize = 10;
+    } else if (screenWidth < 1024) {
       axisFontSize = 12;
     }
 
@@ -74,6 +76,7 @@ export class TotalArtemiaChartComponent {
       fontWeight: 'bold',
       formatter: '{c}',
       position: 'top',
+      rotate: screenWidth > 1024 ? 0 : 90,
     };
 
     this.liveChartOption = {
@@ -111,9 +114,15 @@ export class TotalArtemiaChartComponent {
           axisLabel: {
             show: true,
             fontSize: axisFontSize,
-            // color: '#808080',
-            // fontStyle: 'italic',
             fontWeight: 'bold',
+            interval: 0,
+            rotate: screenWidth > 1024 ? 0 : 30, // or 45 for more tilt
+            width: 100,
+            overflow: 'truncate', // or 'break'
+            formatter: function (value: string) {
+              // Optionally break long names into two lines
+              return value.length > 12 ? value.slice(0, 12) + '\n' + value.slice(12) : value;
+            },
           },
           nameTextStyle: {
             fontSize: axisFontSize,

@@ -58,7 +58,8 @@
     ));
 }
 
-.user {
+.user,
+.tank-column {
   @include mat.icon-overrides((color: $dark-green,
     ));
 }
