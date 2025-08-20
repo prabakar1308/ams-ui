@@ -53,7 +53,7 @@ export class LiveArtemiaReportComponent {
   getShiftData(data: Transit[]) {
     return data.map((item) => ({
       tank: item.worksheet ? `${item.worksheet.tankType} - #${item.worksheet.tankNumber}` : '-',
-      date: this.datePipe.transform(item.createdAt, 'MMM d, y h:mm a'),
+      date: this.datePipe.transform(item.generatedAt, 'MMM d, y h:mm a'),
       transit_by: item.createdBy || '-',
       count: item.transitCount,
       in_charge: item.staffInCharge,

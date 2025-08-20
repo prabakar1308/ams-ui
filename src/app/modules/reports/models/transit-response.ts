@@ -17,7 +17,7 @@ export interface TransitReport {
 
 export interface Transit {
   id: number;
-  createdAt: Date;
+  generatedAt: Date;
   createdBy: string;
   harvestCount: string;
   transitCount: string;
