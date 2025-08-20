@@ -5,8 +5,11 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 
-import { WORKSHEET_TABLE_STATUS } from '@app/shared/constants/shared.contants';
-import { UnitSector } from '@app/shared/models/master';
+import {
+  WORKSHEET_OUTPUT_UNITS,
+  WORKSHEET_TABLE_STATUS,
+} from '@app/shared/constants/shared.contants';
+import { UnitSector, WorksheetUnit } from '@app/shared/models/master';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { Transit } from '@app/worksheet/models/transit';
@@ -34,12 +37,19 @@ export class TransitListComponent {
   dataSource = new MatTableDataSource<Transit>();
   statusDetails = WORKSHEET_TABLE_STATUS;
   status = WORKSHEET_TABLE_STATUS.ACTIVE;
+  transits: Transit[] = [];
   unitSectors: UnitSector[] = [];
+  worksheetUnits: WorksheetUnit[] = [];
   selectedValue = 0;
+  selectedUnit: number | null = 0;
   periods = [
     {
       label: 'Today',
       value: 0,
+    },
+    {
+      label: 'Yesterday',
+      value: 1,
     },
     {
       label: 'Last 3 days',
@@ -68,13 +78,18 @@ export class TransitListComponent {
   ngOnInit() {
     this.worksheetFacadeService.getTransits({ days: 0 });
     this.worksheetFacadeService.transits$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
-      this.dataSource.data = data;
+      this.transits = data;
+      this.onUnitChange(this.selectedUnit || 0);
     });
 
     this.sharedFacadeService.masterData$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
         this.unitSectors = data.unitSectors;
+        this.worksheetUnits = [
+          { id: 0, value: 'All', brand: '' },
+          ...data?.worksheetUnits.filter((unit) => WORKSHEET_OUTPUT_UNITS.includes(unit.id)),
+        ];
       });
 
     this.authFacadeService.userData$
@@ -98,6 +113,14 @@ export class TransitListComponent {
 
   periodChange(event: number) {
     this.worksheetFacadeService.getTransits({ days: event });
+  }
+
+  onUnitChange(unitId: number) {
+    if (unitId === 0) {
+      this.dataSource.data = this.transits;
+    } else {
+      this.dataSource.data = this.transits.filter((transit) => transit.unitId === unitId);
+    }
   }
 
   onClickBack() {

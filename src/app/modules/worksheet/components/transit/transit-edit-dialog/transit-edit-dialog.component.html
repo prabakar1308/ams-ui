@@ -50,7 +50,7 @@
               matInput
               placeholder="Count"
               [(ngModel)]="transitDetails.count"
-              (change)="calculateCount()"
+              (input)="calculateCount()"
               [required]="true"
               [min]="1"
             />

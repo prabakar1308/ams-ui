@@ -9,6 +9,7 @@ export interface Transit {
   count?: number;
   countInStock?: number;
   staffInCharge?: string;
+  unitId?: number;
   unitName?: string;
   unitSector: {
     id: number;

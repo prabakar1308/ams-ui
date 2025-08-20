@@ -33,6 +33,18 @@
           </button>
         </div>
         <mat-form-field appearance="outline" class="ams-small ml-2 mt-5">
+          <mat-label>Categories</mat-label>
+          <mat-select
+            name="units"
+            (selectionChange)="onUnitChange($event.value)"
+            [(value)]="selectedUnit"
+          >
+            @for (unit of worksheetUnits; track unit) {
+              <mat-option [value]="unit.id">{{ unit.value }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="ams-small ml-2 mt-0 md:mt-5">
           <mat-label>Filter</mat-label>
           <mat-select
             [(ngModel)]="selectedValue"
