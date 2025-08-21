@@ -113,40 +113,46 @@ export class ReportHomeComponent {
   }
 
   generatePDF() {
+    const elementsToHide = document.querySelectorAll('.hide-in-pdf');
+    elementsToHide.forEach((el) => ((el as HTMLElement).style.display = 'none'));
+
     this.loaderService.show();
     const screenWidth = window.innerWidth;
     const data = document.getElementById('contentToConvert');
     if (data) {
-      let width = 800;
+      let width = screenWidth;
       if (screenWidth) {
         if (screenWidth > 1600) width = screenWidth - 400;
         else if (screenWidth > 1200) width = screenWidth - 300;
         else if (screenWidth > 1000) width = screenWidth - 200;
         else if (screenWidth > 900) width = screenWidth - 100;
-        // else if (screenWidth < 500) width = 800;
       }
       html2canvas(data, {
-        width, //: screenWidth && screenWidth > 1200 ? screenWidth - 400 : 600,
-        height: screenWidth < 720 ? 2800 : 2000,
+        width,
+        height: screenWidth < 720 ? 2800 : 2100,
         scale: 2,
       }).then((canvas) => {
-        // const imgWidth = 250;
-        // const pageHeight = 295;
-        // const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        // const heightLeft = imgHeight;
-
         const imgData = canvas.toDataURL('image/png');
-        // const pdf = new jsPDF('l', 'mm', 'a4'); // A4 size page of PDF
-
-        // let position = 0;
-        // pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        // pdf.save('dynamicData.pdf'); // Generated PDF
-
         const doc = new jsPDF('p', 'mm', 'a4', true);
 
-        const width = doc.internal.pageSize.getWidth();
-        const height = doc.internal.pageSize.getHeight();
-        doc.addImage(imgData, 'PNG', 0, 0, width, height);
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = doc.internal.pageSize.getHeight();
+
+        // Calculate image dimensions to fit PDF width while maintaining aspect ratio
+        const imgProps = {
+          width: canvas.width,
+          height: canvas.height,
+        };
+        const ratio = Math.min(pdfWidth / imgProps.width, pdfHeight / imgProps.height);
+        const imgWidth = imgProps.width * ratio;
+        const imgHeight = imgProps.height * ratio;
+
+        // Center the image horizontally
+        const x = (pdfWidth - imgWidth) / 2;
+        const y = 10; // You can also center vertically if needed
+
+        doc.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+
         // Append date and time to PDF name
         const now = new Date();
         const dateStr = [
@@ -164,11 +170,8 @@ export class ReportHomeComponent {
         doc.save(fileName);
         this.loaderService.hide();
 
-        // const imgProps = pdf.getImageProperties(imgData);
-        // const pdfWidth = pdf.internal.pageSize.getWidth();
-        // const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        // pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        // pdf.save('download.pdf');
+        // Restore elements after PDF is generated
+        elementsToHide.forEach((el) => ((el as HTMLElement).style.display = ''));
       });
     }
   }
