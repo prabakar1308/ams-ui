@@ -42,6 +42,7 @@ export class TransitListComponent {
   worksheetUnits: WorksheetUnit[] = [];
   selectedValue = 0;
   selectedUnit: number | null = 0;
+  selectedUnitSector: number | null = 0;
   periods = [
     {
       label: 'Today',
@@ -85,7 +86,7 @@ export class TransitListComponent {
     this.sharedFacadeService.masterData$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
-        this.unitSectors = data.unitSectors;
+        this.unitSectors = [{ id: 0, name: 'All', description: '' }, ...data.unitSectors];
         this.worksheetUnits = [
           { id: 0, value: 'All', brand: '' },
           ...data?.worksheetUnits.filter((unit) => WORKSHEET_OUTPUT_UNITS.includes(unit.id)),
@@ -116,10 +117,26 @@ export class TransitListComponent {
   }
 
   onUnitChange(unitId: number) {
-    if (unitId === 0) {
+    this.updateTableData(unitId, this.selectedUnitSector || 0);
+  }
+
+  onUnitSectorChange(unitSectorId: number) {
+    this.updateTableData(this.selectedUnit || 0, unitSectorId);
+  }
+
+  updateTableData(unitId: number, unitSectorId: number) {
+    if (unitId === 0 && unitSectorId === 0) {
       this.dataSource.data = this.transits;
-    } else {
+    } else if (unitId === 0) {
+      this.dataSource.data = this.transits.filter(
+        (transit) => transit.unitSector.id === unitSectorId,
+      );
+    } else if (unitSectorId === 0) {
       this.dataSource.data = this.transits.filter((transit) => transit.unitId === unitId);
+    } else {
+      this.dataSource.data = this.transits.filter(
+        (transit) => transit.unitId === unitId && transit.unitSector.id === unitSectorId,
+      );
     }
   }
 
@@ -152,7 +169,7 @@ export class TransitListComponent {
   openDialog(element: Transit) {
     const data = {
       transit: element,
-      unitSectors: this.unitSectors,
+      unitSectors: this.unitSectors.filter((us) => us.id !== 0),
     };
     const dialogRef = this.dialog.open(TransitEditDialogComponent, {
       data,

@@ -11,10 +11,13 @@ export class GenericDataComponent {
   @Input() data!: unknown[];
   @Input() displayColumns!: string[];
   @Input() sticky = '';
+  @Input() showSearch = false;
   @Output() refreshPage = new EventEmitter<unknown>();
   @Output() addData = new EventEmitter<unknown>();
   @Output() editData = new EventEmitter<unknown>();
   @Output() deleteData = new EventEmitter<unknown>();
+  @Output() applyFilter = new EventEmitter<unknown>();
+  searchText = '';
 
   onRefresh() {
     this.refreshPage.emit();
