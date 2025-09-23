@@ -43,6 +43,7 @@ export class DashboardStatusComponent implements OnInit, OnDestroy {
                 count: res.liveCompleted,
                 unit: 'Millions',
                 link: '/worksheet/transit',
+                queryParams: { id: '1' },
                 class: 'text-green-600',
               });
               break;
@@ -58,6 +59,7 @@ export class DashboardStatusComponent implements OnInit, OnDestroy {
                 count: res.frozenCompleted,
                 unit: 'Frozen Cups',
                 link: '/worksheet/transit',
+                queryParams: { id: '2' },
                 class: 'text-green-600',
               });
               break;

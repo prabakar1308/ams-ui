@@ -3,7 +3,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   WORKSHEET_OUTPUT_UNITS,
@@ -73,10 +73,17 @@ export class TransitListComponent {
     private sharedFacadeService: SharedFacadeService,
     private authFacadeService: AuthFacadeService,
     private router: Router,
+    private route: ActivatedRoute,
     private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      if (params['id']) {
+        this.selectedUnit = Number(params['id']);
+        this.onUnitChange(this.selectedUnit || 0);
+      }
+    });
     this.worksheetFacadeService.getTransits({ days: 0 });
     this.worksheetFacadeService.transits$.pipe(takeUntil(this.unSubscribe)).subscribe((data) => {
       this.transits = data;

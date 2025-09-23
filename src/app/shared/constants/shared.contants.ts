@@ -89,6 +89,7 @@ export const WORKSHEET_STATUS = {
   READY_FOR_HARVEST: 3,
   COMPLETED: 4,
   FREE: 5,
+  WASHING: 6,
 };
 
 export const HARVEST_TYPES = {

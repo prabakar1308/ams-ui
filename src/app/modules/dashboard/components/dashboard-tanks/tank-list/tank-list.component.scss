@@ -58,19 +58,24 @@
     text-shadow: 0 1px 2px #fff, 0 0 2px #0002;
 }
 
-.tank-card.rfh {
+.tank-card {
+    &.rfh {
+        background: #b9f8cf;
+    }
 
-    background: #b9f8cf;
-}
+    &.ic {
+        background: #e9d4ff;
+    }
 
-.tank-card.ic {
-    background: #b8e6fe;
-}
+    &.rfs {
+        background: #fff085;
+    }
 
-.tank-card.rfs {
-    background: #fff085;
-}
+    &.empty {
+        background: #ebe6e7;
+    }
 
-.tank-card.empty {
-    background: #ebe6e7;
+    &.wm {
+        background: #b8e6fe;
+    }
 }
