@@ -20,7 +20,7 @@ export class HarvestListPopupComponent {
   transitDetails: TransitDetail[] = [];
   selectedUnitSectors: UnitSector[] = [];
   allUnitSectors: any[] = [];
-  exisingTransits: Transit[] = [];
+  // exisingTransits: Transit[] = [];
   selectedSectorId: number = 0;
   showError: boolean = false;
   generatedAt = new FormControl<Date | null>(null);
@@ -31,16 +31,16 @@ export class HarvestListPopupComponent {
     private nsService: NotificationService,
     public dialogRef: MatDialogRef<HarvestListPopupComponent>,
   ) {
-    this.countsRemining = this.data.harvestData.countInStock;
+    this.countsRemining = this.data.countInStock;
     this.allUnitSectors = this.data.unitSectors.map((sector: any) => ({
       ...sector,
       isSelected: false,
     }));
-    this.exisingTransits = this.data.exisingTransits;
+    // this.exisingTransits = this.data.exisingTransits;
     this.selectedUnitSectors = [];
-    if (this.exisingTransits && this.exisingTransits.length > 0) {
-      //need to add code for existing transits
-    }
+    // if (this.exisingTransits && this.exisingTransits.length > 0) {
+    //   //need to add code for existing transits
+    // }
 
     this.addTransit();
   }
@@ -50,9 +50,9 @@ export class HarvestListPopupComponent {
     this.resetUnitSectorSelection();
     let transit: TransitDetail = {
       count: 0,
-      harvestId: this.data.harvestData.id,
+      // harvestId: this.data.harvestData.id,
       staffInCharge: '',
-      unitId: this.data.harvestData.unit.id,
+      unitId: this.data.unit.id,
       unitSectorId: 0,
     };
     this.transitDetails.push(transit);
@@ -71,13 +71,13 @@ export class HarvestListPopupComponent {
     this.transitDetails.forEach((x) => {
       totalCount = totalCount + parseInt(x.count.toString());
     });
-    this.countsRemining = this.data.harvestData.countInStock - totalCount;
+    this.countsRemining = this.data.countInStock - totalCount;
   }
 
   saveTransit() {
     // Validate transit details before saving
     const isValid = this.transitDetails.every(
-      (x) => x.count > 0 && x.staffInCharge && x.unitSectorId && x.harvestId,
+      (x) => x.count > 0 && x.staffInCharge && x.unitSectorId,
     );
     if (!isValid) {
       this.showError = true;
@@ -90,7 +90,7 @@ export class HarvestListPopupComponent {
 
     this.dialogRef.close({
       transits: this.transitDetails,
-      harvestId: this.data.harvestData.id,
+      // harvestId: this.data.harvestData.id,
       generatedAt: this.generatedAt.value || undefined,
     });
   }

@@ -1,7 +1,7 @@
 <app-form-generator
   [formStructure]="formConfigData"
   [formDetails]="formDetails"
-  [showDelete]="!!editId"
+  [showDelete]="!!editId && canDelete"
   (deleteItem)="deleteWorksheet()"
   (moveBack)="goToHomePage()"
   (formData)="submitFormData($event)"

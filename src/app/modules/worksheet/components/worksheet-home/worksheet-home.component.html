@@ -104,6 +104,7 @@
                       'text-red-500': element.timeDifference?.status === 'error',
                       'text-green-500': element.timeDifference?.status === 'success',
                       'text-yellow-500': element.timeDifference?.status === 'warning',
+                      'text-sky-500': element.timeDifference?.status === 'idle',
                     }"
                   >
                     {{ element.timeDifference?.text }}
@@ -127,7 +128,7 @@
                       <mat-icon>{{ getIconName(element) }}</mat-icon>
                     </button>
                   }
-                  @if (canDelete(element) && isAdmin) {
+                  @if (canEdit(element) && isAdmin) {
                     <button
                       class="primary small"
                       mat-icon-button

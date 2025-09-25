@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 import {
   DEFAULT_TANK_TYPE,
+  HARVEST_TYPES,
   WORKSHEET_OUTPUT_UNITS,
   WORKSHEET_STATUS,
   WORKSHEET_TABLE_STATUS,
@@ -35,6 +36,8 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
   selectedTankType: number = DEFAULT_TANK_TYPE;
   activeRestocks: ActiveRestock[] = [];
   editId = 0;
+  currentWorksheetStatus = WORKSHEET_STATUS.READY_FOR_STOCKING;
+  canDelete = true;
 
   constructor(
     private router: Router,
@@ -81,9 +84,11 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
           userData,
         ]) => {
           this.activeRestocks = activeRestocks;
+          this.canDelete = currentWorksheet?.statusId === WORKSHEET_STATUS.READY_FOR_STOCKING;
+          this.currentWorksheetStatus =
+            currentWorksheet?.statusId || WORKSHEET_STATUS.READY_FOR_STOCKING;
+          console.log(this.currentWorksheetStatus, 'status');
           const { tanks, tankType } = tankSelection;
-
-          console.log(currentWorksheet, 'currentWorksheet');
 
           if (!tankType) {
             this.selectedTankType = tankType || DEFAULT_TANK_TYPE;
@@ -162,31 +167,34 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
                   ...data,
                   value:
                     this.editId && currentWorksheet ? currentWorksheet.harvestTypeId : data.value,
-                  options: masterData?.harvestTypes.map((type) => {
-                    if (type.value.toLowerCase().includes('restock')) {
+                  options: masterData?.harvestTypes
+                    // to remove manual from the list
+                    .filter((type) => type.id !== HARVEST_TYPES.MANUAL)
+                    .map((type) => {
+                      if (type.value.toLowerCase().includes('restock')) {
+                        return {
+                          label: type.value,
+                          value: type.id,
+                          dependents: [
+                            {
+                              name: FORM_CONTROL_NAMES.HARVEST_HOURS,
+                              value: type.harvestTime,
+                            },
+                          ],
+                          hide: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
+                          show: [FORM_CONTROL_NAMES.RESTOCK],
+                        };
+                      }
                       return {
                         label: type.value,
                         value: type.id,
                         dependents: [
-                          {
-                            name: FORM_CONTROL_NAMES.HARVEST_HOURS,
-                            value: type.harvestTime,
-                          },
+                          { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: type.harvestTime },
                         ],
-                        hide: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
-                        show: [FORM_CONTROL_NAMES.RESTOCK],
+                        show: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
+                        hide: [FORM_CONTROL_NAMES.RESTOCK],
                       };
-                    }
-                    return {
-                      label: type.value,
-                      value: type.id,
-                      dependents: [
-                        { name: FORM_CONTROL_NAMES.HARVEST_HOURS, value: type.harvestTime },
-                      ],
-                      show: [FORM_CONTROL_NAMES.INPUT_COUNT, FORM_CONTROL_NAMES.INPUT_UNIT_ID],
-                      hide: [FORM_CONTROL_NAMES.RESTOCK],
-                    };
-                  }),
+                    }),
                 };
 
               case FORM_CONTROL_NAMES.HARVEST_HOURS:
@@ -341,7 +349,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
     requestData = {
       ...requestData,
       harvestHours: requestData.harvestHours ? +requestData.harvestHours : 0,
-      statusId: WORKSHEET_STATUS.READY_FOR_STOCKING,
+      statusId: this.currentWorksheetStatus,
       id: this.editId || undefined,
       generatedAt: requestData.generatedAt || new Date(),
     };

@@ -18,6 +18,7 @@ import { CreateHarvest, CreateHarvestRequest } from '../models/create-harvest';
 import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest } from '../models/create-transit';
+import { MonitoringCount } from '../models/monitoring-count';
 
 @Injectable({
   providedIn: 'root',
@@ -29,8 +30,9 @@ export class WorksheetFacadeService {
   transits$: Observable<Transit[]>;
   tankSelection$: Observable<TankSelection>;
   meta$: Observable<MetaState>;
-  activeHarvestList$: Observable<HarvestDetails[]>;
+  activeHarvestData$: Observable<{ data: HarvestDetails[]; totalRecords: number }>;
   currentHarvest$: Observable<HarvestDetails | null>;
+  monitoringCount$: Observable<MonitoringCount>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.currentWorksheet$ = this.store.select(fromStore.getCurrentWorksheet);
@@ -39,8 +41,9 @@ export class WorksheetFacadeService {
     this.transits$ = this.store.select(fromStore.getTransits);
     this.tankSelection$ = this.store.select(fromStore.getWorksheetTankDetails);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
-    this.activeHarvestList$ = this.store.select(fromStore.getHarvestList);
+    this.activeHarvestData$ = this.store.select(fromStore.getHarvestData);
     this.currentHarvest$ = this.store.select(fromStore.getCurrentHarvest);
+    this.monitoringCount$ = this.store.select(fromStore.getMonitoringCount);
   }
 
   getCurrentWorksheet(id: number) {
@@ -81,7 +84,7 @@ export class WorksheetFacadeService {
     this.store.dispatch(worksheetActions.getHarvests(data));
   }
 
-  getHarvestsSuccess(response: HarvestDetails[]) {
+  getHarvestsSuccess(response: { data: HarvestDetails[]; totalRecords: number }) {
     this.store.dispatch(worksheetActions.getHarvestsSuccess(response));
   }
 
@@ -112,5 +115,9 @@ export class WorksheetFacadeService {
 
   updateTransit(request: { payload: TransitUpdate; days: number }) {
     this.store.dispatch(worksheetActions.updateTransit(request));
+  }
+
+  getMonitoringCount() {
+    this.store.dispatch(worksheetActions.getMonitoringCount());
   }
 }

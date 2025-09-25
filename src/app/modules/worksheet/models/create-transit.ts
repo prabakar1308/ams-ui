@@ -4,7 +4,7 @@ import { UnitDetails } from './unit-details';
 import { UnitSector } from './unit-sector';
 
 export interface TransitDetail {
-  harvestId: number;
+  // harvestId: number;
   unitSectorId: number;
   count: number;
   unitId: number;
@@ -14,7 +14,7 @@ export interface TransitDetail {
 
 export interface CreateTransitRequest {
   transits: TransitDetail[];
-  harvestId: number;
+  // harvestId: number;
   filter?: HarvestFilter;
 }
 
@@ -22,7 +22,7 @@ export interface CreateTransitResponse {
   createdBy: number;
   updatedBy: number;
   id: number;
-  harvest: HarvestDetails;
+  // harvest: HarvestDetails;
   unitSector: UnitSector;
   count: number;
   unit: UnitDetails;

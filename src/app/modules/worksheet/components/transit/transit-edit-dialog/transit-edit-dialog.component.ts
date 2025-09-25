@@ -24,13 +24,18 @@ export class TransitEditDialogComponent {
   generatedAt = new FormControl<Date | null>(null);
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { transit: Transit; unitSectors: UnitSector[] },
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      transit: Transit;
+      unitSectors: UnitSector[];
+      countInStock: number;
+      count: number;
+    },
     private nsService: NotificationService,
     public dialogRef: MatDialogRef<TransitEditDialogComponent>,
   ) {
-    this.overallCountInStock =
-      (this.data.transit.countInStock || 0) + (this.data.transit.count || 0);
-    this.countsRemaining = this.data.transit.countInStock || 0;
+    this.overallCountInStock = (this.data.countInStock || 0) + (this.data.transit.count || 0);
+    this.countsRemaining = this.data.countInStock || 0;
     this.updateTransit();
   }
 
@@ -40,7 +45,7 @@ export class TransitEditDialogComponent {
       id: this.data.transit.id,
       staffInCharge: this.data.transit.staffInCharge || '',
       unitSectorId: this.data.transit.unitSector.id,
-      harvestId: this.data.transit.harvestId || 0,
+      // harvestId: this.data.transit.harvestId || 0,
       generatedAt: this.data.transit.generatedAt || undefined,
     };
     this.generatedAt.setValue(this.data.transit.generatedAt || null);
@@ -66,7 +71,7 @@ export class TransitEditDialogComponent {
 
     this.dialogRef.close({
       ...this.transitDetails,
-      countInStock: this.countsRemaining,
+      // countInStock: this.countsRemaining,
       generatedAt: this.generatedAt.value,
     });
   }

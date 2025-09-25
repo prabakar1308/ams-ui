@@ -51,4 +51,6 @@ export interface MasterData {
 export interface HarvestFilter {
   unitId: number;
   statusIds: string[];
+  page?: number;
+  limit?: number;
 }

@@ -116,8 +116,13 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  canDelete(data: WorksheetTank): boolean {
-    return data && data.status?.id === WORKSHEET_STATUS.READY_FOR_STOCKING;
+  canEdit(data: WorksheetTank): boolean {
+    return (
+      data &&
+      (data.status?.id === WORKSHEET_STATUS.READY_FOR_STOCKING ||
+        data.status?.id === WORKSHEET_STATUS.IN_CULTURE ||
+        data.status?.id === WORKSHEET_STATUS.READY_FOR_HARVEST)
+    );
   }
 
   isRestockType(data: WorksheetTank): boolean {
@@ -205,7 +210,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
           worksheets: [
             {
               id: worksheet.worksheetId,
-              statusId: WORKSHEET_STATUS.IN_STOCKING,
+              statusId: WORKSHEET_STATUS.IN_CULTURE,
               generatedAt: result.generatedAt,
             },
             {
