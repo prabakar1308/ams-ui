@@ -19,7 +19,7 @@ export class LiveArtemiaReportComponent {
 
   expanded = signal(false);
   transitReports: TransitReport[] = [];
-  displayColumns = ['tank', 'date', 'transit_by', 'count', 'in_charge'];
+  displayColumns = ['date', 'transit_by', 'count', 'in_charge'];
   totalCountText = '';
   dataExists = true;
 
@@ -52,7 +52,7 @@ export class LiveArtemiaReportComponent {
 
   getShiftData(data: Transit[]) {
     return data.map((item) => ({
-      tank: item.worksheet ? `${item.worksheet.tankType} - #${item.worksheet.tankNumber}` : '-',
+      // tank: item.worksheet ? `${item.worksheet.tankType} - #${item.worksheet.tankNumber}` : '-',
       date: this.datePipe.transform(item.generatedAt, 'MMM d, y h:mm a'),
       transit_by: item.createdBy || '-',
       count: item.transitCount,

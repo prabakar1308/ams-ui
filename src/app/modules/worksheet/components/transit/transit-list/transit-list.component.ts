@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import {
+  UNIT_IDS,
   WORKSHEET_OUTPUT_UNITS,
   WORKSHEET_TABLE_STATUS,
 } from '@app/shared/constants/shared.contants';
@@ -17,6 +18,7 @@ import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade
 import { TransitEditDialogComponent } from '../transit-edit-dialog/transit-edit-dialog.component';
 import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
 import { ADMIN, SUPER_ADMIN } from '@app/core/core.contants';
+import { MonitoringCount } from '@app/worksheet/models/monitoring-count';
 
 @Component({
   selector: 'app-transit-list',
@@ -43,13 +45,14 @@ export class TransitListComponent {
   selectedValue = 0;
   selectedUnit: number | null = 0;
   selectedUnitSector: number | null = 0;
+  monitoringCount: MonitoringCount | null = null;
   periods = [
     {
       label: 'Today',
       value: 0,
     },
     {
-      label: 'Yesterday',
+      label: 'Last 2 days',
       value: 1,
     },
     {
@@ -78,6 +81,7 @@ export class TransitListComponent {
   ) {}
 
   ngOnInit() {
+    this.worksheetFacadeService.getMonitoringCount();
     this.route.queryParams.subscribe((params) => {
       if (params['id']) {
         this.selectedUnit = Number(params['id']);
@@ -89,6 +93,12 @@ export class TransitListComponent {
       this.transits = data;
       this.onUnitChange(this.selectedUnit || 0);
     });
+
+    this.worksheetFacadeService.monitoringCount$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((data) => {
+        this.monitoringCount = data;
+      });
 
     this.sharedFacadeService.masterData$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
@@ -108,6 +118,27 @@ export class TransitListComponent {
           this.currentUserId = parseInt(userData.userId);
         }
       });
+  }
+
+  get totalMillionsCount(): number {
+    return this.monitoringCount?.millionsTransited || 0;
+  }
+
+  get totalFrozenCupsCount(): number {
+    return this.monitoringCount?.frozenCupsTransited || 0;
+  }
+
+  totalHarvestCount(unitId: number): number {
+    return unitId === UNIT_IDS.MILLIONS
+      ? this.monitoringCount?.millionsHarvested || 0
+      : this.monitoringCount?.frozenCupsHarvested || 0;
+  }
+
+  availableCount(unitId: number): number {
+    if (!this.monitoringCount) return 0;
+    return unitId === UNIT_IDS.MILLIONS
+      ? this.monitoringCount.millionsHarvested - this.monitoringCount.millionsTransited
+      : this.monitoringCount.frozenCupsHarvested - this.monitoringCount.frozenCupsTransited;
   }
 
   canAccessAction(data: Transit): boolean {
@@ -159,13 +190,14 @@ export class TransitListComponent {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
     dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
       if (isConfirmed) {
-        const { count, id, countInStock, harvestId } = element;
+        // const { count, id, countInStock, harvestId } = element;
+        const { count, id } = element;
         const payload = {
           count: count || 0,
           id,
           // add count to stock when it is deleted
-          countInStock: countInStock ? countInStock + (count || 0) : 0,
-          harvestId,
+          // countInStock: countInStock ? countInStock + (count || 0) : 0,
+          // harvestId,
           isDelete: true,
         };
         this.worksheetFacadeService.updateTransit({ payload, days: this.selectedValue });
@@ -176,6 +208,8 @@ export class TransitListComponent {
   openDialog(element: Transit) {
     const data = {
       transit: element,
+      countInStock: this.availableCount(element.unitId || 0),
+      count: this.totalHarvestCount(element.unitId || 0),
       unitSectors: this.unitSectors.filter((us) => us.id !== 0),
     };
     const dialogRef = this.dialog.open(TransitEditDialogComponent, {

@@ -27,8 +27,8 @@ export interface Transit {
     name?: string;
     location?: string;
   };
-  worksheet?: {
-    tankNumber: number;
-    tankType: string;
-  };
+  // worksheet?: {
+  //   tankNumber: number;
+  //   tankType: string;
+  // };
 }

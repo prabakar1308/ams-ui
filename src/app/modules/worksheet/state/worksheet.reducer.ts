@@ -13,11 +13,18 @@ export const initialState: WorksheetState = {
   },
   activeRestocks: [],
   transits: [],
-  harvestList: [],
+  harvestData: { data: [], totalRecords: 0 },
   currentHarvest: null,
   meta: {
     isLoading: false,
     error: '',
+  },
+  monitoringCount: {
+    id: 0,
+    millionsHarvested: 0,
+    frozenCupsHarvested: 0,
+    millionsTransited: 0,
+    frozenCupsTransited: 0,
   },
 };
 
@@ -93,7 +100,7 @@ export const worksheetReducer = createReducer(
   })),
   on(WorksheetActions.getHarvestsSuccess, (state, { payload }) => ({
     ...state,
-    harvestList: payload,
+    harvestData: payload,
     meta: {
       ...state.meta,
       isLoading: true,
@@ -105,5 +112,10 @@ export const worksheetReducer = createReducer(
       ...state.meta,
       isLoading: false,
     },
+  })),
+  // Monitoring Count
+  on(WorksheetActions.getMonitoringCountSuccess, (state, { payload }) => ({
+    ...state,
+    monitoringCount: payload,
   })),
 );

@@ -71,7 +71,6 @@ export class ReportHomeComponent {
   }
 
   onUnitSectorChange(unitSectorId: number) {
-    console.log('Selected Unit Sector ID:', unitSectorId);
     if (unitSectorId === 0) {
       this.filteredLiveTransits = this.liveTransits;
       this.filteredFrozenTransits = this.frozenTransits;

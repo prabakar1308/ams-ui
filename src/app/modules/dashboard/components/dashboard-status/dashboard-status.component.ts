@@ -110,7 +110,7 @@ export class DashboardStatusComponent implements OnInit, OnDestroy {
   navigateItem(id: number): void {
     this.sharedFacadeService.updateWorksheetFilter({
       tankTypeId: id,
-      statusId: WORKSHEET_STATUS.IN_STOCKING,
+      statusId: WORKSHEET_STATUS.IN_CULTURE,
       userId: 0,
       harvestTypeId: 0,
     });

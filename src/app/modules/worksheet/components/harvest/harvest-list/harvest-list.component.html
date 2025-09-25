@@ -1,4 +1,18 @@
 <div>
+  <div class="flex flex-col md:flex-row justify-between mt-2 pr-3 items-center gap-1">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-1">
+      <div class="text-[#177b1f] text-sm">
+        Overall Count - <span class="font-bold">{{ totalHarvestCount }}</span> {{ unitName }}
+      </div>
+      <mat-divider vertical class="mx-2 h-0 md:h-6 w-3"></mat-divider>
+      <div class="text-[#177b1f] text-sm pl-2">
+        Available for Transit - <span class="font-bold">{{ availableCount }}</span> {{ unitName }}
+      </div>
+    </div>
+    <button class="primary small ml-2" mat-flat-button (click)="openDialog()" matTooltip="Transit">
+      Add Transit
+    </button>
+  </div>
   <mat-card appearance="outlined">
     <mat-card-content>
       <section class="table-container mat-elevation-z8" tabindex="0">
@@ -47,16 +61,13 @@
             </td>
           </ng-container>
 
-          <!-- Position Column -->
           <ng-container matColumnDef="count_measured">
             <th mat-header-cell *matHeaderCellDef class="min-w-32 text-center">Measured Count</th>
             <td mat-cell *matCellDef="let element" class="min-w-32 text-center">
               {{ element.count || '-' }} {{ element.unit.value }}
             </td>
           </ng-container>
-
-          <!-- Weight Column -->
-          <ng-container matColumnDef="count_remaining">
+          <!-- <ng-container matColumnDef="count_remaining">
             <th mat-header-cell *matHeaderCellDef class="min-w-32 text-center">Remaining Count</th>
             <td
               mat-cell
@@ -65,9 +76,8 @@
             >
               {{ element.countInStock || '-' }} {{ element.unit.value }}
             </td>
-          </ng-container>
+          </ng-container> -->
 
-          <!-- Star Column -->
           <ng-container matColumnDef="action">
             <th
               mat-header-cell
@@ -78,14 +88,14 @@
               <div class="pr-2">Actions</div>
             </th>
             <td mat-cell *matCellDef="let element" class="min-w-22">
-              <button
+              <!-- <button
                 class="primary small"
                 mat-icon-button
                 (click)="openDialog(element)"
                 matTooltip="Transit"
               >
                 <div><mat-icon>keyboard_double_arrow_right</mat-icon></div>
-              </button>
+              </button> -->
               @if (canAccessAction(element)) {
                 <button
                   class="primary small"
@@ -100,7 +110,15 @@
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns" class="pl-1 pr-1"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            class="pl-1 pr-1"
+            [ngClass]="{
+              'current-shift-highlight': row.isCurrentShift,
+              'previous-shift-highlight': row.isPreviousShift,
+            }"
+          ></tr>
           <tr class="mat-row" *matNoDataRow>
             <td [attr.colspan]="displayedColumns.length" class="p-4 text-center font-bold">
               No records available!
@@ -109,9 +127,9 @@
         </table>
       </section>
       <mat-paginator
-        [length]="dataSource.data.length"
-        [pageSize]="10"
-        [pageSizeOptions]="[5, 10, 25, 50]"
+        [length]="totalRecords"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
         (page)="onPageChange($event)"
       >
       </mat-paginator>

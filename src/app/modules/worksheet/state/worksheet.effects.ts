@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, catchError, tap, exhaustMap } from 'rxjs/operators';
+import { map, catchError, tap, exhaustMap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -41,6 +41,9 @@ import {
   updateHarvestFailure,
   updateTransit,
   updateTransitFailure,
+  getMonitoringCount,
+  getMonitoringCountFailure,
+  getMonitoringCountSuccess,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
@@ -328,7 +331,7 @@ export class WorksheetEffects {
       ofType(getHarvests.type),
       exhaustMap(({ payload: { unitId, statusIds } }) =>
         this.WorksheetService.getHarvests(unitId, statusIds).pipe(
-          map((res: Response<HarvestDetails[]>) => {
+          map((res: Response<{ data: HarvestDetails[]; totalRecords: number }>) => {
             console.log('Hervest data:', res);
             if (res.status !== 201) {
               return getHarvestsFailure({
@@ -353,24 +356,28 @@ export class WorksheetEffects {
       ofType(createTransit.type),
       exhaustMap(({ payload: { filter, ...transit } }) =>
         this.WorksheetService.createTransit(transit).pipe(
-          map((res: Response<any>) => {
+          mergeMap((res: Response<any>) => {
             if (res.status !== 201) {
-              return createTransitFailure({
-                error: res.message || 'Create Transit failed',
-              });
+              return of(
+                createTransitFailure({
+                  error: res.message || 'Create Transit failed',
+                }),
+              );
             }
             if (res.data) {
               this.notificationService.showMessage(
                 SEVERITY.SUCCESS,
                 'Transits created successfully!',
               );
-              return getHarvests(filter);
+              // Dispatch both getHarvests and getMonitoringCount actions
+              return [getHarvests(filter), getMonitoringCount()];
             }
-            return createTransitFailure({
-              error: res.message || 'Create Transit failed',
-            });
+            return of(
+              createTransitFailure({
+                error: res.message || 'Create Transit failed',
+              }),
+            );
           }),
-          tap(() => of(getHarvests(filter))),
           catchError((error) => of(createTransitFailure({ error }))),
         ),
       ),
@@ -382,11 +389,13 @@ export class WorksheetEffects {
       ofType(updateTransit.type),
       exhaustMap(({ request: { payload, days } }) =>
         this.WorksheetService.updateTransit(payload).pipe(
-          map((res: Response<any>) => {
+          mergeMap((res: Response<any>) => {
             if (res.status !== 201) {
-              return updateTransitFailure({
-                error: res.message || 'Update transit failed',
-              });
+              return of(
+                updateTransitFailure({
+                  error: res.message || 'Update transit failed',
+                }),
+              );
             }
             if (res.data) {
               if (payload.isDelete) {
@@ -400,14 +409,41 @@ export class WorksheetEffects {
                   'Transit is updated successfully!',
                 );
               }
-              return getTransits({ days });
+              return [getTransits({ days }), getMonitoringCount()];
             }
-            return updateTransitFailure({
-              error: res.message || 'Update harvest failed',
-            });
+            return of(
+              updateTransitFailure({
+                error: res.message || 'Update harvest failed',
+              }),
+            );
           }),
           // tap(() => this.router.navigate(['/worksheet/transit'])),
           catchError((error) => of(updateTransitFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  // Monitoring Count
+  getMonitoringCount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getMonitoringCount.type),
+      exhaustMap(() =>
+        this.WorksheetService.getMonitoringCount().pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 200) {
+              return getMonitoringCountFailure({
+                error: res.message || 'Get monitoring count failed',
+              });
+            }
+            if (res.data) {
+              return getMonitoringCountSuccess(res.data);
+            }
+            return getMonitoringCountFailure({
+              error: res.message || 'Get monitoring count failed',
+            });
+          }),
+          catchError((error) => of(getMonitoringCountFailure({ error }))),
         ),
       ),
     ),

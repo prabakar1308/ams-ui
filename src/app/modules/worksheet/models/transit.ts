@@ -1,13 +1,13 @@
 export interface Transit {
   id: number;
-  harvestId?: number;
+  // harvestId?: number;
   createdAt: Date;
   createdBy: string;
   createdById?: number;
   harvestCount: string;
   transitCount: string;
   count?: number;
-  countInStock?: number;
+  // countInStock?: number;
   staffInCharge?: string;
   unitId?: number;
   unitName?: string;

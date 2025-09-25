@@ -12,6 +12,7 @@ import { CreateHarvest, CreateHarvestRequest } from '../models/create-harvest';
 import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest, CreateTransitResponse } from '../models/create-transit';
+import { MonitoringCount } from '../models/monitoring-count';
 
 export const getActiveWorksheets = createAction(
   '[Worksheet] Get Active Worksheets',
@@ -112,7 +113,7 @@ export const getHarvests = createAction('[Harvest] Get Harvests', (payload: Harv
 
 export const getHarvestsSuccess = createAction(
   '[Harvest] Get Harvests Success',
-  (payload: HarvestDetails[]) => ({ payload }),
+  (payload: { data: HarvestDetails[]; totalRecords: number }) => ({ payload }),
 );
 
 export const getHarvestsFailure = createAction(
@@ -215,5 +216,17 @@ export const updateTransitSuccess = createAction(
 
 export const updateTransitFailure = createAction(
   '[Transit] Update Transit Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const getMonitoringCount = createAction('[Monitoring] Get Monitoring Count');
+
+export const getMonitoringCountSuccess = createAction(
+  '[Monitoring] Get Monitoring Count Success',
+  (payload: MonitoringCount) => ({ payload }),
+);
+
+export const getMonitoringCountFailure = createAction(
+  '[Monitoring] Get Monitoring Count Failure',
   (payload: { error: string }) => ({ payload }),
 );

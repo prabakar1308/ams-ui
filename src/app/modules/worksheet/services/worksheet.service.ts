@@ -15,6 +15,7 @@ import { CreateHarvestRequest } from '../models/create-harvest';
 import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest } from '../models/create-transit';
+import { MonitoringCount } from '../models/monitoring-count';
 
 @Injectable({
   providedIn: 'root',
@@ -66,10 +67,13 @@ export class WorksheetService {
 
   // harvest
   getHarvests(unitId: number, statusIds: string[]) {
-    return this.http.post<Response<HarvestDetails[]>>(`${this.API_URL}/get-harvests`, {
-      unitId,
-      statusIds,
-    });
+    return this.http.post<Response<{ data: HarvestDetails[]; totalRecords: number }>>(
+      `${this.API_URL}/get-harvests`,
+      {
+        unitId,
+        statusIds,
+      },
+    );
   }
 
   getCurrentHarvest(id: number) {
@@ -101,5 +105,9 @@ export class WorksheetService {
 
   updateTransit(request: TransitUpdate) {
     return this.http.post<Response<any>>(`${this.API_URL}/update-transit`, request);
+  }
+
+  getMonitoringCount() {
+    return this.http.get<Response<MonitoringCount>>(`${this.API_URL}/monitoring-count`);
   }
 }
