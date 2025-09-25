@@ -30,12 +30,16 @@ import {
   resetUserPassword,
   resetUserPasswordFailure,
   resetUserPasswordSuccess,
+  getSourceTrackerList,
+  getSourceTrackerFailure,
+  getSourceTrackerSuccess,
 } from './shared-actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { UserDetails } from '@app/shared/models/user-details';
 import { NotificationService } from '@app/core/services/notification.service';
 import { SEVERITY } from '@app/core/core.contants';
+import { SourceTracker } from '../models/master';
 
 @Injectable()
 export class SharedEffects {
@@ -303,6 +307,26 @@ export class SharedEffects {
             });
           }),
           catchError((error) => of(resetUserPasswordFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  getSourceTracker$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getSourceTrackerList.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.getSourceTracker(payload).pipe(
+          map((res: Response<any>) => {
+            console.log('source tracker details', res);
+            if (res.status !== 201 && res.status !== 200) {
+              return getSourceTrackerFailure({ error: res.message || 'Get source tracker failed' });
+            }
+            if (res.data) {
+              return getSourceTrackerSuccess(res.data);
+            }
+            return getSourceTrackerFailure({ error: res.message || 'Get source tracker failed' });
+          }),
+          catchError((error) => of(getSourceTrackerFailure({ error }))),
         ),
       ),
     ),

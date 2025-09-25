@@ -12,12 +12,14 @@ export class GenericDataComponent {
   @Input() displayColumns!: string[];
   @Input() sticky = '';
   @Input() showSearch = false;
+  @Input() showDateRange = false;
   @Output() refreshPage = new EventEmitter<unknown>();
   @Output() addData = new EventEmitter<unknown>();
   @Output() editData = new EventEmitter<unknown>();
   @Output() deleteData = new EventEmitter<unknown>();
   @Output() applyFilter = new EventEmitter<unknown>();
   searchText = '';
+  dateValue = { startDate: new Date(), endDate: new Date() };
 
   onRefresh() {
     this.refreshPage.emit();
@@ -32,5 +34,13 @@ export class GenericDataComponent {
   }
   onDeleteDetails(event: unknown) {
     this.deleteData.emit(event);
+  }
+  dateChange(event: unknown): void {
+    const date: { start: string; end: string } = event as { start: string; end: string };
+    if (date) {
+      const { start, end } = date;
+      this.dateValue = { startDate: new Date(start), endDate: new Date(end) };
+      //this.updatelist();
+    }
   }
 }

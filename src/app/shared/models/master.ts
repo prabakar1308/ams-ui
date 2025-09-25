@@ -46,3 +46,15 @@ export interface DisplayColumn {
   id: string;
   label: string;
 }
+
+export interface SourceTracker {
+  id: number;
+  sourceOrigin: string;
+  count: number;
+  unitSource: number;
+  generatedAt: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  createdBy?: string;
+  updatedBy?: string;
+}

@@ -1,0 +1,22 @@
+<div>
+  @if (userAction === userActions.LIST) {
+    <app-generic-data
+      [title]="'Source Tracker Inputs'"
+      [data]="tableData"
+      [displayColumns]="displayColumns"
+      [showDateRange]="true"
+      (refreshPage)="getSourceTrackerDetails()"
+      (addData)="addNew()"
+      (editData)="editDetails($event)"
+      (deleteData)="deleteDetails($event)"
+    ></app-generic-data>
+  } @else if (userAction === userActions.ADD || userAction === userActions.EDIT) {
+    <app-form-generator
+      [formStructure]="formSTConfigData"
+      [formDetails]="formSTDetails"
+      [getRawData]="true"
+      (moveBack)="moveBack()"
+      (formData)="submitFormData($event)"
+    />
+  }
+</div>

@@ -30,6 +30,7 @@ export const initialState: SharedState = {
   salnity: defaultRangeValues,
   temperature: defaultRangeValues,
   unitSectors: [],
+  sourceTrackerList: [],
   meta: {
     isLoading: false,
     error: '',
@@ -139,6 +140,21 @@ export const sharedReducer = createReducer(
     meta: {
       ...state.meta,
       resetPassword: true,
+    },
+  })),
+  on(SharedActions.getSourceTrackerSuccess, (state, { payload }) => ({
+    ...state,
+    sourceTrackerList: payload,
+    meta: {
+      ...state.meta,
+      isLoading: true,
+    },
+  })),
+  on(SharedActions.getSourceTrackerList, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      isLoading: false,
     },
   })),
 );

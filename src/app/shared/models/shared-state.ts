@@ -1,4 +1,11 @@
-import { HarvestType, MasterGeneric, MasterRange, UnitSector, WorksheetUnit } from './master';
+import {
+  HarvestType,
+  MasterGeneric,
+  MasterRange,
+  SourceTracker,
+  UnitSector,
+  WorksheetUnit,
+} from './master';
 import { UserDetails } from './user-details';
 import { WorksheetStatus } from './worksheet-status';
 
@@ -14,6 +21,7 @@ export interface SharedState {
   salnity: MasterRange;
   temperature: MasterRange;
   unitSectors: UnitSector[];
+  sourceTrackerList: SourceTracker[];
   meta: {
     isLoading: boolean;
     error: string;

@@ -15,6 +15,14 @@
           }
         </mat-form-field>
       }
+      @if (showDateRange) {
+        <div>
+          <app-date-range-picker
+            [value]="dateValue"
+            (selectionChange)="dateChange($event)"
+          ></app-date-range-picker>
+        </div>
+      }
       <div>
         <button
           mat-mini-fab

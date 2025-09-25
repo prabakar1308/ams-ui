@@ -8,6 +8,7 @@ import {
   HarvestType,
   MasterGeneric,
   MasterRange,
+  SourceTracker,
   UnitSector,
   WorksheetUnit,
 } from '../models/master';
@@ -69,5 +70,11 @@ export class SharedService {
   }
   resetUserPassword(request: any[]) {
     return this.http.patch<Response<any>>(`${this.API_URL}/users/reset-password`, request);
+  }
+  getSourceTracker(request: any) {
+    return this.http.post<Response<{ data: SourceTracker[] }>>(
+      `${this.API_URL}/master/source-tracker-list`,
+      request,
+    );
   }
 }

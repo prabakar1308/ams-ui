@@ -11,9 +11,10 @@ import { SharedModule } from '@app/shared/shared.module';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { WorksheetUnitDetailsComponent } from './components/worksheet-unit-details/worksheet-unit-details.component';
+import { SourceTrackerComponent } from './components/source-tracker/source-tracker.component';
 
 @NgModule({
-  declarations: [MasterHomeComponent, GenericDataComponent, UserDetailsComponent, WorksheetUnitDetailsComponent],
+  declarations: [MasterHomeComponent, GenericDataComponent, UserDetailsComponent, WorksheetUnitDetailsComponent, SourceTrackerComponent],
   imports: [
     CommonModule,
     MasterRoutingModule,

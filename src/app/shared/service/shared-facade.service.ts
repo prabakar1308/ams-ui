@@ -7,7 +7,7 @@ import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import * as fromStore from '../state';
 import * as sharedAction from '../state/shared-actions';
 import { MasterData, WorksheetFilter } from '../models/shared-state';
-import { HarvestType } from '../models/master';
+import { HarvestType, SourceTracker } from '../models/master';
 import { ResetUserPassword, UserDetails } from '../models/user-details';
 import { CreateUserRequest } from '../models/create-user';
 import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
@@ -24,6 +24,7 @@ export class SharedFacadeService {
   meta$: Observable<MetaState>;
   resetUserUpdated$: Observable<boolean>;
   resetWorksheetUnitUpdated$: Observable<boolean>;
+  sourceTrackerList$: Observable<any[]>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.masterData$ = this.store.select(fromStore.getMasterData);
@@ -34,6 +35,7 @@ export class SharedFacadeService {
     this.meta$ = this.store.select(fromStore.getMetaInfo);
     this.resetUserUpdated$ = this.store.select(fromStore.resetUserUpdated);
     this.resetWorksheetUnitUpdated$ = this.store.select(fromStore.resetWorksheetUnitUpdated);
+    this.sourceTrackerList$ = this.store.select(fromStore.getSourceTrackerList);
   }
 
   getWorksheetStatus() {
@@ -94,5 +96,12 @@ export class SharedFacadeService {
   }
   resetUserPassword(request: ResetUserPassword) {
     this.store.dispatch(sharedAction.resetUserPassword(request));
+  }
+  getSourceTrackerList(request: any) {
+    this.store.dispatch(sharedAction.getSourceTrackerList(request));
+  }
+
+  getSourceTrackerSuccess(response: SourceTracker[]) {
+    this.store.dispatch(sharedAction.getSourceTrackerSuccess(response));
   }
 }

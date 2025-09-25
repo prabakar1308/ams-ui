@@ -4,6 +4,7 @@ import { ResetUserPassword, UserDetails } from '@app/shared/models/user-details'
 import { MasterData, WorksheetFilter } from '../models/shared-state';
 import { CreateUserRequest } from '../models/create-user';
 import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
+import { SourceTracker } from '../models/master';
 
 export const getWorksheetStatus = createAction('[Shared] Get Worksheet Status');
 
@@ -140,5 +141,18 @@ export const resetUserPasswordSuccess = createAction(
 
 export const resetUserPasswordFailure = createAction(
   '[User] Reset User Password Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+export const getSourceTrackerList = createAction(
+  '[Shared] Get Source Tracker List',
+  (payload: any[]) => ({ payload }),
+);
+export const getSourceTrackerSuccess = createAction(
+  '[Shared] Get Source Tracker Success',
+  (payload: SourceTracker[]) => ({ payload }),
+);
+
+export const getSourceTrackerFailure = createAction(
+  '[Shared] Get Source Tracker Failure',
   (payload: { error: string }) => ({ payload }),
 );
