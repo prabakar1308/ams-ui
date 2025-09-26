@@ -12,20 +12,6 @@ export const formSTConfig: FormStructure[] = [
   {
     class: LAYOUT_CLASSES.NONE,
     type: INPUT_TYPES.TEXT,
-    label: 'Id',
-    name: 'id',
-    value: '',
-    validations: [
-      {
-        name: 'required',
-        validator: 'required',
-        message: 'Id is required',
-      },
-    ],
-  },
-  {
-    class: LAYOUT_CLASSES.NONE,
-    type: INPUT_TYPES.TEXT,
     label: 'Source Origin',
     name: 'sourceOrigin',
     value: '',
@@ -56,7 +42,7 @@ export const formSTConfig: FormStructure[] = [
     type: INPUT_TYPES.SELECT,
     label: 'Unit Source',
     name: 'unitSource',
-    value: ADMIN, // default as admin,
+    value: 'ADMIN', //need to workout,
     isMultiple: false,
     options: USER_ROLES,
     validations: [

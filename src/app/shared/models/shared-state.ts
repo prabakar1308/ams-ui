@@ -27,6 +27,7 @@ export interface SharedState {
     error: string;
     userUpdated?: boolean;
     worksheetUnitUpdated?: boolean;
+    sourceTrackerUpdated?: boolean;
   };
 }
 

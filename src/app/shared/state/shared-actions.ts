@@ -5,6 +5,7 @@ import { MasterData, WorksheetFilter } from '../models/shared-state';
 import { CreateUserRequest } from '../models/create-user';
 import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
 import { SourceTracker } from '../models/master';
+import { CreateSourceTrackerRequest } from '../models/create-source-tracker';
 
 export const getWorksheetStatus = createAction('[Shared] Get Worksheet Status');
 
@@ -155,4 +156,43 @@ export const getSourceTrackerSuccess = createAction(
 export const getSourceTrackerFailure = createAction(
   '[Shared] Get Source Tracker Failure',
   (payload: { error: string }) => ({ payload }),
+);
+export const createSourceTracker = createAction(
+  '[Master] Create SourceTracker',
+  (payload: CreateSourceTrackerRequest) => ({
+    payload,
+  }),
+);
+
+export const createSourceTrackerSuccess = createAction(
+  '[Master] Create SourceTracker Success',
+  (payload: any[]) => ({
+    payload,
+  }),
+);
+
+export const createSourceTrackerFailure = createAction(
+  '[Master] Create SourceTracker Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+export const updateSourceTracker = createAction(
+  '[Master] Update Source Tracker',
+  (payload: any) => ({
+    payload,
+  }),
+);
+
+export const updateSourceTrackerSuccess = createAction(
+  '[Master] Update Source Tracker Success',
+  (payload: any[]) => ({
+    payload,
+  }),
+);
+
+export const updateSourceTrackerFailure = createAction(
+  '[Master] Update Source Tracker Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+export const resetSourceTrackerUpdatedStatus = createAction(
+  '[Master] Reset Source Tracker Update Status',
 );

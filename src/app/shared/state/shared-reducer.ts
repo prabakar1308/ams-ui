@@ -157,4 +157,25 @@ export const sharedReducer = createReducer(
       isLoading: false,
     },
   })),
+  on(SharedActions.createSourceTrackerSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: true,
+    },
+  })),
+  on(SharedActions.resetSourceTrackerUpdatedStatus, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: false,
+    },
+  })),
+  on(SharedActions.updateSourceTrackerSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: true,
+    },
+  })),
 );

@@ -5,6 +5,8 @@ import { distinctUntilChanged, from, Subject, takeUntil } from 'rxjs';
 import { SharedService } from '@app/shared/service/shared-service';
 import { SourceTracker, WorksheetUnit } from '@app/shared/models/master';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
+import { CreateSourceTrackerRequest } from '@app/shared/models/create-source-tracker';
+import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
 
 @Component({
   selector: 'app-source-tracker',
@@ -19,25 +21,41 @@ export class SourceTrackerComponent {
   tableData: unknown[] = [];
   formSTConfigData = formSTConfig;
   formSTDetails = formSTDetails;
-  displayColumns = ['Id', 'source_origin', 'count', 'source_unit', 'generated_at', 'actions'];
+  displayColumns = ['source_origin', 'count', 'source_unit', 'generated_at', 'actions'];
   sourceTrackerDetails: SourceTracker[] = [];
   worksheetUnit: WorksheetUnit[] = [];
+  editId: number | null = null;
+  currentUserId: number = 0;
 
-  constructor(private sharedFacadeService: SharedFacadeService) {}
+  constructor(
+    private sharedFacadeService: SharedFacadeService,
+    private authFacadeService: AuthFacadeService,
+  ) {}
 
   ngOnInit() {
     this.sharedFacadeService.getMasterData();
-    this.sharedFacadeService.masterData$
-      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
-      .subscribe((data) => {
-        this.worksheetUnit = data?.worksheetUnits || [];
-      });
+
     this.getSourceTrackerDetails();
+    this.sharedFacadeService.resetWorksheetUnitUpdated$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.sharedFacadeService.resetSourceTrackerUpdatedStatus();
+          this.userAction = USER_ACTIONS.LIST;
+          this.editId = null;
+          //this.sharedFacadeService.getMasterData();
+        }
+      });
   }
   getSourceTrackerDetails() {
     const fromdate = new Date();
     const toDate = new Date();
     fromdate.setDate(toDate.getDate() - 30);
+    this.sharedFacadeService.masterData$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((data) => {
+        this.worksheetUnit = data?.worksheetUnits || [];
+      });
     this.sharedFacadeService.getSourceTrackerList({ fromDate: fromdate, toDate: toDate });
     this.sharedFacadeService.sourceTrackerList$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
@@ -45,14 +63,33 @@ export class SourceTrackerComponent {
         this.sourceTrackerDetails = data || [];
         this.tableData = this.sourceTrackerDetails.map((sourceTracker) => ({
           ...sourceTracker,
-          Id: sourceTracker.id,
           source_origin: sourceTracker.sourceOrigin,
           count: sourceTracker.count,
-          source_unit:
-            this.worksheetUnit.filter((x) => x.id == sourceTracker.unitSource)[0]?.value || '',
+          source_unit: sourceTracker.unitSource, //need to workout
+          //this.worksheetUnit.filter((x) => x.id == sourceTracker.unitSource)[0]?.value || '',
           generated_at: sourceTracker.generatedAt,
           enableEdit: true,
         }));
+        //need to workout
+        this.formSTConfigData.map((cfg) => {
+          if (cfg.name === 'unitSource') {
+            return {
+              ...cfg,
+              options: this.worksheetUnit.map((unit) => ({
+                id: unit.id,
+                name: unit.value,
+              })),
+            };
+          }
+          return cfg;
+        });
+      });
+    this.authFacadeService.userData$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((userData) => {
+        if (userData) {
+          this.currentUserId = parseInt(userData.userId);
+        }
       });
   }
 
@@ -63,16 +100,16 @@ export class SourceTrackerComponent {
 
   editDetails(event: unknown) {
     console.log('Edit event:', event);
-    // const worksheetUnitDetails = event as WorksheetUnit;
-    // this.editId = worksheetUnitDetails.id;
-    // this.formWsConfigData = this.formWsConfigData.map((data) => {
-    //   return {
-    //     ...data,
-    //     value: worksheetUnitDetails[data.name as keyof WorksheetUnit] || '',
-    //   };
-    // });
-    // this.userAction = USER_ACTIONS.EDIT;
-    // this.formWsDetails = { ...this.formWsDetails, title: 'Update Worksheet Details' };
+    const sourceTrackerDetails = event as SourceTracker;
+    this.editId = sourceTrackerDetails.id;
+    this.formSTConfigData = this.formSTConfigData.map((data) => {
+      return {
+        ...data,
+        value: sourceTrackerDetails[data.name as keyof SourceTracker] || '',
+      };
+    });
+    this.userAction = USER_ACTIONS.EDIT;
+    this.formSTDetails = { ...this.formSTDetails, title: 'Update Source Tracker Details' };
   }
 
   deleteDetails(event: unknown) {
@@ -83,17 +120,20 @@ export class SourceTrackerComponent {
     this.userAction = USER_ACTIONS.LIST;
   }
   submitFormData(formData: unknown) {
-    // const payload = formData as CreateWorksheetUnitRequest;
-    // if (this.userAction === USER_ACTIONS.EDIT) {
-    //   this.sharedService.updateWorksheetUnit({
-    //     ...payload,
-    //     id: this.editId || 0,
-    //   });
-    // } else {
-    //   this.sharedService.createWorksheetUnit({
-    //     ...payload,
-    //   });
-    // }
+    const payload = formData as CreateSourceTrackerRequest;
+    payload.createdBy = this.currentUserId;
+    payload.updatedBy = this.currentUserId;
+    payload.unitSource = 1; //need to workout
+    if (this.userAction === USER_ACTIONS.EDIT) {
+      this.sharedFacadeService.updateSourceTracker({
+        ...payload,
+        id: this.editId || 0,
+      });
+    } else {
+      this.sharedFacadeService.createSourceTracker({
+        ...payload,
+      });
+    }
   }
 
   ngOnDestroy() {

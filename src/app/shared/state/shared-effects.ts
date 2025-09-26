@@ -33,6 +33,12 @@ import {
   getSourceTrackerList,
   getSourceTrackerFailure,
   getSourceTrackerSuccess,
+  createSourceTracker,
+  createSourceTrackerFailure,
+  createSourceTrackerSuccess,
+  updateSourceTracker,
+  updateSourceTrackerFailure,
+  updateSourceTrackerSuccess,
 } from './shared-actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
@@ -327,6 +333,60 @@ export class SharedEffects {
             return getSourceTrackerFailure({ error: res.message || 'Get source tracker failed' });
           }),
           catchError((error) => of(getSourceTrackerFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  createSourceTrackerData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createSourceTracker.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.createSourceTracker(payload).pipe(
+          map((res: Response<any>) => {
+            if (!(res.status === 201 || res.status === 200)) {
+              return createSourceTrackerFailure({
+                error: res.message || 'Create Source Tracker failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Source Tracker created successfully!',
+              );
+              return createSourceTrackerSuccess(res.data);
+            }
+            return createSourceTrackerFailure({
+              error: res.message || 'Create Source Tracker failed',
+            });
+          }),
+          catchError((error) => of(createSourceTrackerFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  updateSourceTrackerData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateSourceTracker.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.updateSourceTracker(payload).pipe(
+          map((res: Response<any>) => {
+            if (!(res.status === 201 || res.status === 200)) {
+              return updateSourceTrackerFailure({
+                error: res.message || 'Update Source Tracker failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Source Tracker updated successfully!',
+              );
+              return updateSourceTrackerSuccess(res.data);
+            }
+            return updateSourceTrackerFailure({
+              error: res.message || 'Update Source Tracker failed',
+            });
+          }),
+          catchError((error) => of(updateSourceTrackerFailure({ error }))),
         ),
       ),
     ),

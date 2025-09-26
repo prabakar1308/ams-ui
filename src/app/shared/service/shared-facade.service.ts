@@ -11,6 +11,7 @@ import { HarvestType, SourceTracker } from '../models/master';
 import { ResetUserPassword, UserDetails } from '../models/user-details';
 import { CreateUserRequest } from '../models/create-user';
 import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
+import { CreateSourceTrackerRequest } from '../models/create-source-tracker';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,7 @@ export class SharedFacadeService {
   resetUserUpdated$: Observable<boolean>;
   resetWorksheetUnitUpdated$: Observable<boolean>;
   sourceTrackerList$: Observable<any[]>;
+  resetSourceTrackerUpdated$: Observable<boolean>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.masterData$ = this.store.select(fromStore.getMasterData);
@@ -36,6 +38,7 @@ export class SharedFacadeService {
     this.resetUserUpdated$ = this.store.select(fromStore.resetUserUpdated);
     this.resetWorksheetUnitUpdated$ = this.store.select(fromStore.resetWorksheetUnitUpdated);
     this.sourceTrackerList$ = this.store.select(fromStore.getSourceTrackerList);
+    this.resetSourceTrackerUpdated$ = this.store.select(fromStore.resetSourceTrackerUpdated);
   }
 
   getWorksheetStatus() {
@@ -103,5 +106,17 @@ export class SharedFacadeService {
 
   getSourceTrackerSuccess(response: SourceTracker[]) {
     this.store.dispatch(sharedAction.getSourceTrackerSuccess(response));
+  }
+  createSourceTracker(request: CreateSourceTrackerRequest) {
+    this.store.dispatch(sharedAction.createSourceTracker(request));
+  }
+  createSourceTrackerSuccess(response: any[]) {
+    this.store.dispatch(sharedAction.createSourceTrackerSuccess(response));
+  }
+  resetSourceTrackerUpdatedStatus() {
+    this.store.dispatch(sharedAction.resetSourceTrackerUpdatedStatus());
+  }
+  updateSourceTracker(request: any) {
+    this.store.dispatch(sharedAction.updateSourceTracker(request));
   }
 }
