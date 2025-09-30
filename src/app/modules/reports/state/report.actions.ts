@@ -1,7 +1,7 @@
 import { createAction } from '@ngrx/store';
 import { TransitReport } from '../models/transit-response';
 import { TransitRequest } from '../models/transit-request';
-import { StockInput, StockInputRequest } from '../models/stock-input';
+import { StockInput, StockInputRequest, StockInputUnit } from '../models/stock-input';
 
 export const getLiveTransitReport = createAction(
   '[Report] Get Live Transit Report',
@@ -50,5 +50,19 @@ export const getActiveStockInputReportSuccess = createAction(
 );
 export const getActiveStockInputReportFailure = createAction(
   '[Report] Get Active Stock Input Report Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const getAvailableStockInputReport = createAction(
+  '[Report] Get Available Stock Input Report',
+);
+
+export const getAvailableStockInputReportSuccess = createAction(
+  '[Report] Get Available Stock Input Report Success',
+  (payload: StockInputUnit[]) => ({ payload }),
+);
+
+export const getAvailableStockInputReportFailure = createAction(
+  '[Report] Get Available Stock Input Report Failure',
   (payload: { error: string }) => ({ payload }),
 );

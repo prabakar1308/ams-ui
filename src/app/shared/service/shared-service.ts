@@ -8,11 +8,13 @@ import {
   HarvestType,
   MasterGeneric,
   MasterRange,
+  SourceTracker,
   UnitSector,
   WorksheetUnit,
 } from '../models/master';
 import { CreateUserRequest } from '../models/create-user';
 import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
+import { CreateSourceTrackerRequest } from '../models/create-source-tracker';
 
 @Injectable({
   providedIn: 'root',
@@ -69,5 +71,21 @@ export class SharedService {
   }
   resetUserPassword(request: any[]) {
     return this.http.patch<Response<any>>(`${this.API_URL}/users/reset-password`, request);
+  }
+  getSourceTracker(request: any) {
+    return this.http.post<Response<{ data: SourceTracker[] }>>(
+      `${this.API_URL}/master/source-tracker-list`,
+      request,
+    );
+  }
+  createSourceTracker(request: CreateSourceTrackerRequest) {
+    return this.http.post<Response<any>>(`${this.API_URL}/master/source-tracker`, request);
+  }
+  updateSourceTracker(request: any[]) {
+    return this.http.patch<Response<any>>(`${this.API_URL}/master/source-tracker`, request);
+  }
+
+  deleteSourceTracker(id: number) {
+    return this.http.delete<Response<any>>(`${this.API_URL}/master/source-tracker?id=${id}`);
   }
 }

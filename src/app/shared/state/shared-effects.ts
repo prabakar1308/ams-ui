@@ -30,12 +30,25 @@ import {
   resetUserPassword,
   resetUserPasswordFailure,
   resetUserPasswordSuccess,
+  getSourceTrackerList,
+  getSourceTrackerFailure,
+  getSourceTrackerSuccess,
+  createSourceTracker,
+  createSourceTrackerFailure,
+  createSourceTrackerSuccess,
+  updateSourceTracker,
+  updateSourceTrackerFailure,
+  updateSourceTrackerSuccess,
+  deleteSourceTracker,
+  deleteSourceTrackerSuccess,
+  deleteSourceTrackerFailure,
 } from './shared-actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import { UserDetails } from '@app/shared/models/user-details';
 import { NotificationService } from '@app/core/services/notification.service';
 import { SEVERITY } from '@app/core/core.contants';
+import { SourceTracker } from '../models/master';
 
 @Injectable()
 export class SharedEffects {
@@ -303,6 +316,108 @@ export class SharedEffects {
             });
           }),
           catchError((error) => of(resetUserPasswordFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  getSourceTracker$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getSourceTrackerList.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.getSourceTracker(payload).pipe(
+          map((res: Response<any>) => {
+            console.log('source tracker details', res);
+            if (res.status !== 201 && res.status !== 200) {
+              return getSourceTrackerFailure({ error: res.message || 'Get source tracker failed' });
+            }
+            if (res.data) {
+              return getSourceTrackerSuccess(res.data);
+            }
+            return getSourceTrackerFailure({ error: res.message || 'Get source tracker failed' });
+          }),
+          catchError((error) => of(getSourceTrackerFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  createSourceTrackerData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createSourceTracker.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.createSourceTracker(payload).pipe(
+          map((res: Response<any>) => {
+            if (!(res.status === 201 || res.status === 200)) {
+              return createSourceTrackerFailure({
+                error: res.message || 'Create Source Tracker failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Source Tracker created successfully!',
+              );
+              return createSourceTrackerSuccess(res.data);
+            }
+            return createSourceTrackerFailure({
+              error: res.message || 'Create Source Tracker failed',
+            });
+          }),
+          catchError((error) => of(createSourceTrackerFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+  updateSourceTrackerData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateSourceTracker.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.updateSourceTracker(payload).pipe(
+          map((res: Response<any>) => {
+            if (!(res.status === 201 || res.status === 200)) {
+              return updateSourceTrackerFailure({
+                error: res.message || 'Update Source Tracker failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Source Tracker updated successfully!',
+              );
+              return updateSourceTrackerSuccess(res.data);
+            }
+            return updateSourceTrackerFailure({
+              error: res.message || 'Update Source Tracker failed',
+            });
+          }),
+          catchError((error) => of(updateSourceTrackerFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  deleteSourceTrackerData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteSourceTracker.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.deleteSourceTracker(payload).pipe(
+          map((res: Response<any>) => {
+            if (!(res.status === 201 || res.status === 200)) {
+              return deleteSourceTrackerFailure({
+                error: res.message || 'Delete Source Tracker failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Source Deleted successfully!',
+              );
+              return deleteSourceTrackerSuccess(res.data);
+            }
+            return deleteSourceTrackerFailure({
+              error: res.message || 'Delete Source Tracker failed',
+            });
+          }),
+          catchError((error) => of(deleteSourceTrackerFailure({ error }))),
         ),
       ),
     ),

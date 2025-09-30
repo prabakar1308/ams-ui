@@ -2,36 +2,49 @@
   <div class="flex flex-col w-full pt-4">
     <div class="flex flex-col md:flex-row gap-2 justify-between items-center">
       <h4 class="text-xl pl-2 font-serif font-bold text-[#165d51]">Live Transit</h4>
-      <div class="flex flex-col md:flex-row items-center gap-2">
-        <div class="flex flex-row gap-2">
-          <button
-            aria-label="Go to harvest list"
-            [routerLink]="['/worksheet/harvest']"
-            mat-mini-fab
-            matTooltip="Harvest"
-            class="secondary"
-          >
-            <mat-icon>agriculture</mat-icon>
-          </button>
-          <button
-            aria-label="Go to Restock Page"
-            [routerLink]="['/worksheet/restock']"
-            mat-mini-fab
-            matTooltip="Restock"
-            class="secondary"
-          >
-            <mat-icon>warehouse</mat-icon>
-          </button>
-          <button
-            mat-mini-fab
-            aria-label="worksheet refresh"
-            (click)="onClickBack()"
-            matTooltip="Worksheets"
-            class="secondary"
-          >
-            <mat-icon>home</mat-icon>
-          </button>
+
+      <div class="flex flex-row gap-2">
+        <button
+          aria-label="Go to harvest list"
+          [routerLink]="['/worksheet/harvest']"
+          mat-mini-fab
+          matTooltip="Harvest"
+          class="secondary"
+        >
+          <mat-icon>agriculture</mat-icon>
+        </button>
+        <button
+          aria-label="Go to Restock Page"
+          [routerLink]="['/worksheet/restock']"
+          mat-mini-fab
+          matTooltip="Restock"
+          class="secondary"
+        >
+          <mat-icon>warehouse</mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          aria-label="worksheet refresh"
+          (click)="onClickBack()"
+          matTooltip="Worksheets"
+          class="secondary"
+        >
+          <mat-icon>home</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row justify-between mt-2 pr-3 items-center gap-1">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-1 pl-2">
+        <div class="text-[#177b1f]">
+          Overall Count - <span class="font-bold">{{ totalMillionsCount }}</span> Millions
         </div>
+        <mat-divider vertical class="mx-2 h-0 md:h-6 w-3"></mat-divider>
+        <div class="text-[#177b1f] pl-2">
+          <span class="font-bold">{{ totalFrozenCupsCount }}</span> Frozen Cups
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row flex-wrap items-center gap-2">
         <mat-form-field appearance="outline" class="ams-small ml-2 mt-5">
           <mat-label>Categories</mat-label>
           <mat-select

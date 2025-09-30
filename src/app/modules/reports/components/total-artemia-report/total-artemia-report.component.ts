@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TransitTable } from '../../models/report';
-import { TransitReport } from '../../models/transit-response';
+import { Transit, TransitReport } from '../../models/transit-response';
 import { frozenCupsToTins, millionsToTins } from '../../utils';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { ReportFacadeService } from '../../services/report-facade.service';
@@ -22,6 +22,7 @@ export class TotalArtemiaReportComponent {
   frozenTableData: TransitTable[] = [];
   overallStocks: StockInputUnit[] = [];
   overallActiveStocks: StockInputUnit[] = [];
+  availableData: StockInputUnit[] = [];
   liveDataExists = true;
   liveTotalCountText = '';
   frozenDataExists = true;
@@ -46,6 +47,10 @@ export class TotalArtemiaReportComponent {
         const { overall } = res;
         this.overallActiveStocks = overall;
       });
+
+    this.reportFacadeService.availableStockInputReport$
+      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+      .subscribe((res) => (this.availableData = res));
   }
 
   ngOnChanges(): void {
@@ -56,8 +61,10 @@ export class TotalArtemiaReportComponent {
   generateLiveTableData() {
     this.liveTableData = this.liveTransits.map((transit) => {
       const { dayShift, nightShift } = transit.shifts;
+      const inchargeNames = this.getInchargeNames(dayShift.transits, nightShift.transits);
       return {
-        unit_sector: transit.unitSector.name,
+        unit_sector: `${transit.unitSector.name} (${inchargeNames})`,
+        unit_sector_name: transit.unitSector.name,
         total_count: millionsToTins(transit.millions),
         day_shift_count: millionsToTins(dayShift.totalTransitCount),
         night_shift_count: millionsToTins(nightShift.totalTransitCount),
@@ -74,8 +81,10 @@ export class TotalArtemiaReportComponent {
   generateFrozenTableData() {
     this.frozenTableData = this.frozenTransits.map((transit) => {
       const { dayShift, nightShift } = transit.shifts;
+      const inchargeNames = this.getInchargeNames(dayShift.transits, nightShift.transits);
       return {
-        unit_sector: transit.unitSector.name,
+        unit_sector: `${transit.unitSector.name} (${inchargeNames})`,
+        unit_sector_name: transit.unitSector.name,
         total_count: frozenCupsToTins(transit.frozenCups),
         day_shift_count: frozenCupsToTins(dayShift.totalTransitCount),
         night_shift_count: frozenCupsToTins(nightShift.totalTransitCount),
@@ -87,6 +96,13 @@ export class TotalArtemiaReportComponent {
       return acc + report.frozenCups;
     }, 0);
     this.frozenTotalCountText = frozenCupsToTins(totalCount);
+  }
+
+  getInchargeNames(item: Transit[], item2: Transit[]): string {
+    return [...item, ...item2]
+      .map((transit) => transit.staffInCharge || '')
+      .filter((name, index, self) => name && self.indexOf(name) === index)
+      .join(', ');
   }
 
   getUnitName(item: StockInputUnit): string {

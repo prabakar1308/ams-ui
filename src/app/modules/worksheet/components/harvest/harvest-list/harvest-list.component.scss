@@ -63,3 +63,12 @@
   @include mat.icon-overrides((color: $dark-green,
     ));
 }
+
+.current-shift-highlight {
+  background-color: #e6fae9;
+  font-weight: bold;
+}
+
+.previous-shift-highlight {
+  background-color: #f8f8ea;
+}

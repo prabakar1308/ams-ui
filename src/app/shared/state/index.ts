@@ -55,3 +55,15 @@ export const resetWorksheetUnitUpdated = createSelector(
     return state.meta.worksheetUnitUpdated || false;
   },
 );
+
+export const getSourceTrackerList = createSelector(
+  getSharedFeatureState,
+  (state: SharedState) => state.sourceTrackerList,
+);
+
+export const resetSourceTrackerUpdated = createSelector(
+  getSharedFeatureState,
+  (state: SharedState) => {
+    return state.meta.sourceTrackerUpdated || false;
+  },
+);

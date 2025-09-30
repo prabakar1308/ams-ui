@@ -1,4 +1,4 @@
-import { StockInput } from './stock-input';
+import { StockInput, StockInputUnit } from './stock-input';
 import { TransitReport } from './transit-response';
 
 export interface ReportState {
@@ -7,4 +7,5 @@ export interface ReportState {
   frozenTransits: TransitReport[];
   stockInput: StockInput;
   activeStockInput: StockInput;
+  availableStockInput: StockInputUnit[];
 }

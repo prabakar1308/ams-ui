@@ -60,6 +60,7 @@ export class ReportHomeComponent {
       });
 
     this.reportFacadeService.getActiveStockInputReport();
+    this.reportFacadeService.getAvailableStockInputReport();
 
     this.sharedService.masterData$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
@@ -71,7 +72,6 @@ export class ReportHomeComponent {
   }
 
   onUnitSectorChange(unitSectorId: number) {
-    console.log('Selected Unit Sector ID:', unitSectorId);
     if (unitSectorId === 0) {
       this.filteredLiveTransits = this.liveTransits;
       this.filteredFrozenTransits = this.frozenTransits;

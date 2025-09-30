@@ -14,6 +14,7 @@ export const initialState: ReportState = {
     byTankType: [],
     overall: [],
   },
+  availableStockInput: [],
 };
 
 export const reportReducer = createReducer(
@@ -34,5 +35,9 @@ export const reportReducer = createReducer(
   on(ReportActions.getActiveStockInputReportSuccess, (state, { payload }) => ({
     ...state,
     activeStockInput: payload,
+  })),
+  on(ReportActions.getAvailableStockInputReportSuccess, (state, { payload }) => ({
+    ...state,
+    availableStockInput: payload,
   })),
 );

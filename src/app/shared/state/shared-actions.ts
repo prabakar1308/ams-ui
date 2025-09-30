@@ -4,6 +4,8 @@ import { ResetUserPassword, UserDetails } from '@app/shared/models/user-details'
 import { MasterData, WorksheetFilter } from '../models/shared-state';
 import { CreateUserRequest } from '../models/create-user';
 import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
+import { SourceTracker } from '../models/master';
+import { CreateSourceTrackerRequest } from '../models/create-source-tracker';
 
 export const getWorksheetStatus = createAction('[Shared] Get Worksheet Status');
 
@@ -140,5 +142,76 @@ export const resetUserPasswordSuccess = createAction(
 
 export const resetUserPasswordFailure = createAction(
   '[User] Reset User Password Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+export const getSourceTrackerList = createAction(
+  '[Shared] Get Source Tracker List',
+  (payload: any[]) => ({ payload }),
+);
+export const getSourceTrackerSuccess = createAction(
+  '[Shared] Get Source Tracker Success',
+  (payload: SourceTracker) => ({ payload }),
+);
+
+export const getSourceTrackerFailure = createAction(
+  '[Shared] Get Source Tracker Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+export const createSourceTracker = createAction(
+  '[Master] Create SourceTracker',
+  (payload: CreateSourceTrackerRequest) => ({
+    payload,
+  }),
+);
+
+export const createSourceTrackerSuccess = createAction(
+  '[Master] Create SourceTracker Success',
+  (payload: any[]) => ({
+    payload,
+  }),
+);
+
+export const createSourceTrackerFailure = createAction(
+  '[Master] Create SourceTracker Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+export const updateSourceTracker = createAction(
+  '[Master] Update Source Tracker',
+  (payload: any) => ({
+    payload,
+  }),
+);
+
+export const updateSourceTrackerSuccess = createAction(
+  '[Master] Update Source Tracker Success',
+  (payload: any[]) => ({
+    payload,
+  }),
+);
+
+export const updateSourceTrackerFailure = createAction(
+  '[Master] Update Source Tracker Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+export const resetSourceTrackerUpdatedStatus = createAction(
+  '[Master] Reset Source Tracker Update Status',
+);
+
+export const deleteSourceTracker = createAction(
+  '[Master] Delete Source Tracker',
+  (payload: number) => ({
+    payload,
+  }),
+);
+
+export const deleteSourceTrackerSuccess = createAction(
+  '[Master] Delete Source Tracker Success',
+  (payload: number) => ({
+    payload,
+  }),
+);
+
+export const deleteSourceTrackerFailure = createAction(
+  '[Master] Delete Source Tracker Failure',
   (payload: { error: string }) => ({ payload }),
 );

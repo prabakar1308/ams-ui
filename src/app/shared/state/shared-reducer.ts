@@ -30,6 +30,7 @@ export const initialState: SharedState = {
   salnity: defaultRangeValues,
   temperature: defaultRangeValues,
   unitSectors: [],
+  sourceTrackerList: { list: [], count: [] },
   meta: {
     isLoading: false,
     error: '',
@@ -98,6 +99,13 @@ export const sharedReducer = createReducer(
       userUpdated: true,
     },
   })),
+  on(SharedActions.deleteUserSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      userUpdated: true,
+    },
+  })),
   on(SharedActions.getMasterDataSuccess, (state, { payload }) => ({
     ...state,
     harvestTypes: payload.harvestTypes,
@@ -139,6 +147,49 @@ export const sharedReducer = createReducer(
     meta: {
       ...state.meta,
       resetPassword: true,
+    },
+  })),
+  on(SharedActions.getSourceTrackerSuccess, (state, { payload }) => ({
+    ...state,
+    sourceTrackerList: payload,
+    meta: {
+      ...state.meta,
+      isLoading: true,
+    },
+  })),
+  on(SharedActions.getSourceTrackerList, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      isLoading: false,
+    },
+  })),
+  on(SharedActions.createSourceTrackerSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: true,
+    },
+  })),
+  on(SharedActions.resetSourceTrackerUpdatedStatus, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: false,
+    },
+  })),
+  on(SharedActions.updateSourceTrackerSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: true,
+    },
+  })),
+  on(SharedActions.deleteSourceTrackerSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: true,
     },
   })),
 );

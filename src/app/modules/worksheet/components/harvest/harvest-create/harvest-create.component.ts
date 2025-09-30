@@ -267,7 +267,7 @@ export class HarvestCreateComponent {
         count,
         countInStock: count,
         restockCount,
-        statusId: WORKSHEET_STATUS.COMPLETED,
+        statusId: WORKSHEET_STATUS.WASHING,
         restockUnitId: restockCount ? UNIT_IDS.MILLIONS : undefined,
         generatedAt: requestData.generatedAt || new Date(),
       };

@@ -1,9 +1,9 @@
-import { HarvestDetails } from "./harvest-details";
+import { HarvestDetails } from './harvest-details';
 
 export interface HarvestState {
-    activeHarvestList: HarvestDetails[];
-    meta: {
-        isLoading: boolean;
-        error: string;
-    };
+  activeHarvestData: HarvestDetails[];
+  meta: {
+    isLoading: boolean;
+    error: string;
+  };
 }

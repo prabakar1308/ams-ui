@@ -7,10 +7,11 @@ import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import * as fromStore from '../state';
 import * as sharedAction from '../state/shared-actions';
 import { MasterData, WorksheetFilter } from '../models/shared-state';
-import { HarvestType } from '../models/master';
+import { HarvestType, SourceTracker } from '../models/master';
 import { ResetUserPassword, UserDetails } from '../models/user-details';
 import { CreateUserRequest } from '../models/create-user';
 import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
+import { CreateSourceTrackerRequest } from '../models/create-source-tracker';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,8 @@ export class SharedFacadeService {
   meta$: Observable<MetaState>;
   resetUserUpdated$: Observable<boolean>;
   resetWorksheetUnitUpdated$: Observable<boolean>;
+  sourceTracker$: Observable<SourceTracker>;
+  resetSourceTrackerUpdated$: Observable<boolean>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.masterData$ = this.store.select(fromStore.getMasterData);
@@ -34,6 +37,8 @@ export class SharedFacadeService {
     this.meta$ = this.store.select(fromStore.getMetaInfo);
     this.resetUserUpdated$ = this.store.select(fromStore.resetUserUpdated);
     this.resetWorksheetUnitUpdated$ = this.store.select(fromStore.resetWorksheetUnitUpdated);
+    this.sourceTracker$ = this.store.select(fromStore.getSourceTrackerList);
+    this.resetSourceTrackerUpdated$ = this.store.select(fromStore.resetSourceTrackerUpdated);
   }
 
   getWorksheetStatus() {
@@ -94,5 +99,24 @@ export class SharedFacadeService {
   }
   resetUserPassword(request: ResetUserPassword) {
     this.store.dispatch(sharedAction.resetUserPassword(request));
+  }
+  getSourceTrackerList(request: any) {
+    this.store.dispatch(sharedAction.getSourceTrackerList(request));
+  }
+  createSourceTracker(request: CreateSourceTrackerRequest) {
+    this.store.dispatch(sharedAction.createSourceTracker(request));
+  }
+  createSourceTrackerSuccess(response: any[]) {
+    this.store.dispatch(sharedAction.createSourceTrackerSuccess(response));
+  }
+  resetSourceTrackerUpdatedStatus() {
+    this.store.dispatch(sharedAction.resetSourceTrackerUpdatedStatus());
+  }
+  updateSourceTracker(request: any) {
+    this.store.dispatch(sharedAction.updateSourceTracker(request));
+  }
+
+  deleteSourceTracker(id: number) {
+    this.store.dispatch(sharedAction.deleteSourceTracker(id));
   }
 }

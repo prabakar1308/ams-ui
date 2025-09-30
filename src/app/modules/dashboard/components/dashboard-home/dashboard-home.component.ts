@@ -81,7 +81,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           },
           series: [
             {
-              color: ['#fff085', '#b8e6fe', '#b9f8cf', '#ebe6e7'],
+              color: ['#fff085', '#e9d4ff', '#b9f8cf', '#ebe6e7', '#b8e6fe'],
               name: '',
               type: 'pie',
               radius: ['30%', '70%'],
