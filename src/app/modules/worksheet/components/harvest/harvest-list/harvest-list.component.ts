@@ -146,10 +146,12 @@ export class HarvestListComponent {
     if (currentHour >= 6 && currentHour < 18 && isSameDay) {
       return harvestHour >= 6 && harvestHour < 18;
     } else if (
-      isSameDay ||
-      this.isSameDate(harvestDate, new Date(now.setDate(now.getDate() - 1))) // Check for the previous day
+      (isSameDay && harvestHour >= 18 && harvestHour < 24) ||
+      (this.isSameDate(harvestDate, new Date(now.setDate(now.getDate() - 1))) &&
+        harvestHour > 0 &&
+        harvestHour < 6) // Check for the previous day
     ) {
-      return harvestHour >= 18 || harvestHour < 6;
+      return true;
     }
     return false;
   }

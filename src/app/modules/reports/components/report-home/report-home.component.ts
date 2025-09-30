@@ -60,6 +60,7 @@ export class ReportHomeComponent {
       });
 
     this.reportFacadeService.getActiveStockInputReport();
+    this.reportFacadeService.getAvailableStockInputReport();
 
     this.sharedService.masterData$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())

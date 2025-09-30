@@ -1,14 +1,17 @@
 <div>
   @if (userAction === userActions.LIST) {
     <app-generic-data
-      [title]="'Source Tracker Inputs'"
+      [title]="'Input Source Tracker'"
       [data]="tableData"
       [displayColumns]="displayColumns"
       [showDateRange]="true"
+      [showSearch]="true"
+      [extraInfos]="extraInfos"
       (refreshPage)="getSourceTrackerDetails()"
       (addData)="addNew()"
       (editData)="editDetails($event)"
       (deleteData)="deleteDetails($event)"
+      (applyFilter)="applyFilter($event)"
     ></app-generic-data>
   } @else if (userAction === userActions.ADD || userAction === userActions.EDIT) {
     <app-form-generator

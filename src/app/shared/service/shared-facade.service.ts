@@ -25,7 +25,7 @@ export class SharedFacadeService {
   meta$: Observable<MetaState>;
   resetUserUpdated$: Observable<boolean>;
   resetWorksheetUnitUpdated$: Observable<boolean>;
-  sourceTrackerList$: Observable<any[]>;
+  sourceTracker$: Observable<SourceTracker>;
   resetSourceTrackerUpdated$: Observable<boolean>;
 
   constructor(private store: Store<fromStore.AppState>) {
@@ -37,7 +37,7 @@ export class SharedFacadeService {
     this.meta$ = this.store.select(fromStore.getMetaInfo);
     this.resetUserUpdated$ = this.store.select(fromStore.resetUserUpdated);
     this.resetWorksheetUnitUpdated$ = this.store.select(fromStore.resetWorksheetUnitUpdated);
-    this.sourceTrackerList$ = this.store.select(fromStore.getSourceTrackerList);
+    this.sourceTracker$ = this.store.select(fromStore.getSourceTrackerList);
     this.resetSourceTrackerUpdated$ = this.store.select(fromStore.resetSourceTrackerUpdated);
   }
 
@@ -103,10 +103,6 @@ export class SharedFacadeService {
   getSourceTrackerList(request: any) {
     this.store.dispatch(sharedAction.getSourceTrackerList(request));
   }
-
-  getSourceTrackerSuccess(response: SourceTracker[]) {
-    this.store.dispatch(sharedAction.getSourceTrackerSuccess(response));
-  }
   createSourceTracker(request: CreateSourceTrackerRequest) {
     this.store.dispatch(sharedAction.createSourceTracker(request));
   }
@@ -118,5 +114,9 @@ export class SharedFacadeService {
   }
   updateSourceTracker(request: any) {
     this.store.dispatch(sharedAction.updateSourceTracker(request));
+  }
+
+  deleteSourceTracker(id: number) {
+    this.store.dispatch(sharedAction.deleteSourceTracker(id));
   }
 }

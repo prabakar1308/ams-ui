@@ -1,16 +1,15 @@
-import { ADMIN } from '@app/core/core.contants';
-import { INPUT_TYPES, LAYOUT_CLASSES, USER_ROLES } from '@app/shared/constants/shared.contants';
+import { INPUT_TYPES, LAYOUT_CLASSES } from '@app/shared/constants/shared.contants';
 import { FormStructure } from '@app/shared/models/form-structure';
 
 export const formSTDetails = {
   container: LAYOUT_CLASSES.CONTAINER,
-  title: 'Source Tracker Details',
+  title: 'Source',
   description: '',
   tags: [],
 };
 export const formSTConfig: FormStructure[] = [
   {
-    class: LAYOUT_CLASSES.NONE,
+    class: LAYOUT_CLASSES.DEFAULT,
     type: INPUT_TYPES.TEXT,
     label: 'Source Origin',
     name: 'sourceOrigin',
@@ -24,7 +23,7 @@ export const formSTConfig: FormStructure[] = [
     ],
   },
   {
-    class: LAYOUT_CLASSES.NONE,
+    class: LAYOUT_CLASSES.DEFAULT,
     type: INPUT_TYPES.TEXT,
     label: 'Total Count',
     name: 'count',
@@ -38,13 +37,13 @@ export const formSTConfig: FormStructure[] = [
     ],
   },
   {
-    class: LAYOUT_CLASSES.NONE,
+    class: LAYOUT_CLASSES.DEFAULT,
     type: INPUT_TYPES.SELECT,
     label: 'Unit Source',
     name: 'unitSource',
-    value: 'ADMIN', //need to workout,
+    value: '', //need to workout,
     isMultiple: false,
-    options: USER_ROLES,
+    options: [],
     validations: [
       {
         name: 'required',
@@ -54,11 +53,11 @@ export const formSTConfig: FormStructure[] = [
     ],
   },
   {
-    class: LAYOUT_CLASSES.NONE,
+    class: LAYOUT_CLASSES.DEFAULT,
     type: INPUT_TYPES.DATE,
     label: 'Generated Date',
     name: 'generatedAt',
-    value: '',
+    value: new Date(),
     validations: [
       {
         name: 'required',

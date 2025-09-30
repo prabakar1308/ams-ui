@@ -110,7 +110,7 @@ export class TotalArtemiaChartComponent {
         {
           type: 'category',
           axisTick: { show: false },
-          data: this.data.map((item) => item.unit_sector),
+          data: this.data.map((item) => item.unit_sector_name),
           axisLabel: {
             show: true,
             fontSize: axisFontSize,

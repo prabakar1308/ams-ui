@@ -48,6 +48,11 @@ export interface DisplayColumn {
 }
 
 export interface SourceTracker {
+  list: SourceTrackerList[];
+  count: { unitSource: number; totalCount: number }[];
+}
+
+export interface SourceTrackerList {
   id: number;
   sourceOrigin: string;
   count: number;

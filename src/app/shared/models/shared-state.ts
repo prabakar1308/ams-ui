@@ -21,7 +21,7 @@ export interface SharedState {
   salnity: MasterRange;
   temperature: MasterRange;
   unitSectors: UnitSector[];
-  sourceTrackerList: SourceTracker[];
+  sourceTrackerList: SourceTracker;
   meta: {
     isLoading: boolean;
     error: string;

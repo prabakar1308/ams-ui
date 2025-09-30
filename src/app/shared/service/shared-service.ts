@@ -84,4 +84,8 @@ export class SharedService {
   updateSourceTracker(request: any[]) {
     return this.http.patch<Response<any>>(`${this.API_URL}/master/source-tracker`, request);
   }
+
+  deleteSourceTracker(id: number) {
+    return this.http.delete<Response<any>>(`${this.API_URL}/master/source-tracker?id=${id}`);
+  }
 }

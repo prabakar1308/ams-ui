@@ -150,7 +150,7 @@ export const getSourceTrackerList = createAction(
 );
 export const getSourceTrackerSuccess = createAction(
   '[Shared] Get Source Tracker Success',
-  (payload: SourceTracker[]) => ({ payload }),
+  (payload: SourceTracker) => ({ payload }),
 );
 
 export const getSourceTrackerFailure = createAction(
@@ -195,4 +195,23 @@ export const updateSourceTrackerFailure = createAction(
 );
 export const resetSourceTrackerUpdatedStatus = createAction(
   '[Master] Reset Source Tracker Update Status',
+);
+
+export const deleteSourceTracker = createAction(
+  '[Master] Delete Source Tracker',
+  (payload: number) => ({
+    payload,
+  }),
+);
+
+export const deleteSourceTrackerSuccess = createAction(
+  '[Master] Delete Source Tracker Success',
+  (payload: number) => ({
+    payload,
+  }),
+);
+
+export const deleteSourceTrackerFailure = createAction(
+  '[Master] Delete Source Tracker Failure',
+  (payload: { error: string }) => ({ payload }),
 );

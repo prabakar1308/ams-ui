@@ -13,6 +13,7 @@ export class GenericDataComponent {
   @Input() sticky = '';
   @Input() showSearch = false;
   @Input() showDateRange = false;
+  @Input() extraInfos: { label: string; value: string | number }[] = [];
   @Output() refreshPage = new EventEmitter<unknown>();
   @Output() addData = new EventEmitter<unknown>();
   @Output() editData = new EventEmitter<unknown>();
@@ -40,7 +41,7 @@ export class GenericDataComponent {
     if (date) {
       const { start, end } = date;
       this.dateValue = { startDate: new Date(start), endDate: new Date(end) };
-      //this.updatelist();
+      this.applyFilter.emit(this.dateValue);
     }
   }
 }

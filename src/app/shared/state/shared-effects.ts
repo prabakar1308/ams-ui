@@ -39,6 +39,9 @@ import {
   updateSourceTracker,
   updateSourceTrackerFailure,
   updateSourceTrackerSuccess,
+  deleteSourceTracker,
+  deleteSourceTrackerSuccess,
+  deleteSourceTrackerFailure,
 } from './shared-actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetStatus } from '@app/shared/models/worksheet-status';
@@ -387,6 +390,34 @@ export class SharedEffects {
             });
           }),
           catchError((error) => of(updateSourceTrackerFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  deleteSourceTrackerData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteSourceTracker.type),
+      exhaustMap(({ payload }) =>
+        this.sharedService.deleteSourceTracker(payload).pipe(
+          map((res: Response<any>) => {
+            if (!(res.status === 201 || res.status === 200)) {
+              return deleteSourceTrackerFailure({
+                error: res.message || 'Delete Source Tracker failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Source Deleted successfully!',
+              );
+              return deleteSourceTrackerSuccess(res.data);
+            }
+            return deleteSourceTrackerFailure({
+              error: res.message || 'Delete Source Tracker failed',
+            });
+          }),
+          catchError((error) => of(deleteSourceTrackerFailure({ error }))),
         ),
       ),
     ),
