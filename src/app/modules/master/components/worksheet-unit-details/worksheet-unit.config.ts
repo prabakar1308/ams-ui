@@ -12,7 +12,7 @@ export const formWsConfig: FormStructure[] = [
   {
     class: LAYOUT_CLASSES.NONE,
     type: INPUT_TYPES.TEXT,
-    label: 'Value Name',
+    label: 'Type',
     name: 'value',
     value: '',
     validations: [

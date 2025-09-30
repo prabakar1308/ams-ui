@@ -22,7 +22,7 @@ export class WorksheetUnitDetailsComponent {
   formWsDetails = formWsDetails;
   editId: number | null = null;
 
-  displayColumns = ['value_name', 'brand_name', 'specification', 'actions'];
+  displayColumns = ['type', 'brand', 'specification', 'actions'];
 
   constructor(public sharedService: SharedFacadeService) {}
 
@@ -48,8 +48,8 @@ export class WorksheetUnitDetailsComponent {
           .filter((unit) => unit.id !== UNIT_IDS.MILLIONS && unit.id !== UNIT_IDS.FROZEN_CUPS)
           .map((unit) => ({
             ...unit,
-            value_name: unit.value,
-            brand_name: unit.brand,
+            type: unit.value,
+            brand: unit.brand,
             specification: unit.specs,
             enableEdit: true,
           }));
@@ -58,7 +58,7 @@ export class WorksheetUnitDetailsComponent {
 
   addNew() {
     this.userAction = USER_ACTIONS.ADD;
-    this.formWsDetails = { ...this.formWsDetails, title: 'Add Worksheet Details' };
+    this.formWsDetails = { ...this.formWsDetails, title: 'Add Worksheet Input Type' };
   }
 
   editDetails(event: unknown) {
@@ -72,7 +72,7 @@ export class WorksheetUnitDetailsComponent {
       };
     });
     this.userAction = USER_ACTIONS.EDIT;
-    this.formWsDetails = { ...this.formWsDetails, title: 'Update Worksheet Details' };
+    this.formWsDetails = { ...this.formWsDetails, title: 'Update Worksheet Input Type' };
   }
   deleteDetails(event: unknown) {
     console.log('Delete event:', event);
