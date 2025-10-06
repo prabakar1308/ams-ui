@@ -35,6 +35,10 @@ export const worksheetReducer = createReducer(
     ...state,
     currentWorksheet: payload,
   })),
+  on(WorksheetActions.resetCurrentWorksheet, (state) => ({
+    ...state,
+    currentWorksheet: null,
+  })),
   on(WorksheetActions.getActiveWorksheetsSuccess, (state, { payload }) => ({
     ...state,
     activeWorksheets: payload,

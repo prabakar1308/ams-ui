@@ -50,6 +50,10 @@ export class WorksheetFacadeService {
     this.store.dispatch(worksheetActions.getCurrentWorksheet(id));
   }
 
+  resetCurrentWorksheet() {
+    this.store.dispatch(worksheetActions.resetCurrentWorksheet());
+  }
+
   getActiveWorksheets(filterData: WorksheetFilter) {
     this.store.dispatch(worksheetActions.getActiveWorksheets(filterData));
   }

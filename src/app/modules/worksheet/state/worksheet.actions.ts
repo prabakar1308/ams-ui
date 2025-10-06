@@ -29,6 +29,8 @@ export const getCurrentWorksheetSucess = createAction(
   (payload: UpdateWorksheet) => ({ payload }),
 );
 
+export const resetCurrentWorksheet = createAction('[Worksheet] Reset Current Worksheet');
+
 export const getCurrentWorksheetFailure = createAction(
   '[Worksheet] Get Current Worksheet Failure',
   (payload: { error: string }) => ({ payload }),

@@ -87,7 +87,6 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
           this.canDelete = currentWorksheet?.statusId === WORKSHEET_STATUS.READY_FOR_STOCKING;
           this.currentWorksheetStatus =
             currentWorksheet?.statusId || WORKSHEET_STATUS.READY_FOR_STOCKING;
-          console.log(this.currentWorksheetStatus, 'status');
           const { tanks, tankType } = tankSelection;
 
           if (!tankType) {
@@ -359,6 +358,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.worksheetFacadeService.resetCurrentWorksheet();
     this.unSubscribe.next();
     this.unSubscribe.complete();
   }

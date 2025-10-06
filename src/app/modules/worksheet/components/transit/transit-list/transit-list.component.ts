@@ -178,6 +178,20 @@ export class TransitListComponent {
     }
   }
 
+  getTotalMillionsCount() {
+    return this.dataSource.data
+      .filter((t) => t.unitId === UNIT_IDS.MILLIONS)
+      .map((t) => t.count)
+      .reduce((acc = 0, value = 0) => acc + value, 0);
+  }
+
+  getTotalFrozenCupsCount() {
+    return this.dataSource.data
+      .filter((t) => t.unitId === UNIT_IDS.FROZEN_CUPS)
+      .map((t) => t.count)
+      .reduce((acc = 0, value = 0) => acc + value, 0);
+  }
+
   onClickBack() {
     this.router.navigate(['/worksheet']);
   }
