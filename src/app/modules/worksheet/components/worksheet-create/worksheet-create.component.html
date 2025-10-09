@@ -2,6 +2,7 @@
   [formStructure]="formConfigData"
   [formDetails]="formDetails"
   [showDelete]="!!editId && canDelete"
+  [validationRules]="validationRules"
   (deleteItem)="deleteWorksheet()"
   (moveBack)="goToHomePage()"
   (formData)="submitFormData($event)"

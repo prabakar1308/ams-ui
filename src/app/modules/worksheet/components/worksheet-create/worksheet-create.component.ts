@@ -106,8 +106,6 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
               ? currentWorksheet.restocks
               : [];
 
-          console.log(restocks, 'resto');
-
           // Update formConfigData based on tankSelection and activeWorksheets
           this.formConfigData = this.formConfigData.map((data) => {
             switch (data.name) {
@@ -294,6 +292,17 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
         statusId: 0,
       });
     }
+  }
+
+  get validationRules() {
+    return {
+      [FORM_CONTROL_NAMES.HARVEST_TYPE]: {
+        validate: (value: number, dependentValue: number[]) =>
+          value === HARVEST_TYPES.RESTOCKING && dependentValue.length > 1,
+        message: 'Restocking can be created with only one tank',
+        dependentKey: FORM_CONTROL_NAMES.TANKS,
+      },
+    };
   }
 
   goToHomePage() {

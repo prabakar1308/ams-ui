@@ -113,7 +113,7 @@ export const formConfig: FormStructure[] = [
     class: LAYOUT_CLASSES.NONE,
     type: INPUT_TYPES.SELECT,
     label: 'Harvest Type',
-    name: 'harvestTypeId',
+    name: FORM_CONTROL_NAMES.HARVEST_TYPE,
     value: 0,
     validations: [
       {
