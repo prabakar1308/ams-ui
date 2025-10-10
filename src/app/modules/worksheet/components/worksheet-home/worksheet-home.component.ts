@@ -112,7 +112,8 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
   navigateToRestock(data: WorksheetTank) {
     if (data && data.worksheetId) {
       localStorage.setItem('restock-worksheet-id', JSON.stringify(data));
-      this.router.navigate(['worksheet/restock'], { queryParams: { type: 'U' } });
+      const restockType = data.status?.id === WORKSHEET_STATUS.WASHING ? 'D' : 'U';
+      this.router.navigate(['worksheet/restock'], { queryParams: { type: restockType } });
     }
   }
 

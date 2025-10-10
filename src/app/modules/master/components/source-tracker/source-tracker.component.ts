@@ -23,7 +23,7 @@ export class SourceTrackerComponent {
   tableData: unknown[] = [];
   formSTConfigData = formSTConfig;
   formSTDetails = formSTDetails;
-  displayColumns = ['source_origin', 'source_count', 'created_date', 'actions'];
+  displayColumns = ['source_origin', 'source_count', 'stocked_date', 'actions'];
   sourceTrackerDetails!: SourceTracker;
   extraInfos: { label: string; value: string | number }[] = [];
   worksheetUnit: WorksheetUnit[] = [];
@@ -51,6 +51,7 @@ export class SourceTrackerComponent {
   getSourceTrackerDetails() {
     const fromdate = new Date();
     const toDate = new Date();
+    fromdate.setDate(toDate.getDate() - 29); // last 30 days
     setTimeout(() => {
       this.sharedFacadeService.getSourceTrackerList({ fromDate: fromdate, toDate: toDate });
     }, 100);
@@ -76,7 +77,7 @@ export class SourceTrackerComponent {
           ...sourceTracker,
           source_origin: sourceTracker.sourceOrigin,
           source_count: `${sourceTracker.count} ${this.getWorksheetUnitLabel(sourceTracker.unitSource)}`,
-          created_date: this.datePipe.transform(sourceTracker.generatedAt, 'MMM d, y h:mm a'),
+          stocked_date: this.datePipe.transform(sourceTracker.generatedAt, 'MMM d, y h:mm a'),
 
           enableEdit: true,
         }));
