@@ -132,11 +132,13 @@
                 {{ element.transitCount }}
               </td>
               <td mat-footer-cell *matFooterCellDef colspan="3">
-                <div class="flex flex-row">
-                  <span>{{ getTotalMillionsCount() }} Millions</span
-                  ><mat-divider vertical class="mx-2 md:h-4 w-3"></mat-divider
-                  ><span class="pl-2">{{ getTotalFrozenCupsCount() }} Frozen Cups</span>
-                </div>
+                @if (dataSource.data.length) {
+                  <div class="flex flex-row">
+                    <span>{{ getTotalMillionsCount() }} Millions</span
+                    ><mat-divider vertical class="mx-2 md:h-4 w-3"></mat-divider
+                    ><span class="pl-2">{{ getTotalFrozenCupsCount() }} Frozen Cups</span>
+                  </div>
+                }
               </td>
             </ng-container>
 

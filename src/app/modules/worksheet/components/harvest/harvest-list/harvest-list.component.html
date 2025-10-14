@@ -1,10 +1,10 @@
 <div>
   <div class="flex flex-col md:flex-row justify-between mt-2 pr-3 items-center gap-1">
     <div class="flex flex-col md:flex-row justify-between items-center gap-1">
-      <div class="text-[#177b1f] text-sm">
+      <!-- <div class="text-[#177b1f] text-sm">
         Overall Count - <span class="font-bold">{{ totalHarvestCount }}</span> {{ unitName }}
       </div>
-      <mat-divider vertical class="mx-2 h-0 md:h-6 w-3"></mat-divider>
+      <mat-divider vertical class="mx-2 h-0 md:h-6 w-3"></mat-divider> -->
       <div class="text-[#177b1f] text-sm pl-2">
         Available for Transit - <span class="font-bold">{{ availableCount }}</span> {{ unitName }}
       </div>
@@ -104,6 +104,14 @@
                   matTooltip="Edit"
                 >
                   <mat-icon>edit</mat-icon>
+                </button>
+              } @else if (element.transferStatus) {
+                <button
+                  class="small"
+                  mat-icon-button
+                  matTooltip="Auto transferred records from Holding Tanks"
+                >
+                  <mat-icon>change_circle</mat-icon>
                 </button>
               }
             </td>

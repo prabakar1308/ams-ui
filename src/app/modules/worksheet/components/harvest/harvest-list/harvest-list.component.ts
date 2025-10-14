@@ -199,7 +199,7 @@ export class HarvestListComponent {
   }
 
   canAccessAction(data: HarvestDetails): boolean {
-    return this.isAdmin || data.measuredBy?.id === this.currentUserId;
+    return (this.isAdmin || data.measuredBy?.id === this.currentUserId) && !data.transferStatus;
   }
 
   openDialog() {
