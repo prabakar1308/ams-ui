@@ -68,4 +68,8 @@ export class DashboardService {
       .get<Response<TankWiseStatus[]>>(`${this.API_URL}/tank-wise-users/${tankTypeId}`)
       .pipe(map((resp) => resp.data));
   }
+
+  getMonitoringCount() {
+    return this.http.get<Response<any>>(`${this.WS_API_URL}/monitoring-count`);
+  }
 }

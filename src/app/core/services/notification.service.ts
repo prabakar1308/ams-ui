@@ -8,9 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 export class NotificationService {
   constructor(private readonly toastr: ToastrService) {}
 
-  showMessage(type: SEVERITY, message: string, header?: string) {
+  showMessage(type: SEVERITY, message: string, header?: string, duration?: number) {
     const opt = {
-      timeOut: CORE_CONSTANTS.TOASTER_LIVE_TIME,
+      timeOut: duration || CORE_CONSTANTS.TOASTER_LIVE_TIME,
     };
     switch (type) {
       case SEVERITY.SUCCESS:

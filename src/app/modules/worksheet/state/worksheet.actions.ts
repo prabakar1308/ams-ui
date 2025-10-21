@@ -232,3 +232,15 @@ export const getMonitoringCountFailure = createAction(
   '[Monitoring] Get Monitoring Count Failure',
   (payload: { error: string }) => ({ payload }),
 );
+
+export const getHarvestConversionLogs = createAction('[Harvest] Get Harvest Conversion Logs');
+
+export const getHarvestConversionLogsSuccess = createAction(
+  '[Harvest] Get Harvest Conversion Logs Success',
+  (payload: any[]) => ({ payload }),
+);
+
+export const getHarvestConversionLogsFailure = createAction(
+  '[Harvest] Get Harvest Conversion Logs Failure',
+  (payload: { error: string }) => ({ payload }),
+);

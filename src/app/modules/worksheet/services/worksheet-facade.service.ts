@@ -19,6 +19,7 @@ import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest } from '../models/create-transit';
 import { MonitoringCount } from '../models/monitoring-count';
+import { HarvestConversionLog } from '../models/harvest-conversion-logs';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,7 @@ export class WorksheetFacadeService {
   activeHarvestData$: Observable<{ data: HarvestDetails[]; totalRecords: number }>;
   currentHarvest$: Observable<HarvestDetails | null>;
   monitoringCount$: Observable<MonitoringCount>;
+  harvestConversionLogs$: Observable<HarvestConversionLog[]>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.currentWorksheet$ = this.store.select(fromStore.getCurrentWorksheet);
@@ -44,6 +46,7 @@ export class WorksheetFacadeService {
     this.activeHarvestData$ = this.store.select(fromStore.getHarvestData);
     this.currentHarvest$ = this.store.select(fromStore.getCurrentHarvest);
     this.monitoringCount$ = this.store.select(fromStore.getMonitoringCount);
+    this.harvestConversionLogs$ = this.store.select(fromStore.getHarvestConversionLogs);
   }
 
   getCurrentWorksheet(id: number) {
@@ -123,5 +126,9 @@ export class WorksheetFacadeService {
 
   getMonitoringCount() {
     this.store.dispatch(worksheetActions.getMonitoringCount());
+  }
+
+  getHarvestConversionLogs() {
+    this.store.dispatch(worksheetActions.getHarvestConversionLogs());
   }
 }

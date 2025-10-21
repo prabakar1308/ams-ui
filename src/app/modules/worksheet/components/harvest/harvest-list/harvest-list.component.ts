@@ -1,21 +1,27 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { combineLatest, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+
 import { UserDetails } from '@app/shared/models/user-details';
-import { HarvestDetails } from '@app/worksheet/models/harvest-details';
-import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { HarvestListPopupComponent } from '../harvest-list-popup/harvest-list-popup.component';
+import { UNIT_IDS } from '@app/shared/constants/shared.contants';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { UnitSector } from '@app/shared/models/master';
 import { HarvestFilter } from '@app/shared/models/shared-state';
-import { Router } from '@angular/router';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
-import { ADMIN, SUPER_ADMIN } from '@app/core/core.contants';
-import { UNIT_IDS } from '@app/shared/constants/shared.contants';
+import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { HarvestDetails } from '@app/worksheet/models/harvest-details';
+import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
+import { HarvestConversionLog } from '@app/worksheet/models/harvest-conversion-logs';
 import { MonitoringCount } from '@app/worksheet/models/monitoring-count';
+import { WorksheetService } from '@app/worksheet/services/worksheet.service';
+import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
+import { ADMIN, SEVERITY, SUPER_ADMIN } from '@app/core/core.contants';
+import { NotificationService } from '@app/core/services/notification.service';
+
 import { APP_DEFAULT_PAGE_SIZE, APP_DEFAULT_PAGE_SIZE_OPTIONS } from 'app/app.constants';
+import { HarvestListPopupComponent } from '../harvest-list-popup/harvest-list-popup.component';
 
 @Component({
   selector: 'app-harvest-list',
@@ -48,36 +54,69 @@ export class HarvestListComponent {
   currentUserId: number = 0;
   unitName: string = '';
   monitoringCount: MonitoringCount | null = null;
+  conversionLogs: HarvestConversionLog[] = [];
 
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
+    private worksheetService: WorksheetService,
     private sharedFacadeService: SharedFacadeService,
     private authFacadeService: AuthFacadeService,
     private dialog: MatDialog,
     private router: Router,
+    private notificationService: NotificationService,
   ) {}
   ngOnInit() {
     this.worksheetFacadeService.getMonitoringCount();
-    this.worksheetFacadeService.activeHarvestData$
-      .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
-      .subscribe((harvest) => {
-        const today = new Date();
-        this.dataSource.data = harvest.data.map((harvest) => ({
+    // subscribe to activeHarvestData$ and harvestConversionLogs$ observables together
+
+    combineLatest([
+      this.worksheetFacadeService.activeHarvestData$,
+      this.worksheetFacadeService.harvestConversionLogs$,
+    ])
+      .pipe(takeUntil(this.unSubscribe))
+      .subscribe(([activeHarvestData, conversionLogs]) => {
+        this.conversionLogs = conversionLogs;
+        const lastestConversionLog = conversionLogs[0];
+
+        this.dataSource.data = activeHarvestData.data.map((harvest) => ({
           ...harvest,
-          isCurrentShift: harvest.generatedAt
-            ? this.isCurrentShift(new Date(harvest.generatedAt))
-            : false,
-          isPreviousShift: harvest.generatedAt
-            ? this.isPreviousShift(new Date(harvest.generatedAt))
-            : false,
+          isCurrentShift:
+            harvest.generatedAt && lastestConversionLog.createdAt
+              ? new Date(harvest.generatedAt) > new Date(lastestConversionLog.createdAt)
+              : false,
+          isPreviousShift:
+            harvest.generatedAt && lastestConversionLog.previousConversionAt
+              ? new Date(harvest.generatedAt) > new Date(lastestConversionLog.previousConversionAt)
+              : false,
           // isCurrentDate: harvest.generatedAt
           //   ? this.isSameDate(new Date(harvest.generatedAt), today)
           //   : false,
         }));
-        this.totalRecords = harvest.totalRecords;
+        this.totalRecords = activeHarvestData.totalRecords;
         // this.totalHarvestCount = data.reduce((acc, item) => acc + (item.count || 0), 0);
         this.dataSource.paginator = this.paginator;
       });
+
+    // this.worksheetFacadeService.activeHarvestData$
+    //   .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
+    //   .subscribe((harvest) => {
+    //     const today = new Date();
+    //     this.dataSource.data = harvest.data.map((harvest) => ({
+    //       ...harvest,
+    //       isCurrentShift: harvest.generatedAt
+    //         ? this.isCurrentShift(new Date(harvest.generatedAt))
+    //         : false,
+    //       isPreviousShift: harvest.generatedAt
+    //         ? this.isPreviousShift(new Date(harvest.generatedAt))
+    //         : false,
+    //       // isCurrentDate: harvest.generatedAt
+    //       //   ? this.isSameDate(new Date(harvest.generatedAt), today)
+    //       //   : false,
+    //     }));
+    //     this.totalRecords = harvest.totalRecords;
+    //     // this.totalHarvestCount = data.reduce((acc, item) => acc + (item.count || 0), 0);
+    //     this.dataSource.paginator = this.paginator;
+    //   });
     this.worksheetFacadeService.monitoringCount$
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
@@ -187,6 +226,21 @@ export class HarvestListComponent {
       : this.monitoringCount.frozenCupsHarvested - this.monitoringCount.frozenCupsTransited;
   }
 
+  get buttonLabel(): string {
+    return this.unitId === UNIT_IDS.MILLIONS ? 'Move to Cold Storage' : 'Revert Auto Conversion';
+  }
+
+  get buttonDisabled(): boolean {
+    return (
+      (this.isMillionsUnit && this.availableCount === 0) ||
+      (!this.isMillionsUnit && this.conversionLogs.length === 0)
+    );
+  }
+
+  get isMillionsUnit(): boolean {
+    return this.unitId === UNIT_IDS.MILLIONS;
+  }
+
   onPageChange(event: PageEvent) {
     const { pageIndex, pageSize } = event;
     let filter: HarvestFilter = {
@@ -202,35 +256,45 @@ export class HarvestListComponent {
     return (this.isAdmin || data.measuredBy?.id === this.currentUserId) && !data.transferStatus;
   }
 
-  openDialog() {
-    // this.worksheetService.getTransitsByHarvestId(element.id).subscribe((res) => {
-    //   if (res.status === 200) {
-    // let count = 0;
-    // let countInStock = 0;
-    // console.log('Monitoring Count:', this.monitoringCount);
-    // if (this.monitoringCount) {
-    //   const { millionsHarvested, frozenCupsHarvested, millionsTransited, frozenCupsTransited } =
-    //     this.monitoringCount;
-    //   if (this.unitId === UNIT_IDS.MILLIONS) {
-    //     count = millionsHarvested || 0;
-    //     countInStock = count - (millionsTransited || 0);
-    //   }
-    //   if (this.unitId === UNIT_IDS.FROZEN_CUPS) {
-    //     count = frozenCupsHarvested || 0;
-    //     countInStock = count - (frozenCupsTransited || 0);
-    //   }
-    // }
+  buttonAction() {
     const data = {
-      // harvestData: element,
+      title: 'Confirmation',
+      message:
+        this.unitId === UNIT_IDS.MILLIONS
+          ? 'Are you sure you want to move the pending millions to the cold storage?'
+          : 'Are you sure you want to revert the latest auto conversion?',
+    };
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
+
+    const method =
+      this.unitId === UNIT_IDS.MILLIONS
+        ? 'movePendingMillionsToColdStorage'
+        : 'revertLatestAutoConversion';
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.worksheetService[method]().subscribe((res) => {
+          if (res.status !== 201) return;
+          let filter: HarvestFilter = {
+            unitId: this.unitId || 1, // Default to 1 if unitId is not provided
+            statusIds: ['A', 'P'],
+          };
+          this.worksheetFacadeService.getHarvests(filter);
+          this.worksheetFacadeService.getMonitoringCount();
+          this.worksheetFacadeService.getHarvestConversionLogs();
+          this.notificationService.showMessage(SEVERITY.SUCCESS, res.data, undefined, 10000);
+        });
+      }
+    });
+  }
+
+  openDialog() {
+    const data = {
       countInStock: this.availableCount,
       count: this.totalHarvestCount,
       unit: { id: this.unitId, value: this.unitName },
-      // unit: element.unit,
-      // Need to pass only selected unit sectors based on unit
-      // unitSectors: this.unitSectors.filter((sector) => sector.unitId === element.unit.id),
       userDetails: this.userDetails,
       unitSectors: this.unitSectors,
-      // exisingTransits: res.data,
     };
     const dialogRef = this.dialog.open(HarvestListPopupComponent, { data });
 
@@ -243,8 +307,6 @@ export class HarvestListComponent {
         this.worksheetFacadeService.createTransit({ ...result, filter });
       }
     });
-    // }
-    // });
   }
 
   onEdit(element: HarvestDetails) {

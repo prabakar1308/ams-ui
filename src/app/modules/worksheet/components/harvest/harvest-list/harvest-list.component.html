@@ -9,9 +9,28 @@
         Available for Transit - <span class="font-bold">{{ availableCount }}</span> {{ unitName }}
       </div>
     </div>
-    <button class="primary small ml-2" mat-flat-button (click)="openDialog()" matTooltip="Transit">
-      Add Transit
-    </button>
+    <div>
+      @if (isAdmin) {
+        <button
+          class="small mr-2"
+          [ngClass]="isMillionsUnit ? 'primary' : 'warning'"
+          mat-stroked-button
+          (click)="buttonAction()"
+          [matTooltip]="isMillionsUnit ? 'Switch to Cups' : 'Switch to Millions'"
+          [disabled]="buttonDisabled"
+        >
+          {{ buttonLabel }}
+        </button>
+      }
+      <button
+        class="primary small ml-2"
+        mat-flat-button
+        (click)="openDialog()"
+        matTooltip="Transit"
+      >
+        Add Transit
+      </button>
+    </div>
   </div>
   <mat-card appearance="outlined">
     <mat-card-content>
@@ -111,7 +130,7 @@
                   mat-icon-button
                   matTooltip="Auto transferred records from Holding Tanks"
                 >
-                  <mat-icon>change_circle</mat-icon>
+                  <mat-icon>swap_horizontal_circle</mat-icon>
                 </button>
               }
             </td>
@@ -124,7 +143,7 @@
             class="pl-1 pr-1"
             [ngClass]="{
               'current-shift-highlight': row.isCurrentShift,
-              'previous-shift-highlight': row.isPreviousShift,
+              'previous-shift-highlight': row.isPreviousShift && !row.isCurrentShift,
             }"
           ></tr>
           <tr class="mat-row" *matNoDataRow>

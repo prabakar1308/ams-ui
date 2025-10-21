@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HarvestFilter } from '@app/shared/models/shared-state';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 import { APP_DEFAULT_PAGE_INDEX, APP_DEFAULT_PAGE_SIZE } from 'app/app.constants';
-import { init } from 'echarts/core';
 
 @Component({
   selector: 'app-harvest-home',
@@ -59,5 +58,6 @@ export class HarvestHomeComponent {
   onRefresh() {
     this.initializeData();
     this.worksheetFacadeService.getMonitoringCount();
+    this.worksheetFacadeService.getHarvestConversionLogs();
   }
 }
