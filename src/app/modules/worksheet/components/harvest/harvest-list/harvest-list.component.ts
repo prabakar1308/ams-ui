@@ -81,11 +81,11 @@ export class HarvestListComponent {
         this.dataSource.data = activeHarvestData.data.map((harvest) => ({
           ...harvest,
           isCurrentShift:
-            harvest.generatedAt && lastestConversionLog.createdAt
+            harvest.generatedAt && lastestConversionLog && lastestConversionLog.createdAt
               ? new Date(harvest.generatedAt) > new Date(lastestConversionLog.createdAt)
               : false,
           isPreviousShift:
-            harvest.generatedAt && lastestConversionLog.previousConversionAt
+            harvest.generatedAt && lastestConversionLog && lastestConversionLog.previousConversionAt
               ? new Date(harvest.generatedAt) > new Date(lastestConversionLog.previousConversionAt)
               : false,
           // isCurrentDate: harvest.generatedAt
