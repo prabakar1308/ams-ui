@@ -257,12 +257,25 @@ export class HarvestListComponent {
   }
 
   buttonAction() {
+    const conversionLog = this.conversionLogs[0];
+    let message =
+      this.unitId === UNIT_IDS.MILLIONS
+        ? 'Are you sure you want to move the pending millions to the cold storage?'
+        : 'Are you sure you want to revert the latest auto conversion?';
+    if (conversionLog) {
+      message =
+        this.unitId !== UNIT_IDS.MILLIONS
+          ? `The latest auto conversion was done on ${new Date(
+              conversionLog.createdAt,
+            ).toLocaleString()}. Are you sure you want to revert it?`
+          : `The lastest auto conversion was done on <strong>${new Date(
+              conversionLog.createdAt,
+            ).toLocaleString()}</strong>. Please make sure that all the transits are updated properly during this period. If you still need to update the transits after the conversion, you can revert the conversion and update the transits manually. <br/><br/>
+            <b> Are you sure you want to move the pending millions to the cold storage? </b>`;
+    }
     const data = {
       title: 'Confirmation',
-      message:
-        this.unitId === UNIT_IDS.MILLIONS
-          ? 'Are you sure you want to move the pending millions to the cold storage?'
-          : 'Are you sure you want to revert the latest auto conversion?',
+      message,
     };
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
 
