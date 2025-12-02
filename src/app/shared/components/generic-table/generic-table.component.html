@@ -1,4 +1,4 @@
-<div class="generic-table-container mat-elevation-z8 table-responsive">
+<div class="generic-table-container mat-elevation-z8 table-responsive" id="generic-table-container">
   <table mat-table [dataSource]="dataSource" class="mat-table">
     <!-- Dynamic Column Definitions -->
     <ng-container
@@ -20,7 +20,7 @@
         [ngClass]="{ 'sticky-border-right': sticky === column }"
       >
         @if (column === 'actions' && element.enableEdit) {
-          <div class="flex">
+          <div class="flex hide-in-pdf">
             <button
               mat-icon-button
               class="primary small"
@@ -59,12 +59,14 @@
 
   <!-- Pagination -->
   @if (showPagination) {
-    <mat-paginator
-      [length]="data.length"
-      [pageSize]="10"
-      [pageSizeOptions]="[5, 10, 25, 50]"
-      (page)="onPageChange($event)"
-    >
-    </mat-paginator>
+    <div class="hide-in-pdf">
+      <mat-paginator
+        [length]="data.length"
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
   }
 </div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-generic-data',
@@ -6,12 +6,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: './generic-data.component.html',
   styleUrl: './generic-data.component.scss',
 })
-export class GenericDataComponent {
+export class GenericDataComponent implements OnInit {
   @Input() title!: string;
   @Input() data!: unknown[];
   @Input() displayColumns!: string[];
   @Input() sticky = '';
   @Input() showSearch = false;
+  @Input() buttonFeature = '';
   @Input() showDateRange = false;
   @Input() extraInfos: { label: string; value: string | number }[] = [];
   @Output() refreshPage = new EventEmitter<unknown>();
@@ -19,6 +20,7 @@ export class GenericDataComponent {
   @Output() editData = new EventEmitter<unknown>();
   @Output() deleteData = new EventEmitter<unknown>();
   @Output() applyFilter = new EventEmitter<unknown>();
+  @Output() btnClick = new EventEmitter<unknown>();
   searchText = '';
   dateValue = { startDate: new Date(), endDate: new Date() };
 
@@ -58,6 +60,12 @@ export class GenericDataComponent {
       value: 364,
     },
   ];
+
+  ngOnInit() {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - this.selectedValue);
+    this.dateValue = { ...this.dateValue, startDate };
+  }
 
   onRefresh() {
     this.refreshPage.emit();

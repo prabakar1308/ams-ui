@@ -1,4 +1,4 @@
-<div>
+<div id="source-tracker-content">
   @if (userAction === userActions.LIST) {
     <app-generic-data
       [title]="'Input Source Tracker'"
@@ -7,11 +7,13 @@
       [showDateRange]="true"
       [showSearch]="true"
       [extraInfos]="extraInfos"
+      [buttonFeature]="'download'"
       (refreshPage)="getSourceTrackerDetails()"
       (addData)="addNew()"
       (editData)="editDetails($event)"
       (deleteData)="deleteDetails($event)"
       (applyFilter)="applyFilter($event)"
+      (btnClick)="generatePDF()"
     ></app-generic-data>
   } @else if (userAction === userActions.ADD || userAction === userActions.EDIT) {
     <app-form-generator

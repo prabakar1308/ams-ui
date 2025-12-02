@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
-import { USER_ACTIONS, WORKSHEET_OUTPUT_UNITS } from '@app/shared/constants/shared.contants';
-import { formSTDetails, formSTConfig } from './source-tracker.config';
+import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { distinctUntilChanged, from, Subject, takeUntil } from 'rxjs';
+import html2canvas from 'html2canvas-pro';
+import jsPDF from 'jspdf';
+
+import { USER_ACTIONS, WORKSHEET_OUTPUT_UNITS } from '@app/shared/constants/shared.contants';
 import { SourceTracker, SourceTrackerList, WorksheetUnit } from '@app/shared/models/master';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { CreateSourceTrackerRequest } from '@app/shared/models/create-source-tracker';
-import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { LoaderService } from '@app/core/services/loader.service';
+import { formSTDetails, formSTConfig } from './source-tracker.config';
 
 @Component({
   selector: 'app-source-tracker',
@@ -33,6 +37,7 @@ export class SourceTrackerComponent {
     private sharedFacadeService: SharedFacadeService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
+    private loaderService: LoaderService,
   ) {}
 
   ngOnInit() {
@@ -166,6 +171,73 @@ export class SourceTrackerComponent {
         count: payload.count ? parseInt(payload.count.toString(), 10) : 0,
       });
     }
+  }
+
+  generatePDF() {
+    const elementsToHide = document.querySelectorAll('.hide-in-pdf');
+    elementsToHide.forEach((el) => ((el as HTMLElement).style.display = 'none'));
+
+    const elementsToShow = document.querySelectorAll('.show-in-pdf');
+    elementsToShow.forEach((el) => ((el as HTMLElement).style.display = 'block'));
+
+    this.loaderService.show();
+    const screenWidth = window.innerWidth;
+    const data = document.getElementById('source-tracker-content');
+    if (data) {
+      let width = screenWidth;
+      if (screenWidth) {
+        if (screenWidth > 1600) width = screenWidth - 400;
+        else if (screenWidth > 1200) width = screenWidth - 300;
+        else if (screenWidth > 1000) width = screenWidth - 200;
+        else if (screenWidth > 900) width = screenWidth - 100;
+      }
+      html2canvas(data, {
+        width: width + 100,
+        height: screenWidth < 720 ? 3500 : 2500,
+        scale: 2,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const doc = new jsPDF('p', 'mm', 'a4', true);
+
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = doc.internal.pageSize.getHeight();
+
+        // Calculate image dimensions to fit PDF width while maintaining aspect ratio
+        const imgProps = {
+          width: canvas.width,
+          height: canvas.height,
+        };
+        const ratio = Math.min(pdfWidth / imgProps.width, pdfHeight / imgProps.height);
+        const imgWidth = imgProps.width * ratio;
+        const imgHeight = imgProps.height * ratio;
+
+        // Center the image horizontally
+        const x = (pdfWidth - imgWidth) / 2;
+        const y = 10; // You can also center vertically if needed
+
+        doc.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+
+        // Append date and time to PDF name
+        const now = new Date();
+        const dateStr = [
+          now.getFullYear(),
+          String(now.getMonth() + 1).padStart(2, '0'),
+          String(now.getDate()).padStart(2, '0'),
+        ].join('-');
+        const timeStr = [
+          String(now.getHours()).padStart(2, '0'),
+          String(now.getMinutes()).padStart(2, '0'),
+          String(now.getSeconds()).padStart(2, '0'),
+        ].join('-');
+        const fileName = `Source_Tracker_${dateStr}_${timeStr}.pdf`;
+
+        doc.save(fileName);
+        this.loaderService.hide();
+      });
+    }
+    // Restore elements after PDF is generated
+    elementsToHide.forEach((el) => ((el as HTMLElement).style.display = ''));
+    elementsToShow.forEach((el) => ((el as HTMLElement).style.display = 'none'));
   }
 
   ngOnDestroy() {

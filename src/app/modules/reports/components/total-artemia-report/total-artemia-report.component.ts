@@ -100,8 +100,8 @@ export class TotalArtemiaReportComponent {
 
   getInchargeNames(item: Transit[], item2: Transit[]): string {
     return [...item, ...item2]
-      .map((transit) => transit.staffInCharge || '')
-      .filter((name, index, self) => name && self.indexOf(name) === index)
+      .map((transit) => (transit.staffInCharge || '').toLowerCase()) // Convert to lowercase
+      .filter((name, index, self) => name && self.indexOf(name) === index) // Remove duplicates
       .join(', ');
   }
 

@@ -123,9 +123,10 @@
               <mat-card-content>
                 <div class="flex flex-col gap-2 justify-start items-center font-semibold bg-white">
                   <span class="text-gray-500">{{ getUnitName(item) }}</span>
-                  <span class="h-8 w-8 bg-gray-200 rounded-lg text-center pt-1 text-[#165d51]">{{
-                    item.count || '-'
-                  }}</span>
+                  <span
+                    class="h-8 w-auto px-1 bg-gray-200 rounded-lg text-center pt-1 text-[#165d51]"
+                    >{{ item.count || '-' }}</span
+                  >
                 </div>
               </mat-card-content>
             </mat-card>
