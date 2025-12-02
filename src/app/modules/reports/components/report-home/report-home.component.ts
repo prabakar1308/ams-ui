@@ -129,7 +129,7 @@ export class ReportHomeComponent {
       }
       html2canvas(data, {
         width,
-        height: screenWidth < 720 ? 2800 : 2100,
+        height: screenWidth < 720 ? 3500 : 2500,
         scale: 2,
       }).then((canvas) => {
         const imgData = canvas.toDataURL('image/png');

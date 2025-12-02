@@ -33,6 +33,7 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
   @Input() formDetails!: GenericForm;
   @Input() getRawData: boolean = false;
   @Input() additionalDetails: FormDetails[] = [];
+  @Input() validationRules: Record<string, any> = {};
   @Output() moveBack = new EventEmitter<void>();
   @Output() deleteItem = new EventEmitter<void>();
   @Output() formData = new EventEmitter<unknown>();
@@ -225,6 +226,25 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
       this.dynamicForm.markAllAsTouched();
       this.notificationService.showMessage(SEVERITY.ERROR, 'The form is not valid, please check!');
       return;
+    }
+    if (this.validationRules && Object.keys(this.validationRules).length) {
+      for (let ruleKey in this.validationRules) {
+        if (this.dynamicForm.controls[ruleKey]) {
+          const rule = this.validationRules[ruleKey];
+          if (
+            rule.validate(
+              this.dynamicForm.controls[ruleKey].value,
+              this.dynamicForm.controls[rule.dependentKey]?.value,
+            )
+          ) {
+            this.notificationService.showMessage(
+              SEVERITY.ERROR,
+              rule.message || `The form is not valid due to ${ruleKey} field, please check!`,
+            );
+            return;
+          }
+        }
+      }
     }
     if (this.getRawData) {
       this.formData.emit(this.dynamicForm.getRawValue());

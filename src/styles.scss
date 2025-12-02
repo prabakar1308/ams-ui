@@ -99,6 +99,8 @@ mat-form-field.ams-small {
 .warning {
     @include mat.icon-button-overrides((icon-color: red), );
     @include mat.button-overrides((filled-container-color: rgb(252, 51, 51),
+            outlined-outline-color: red,
+            outlined-label-text-color: red,
         ));
     @include mat.icon-overrides((color: red,
         ));
@@ -186,7 +188,8 @@ mat-card {
     }
 
     .mat-mdc-row,
-    .mdc-data-table__content {
+    .mdc-data-table__content,
+    .mat-mdc-footer-row {
         font-size: 12px !important;
     }
 

@@ -22,6 +22,43 @@ export class GenericDataComponent {
   searchText = '';
   dateValue = { startDate: new Date(), endDate: new Date() };
 
+  // last 30 days selected by default
+  selectedValue = 29;
+  periods = [
+    {
+      label: 'Today',
+      value: 0,
+    },
+    {
+      label: 'Last 2 days',
+      value: 1,
+    },
+    {
+      label: 'Last 3 days',
+      value: 2,
+    },
+    {
+      label: 'Last 7 days',
+      value: 6,
+    },
+    {
+      label: 'Last 30 days',
+      value: 29,
+    },
+    {
+      label: 'Last 90 days',
+      value: 89,
+    },
+    {
+      label: 'Last 180 days',
+      value: 179,
+    },
+    {
+      label: 'Last 1 year',
+      value: 364,
+    },
+  ];
+
   onRefresh() {
     this.refreshPage.emit();
   }
@@ -36,12 +73,22 @@ export class GenericDataComponent {
   onDeleteDetails(event: unknown) {
     this.deleteData.emit(event);
   }
-  dateChange(event: unknown): void {
-    const date: { start: string; end: string } = event as { start: string; end: string };
-    if (date) {
-      const { start, end } = date;
-      this.dateValue = { startDate: new Date(start), endDate: new Date(end) };
-      this.applyFilter.emit(this.dateValue);
-    }
+
+  periodChange(days: number) {
+    this.selectedValue = days;
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(endDate.getDate() - days);
+    this.dateValue = { startDate, endDate };
+    this.applyFilter.emit(this.dateValue);
   }
+
+  // dateChange(event: unknown): void {
+  //   const date: { start: string; end: string } = event as { start: string; end: string };
+  //   if (date) {
+  //     const { start, end } = date;
+  //     this.dateValue = { startDate: new Date(start), endDate: new Date(end) };
+  //     this.applyFilter.emit(this.dateValue);
+  //   }
+  // }
 }

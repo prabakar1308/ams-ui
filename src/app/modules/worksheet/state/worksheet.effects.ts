@@ -44,6 +44,9 @@ import {
   getMonitoringCount,
   getMonitoringCountFailure,
   getMonitoringCountSuccess,
+  getHarvestConversionLogsSuccess,
+  getHarvestConversionLogs,
+  getHarvestConversionLogsFailure,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
@@ -418,7 +421,15 @@ export class WorksheetEffects {
             );
           }),
           // tap(() => this.router.navigate(['/worksheet/transit'])),
-          catchError((error) => of(updateTransitFailure({ error }))),
+          catchError((error) => {
+            this.notificationService.showMessage(
+              SEVERITY.ERROR,
+              error.message || 'Update transit failed',
+              undefined,
+              5000,
+            );
+            return of(updateTransitFailure({ error }));
+          }),
         ),
       ),
     ),
@@ -444,6 +455,31 @@ export class WorksheetEffects {
             });
           }),
           catchError((error) => of(getMonitoringCountFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  // Harvest Conversion Logs
+  getHarvestConversionLogs$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getHarvestConversionLogs.type),
+      exhaustMap(() =>
+        this.WorksheetService.getHarvestConversionLogs().pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 200) {
+              return getHarvestConversionLogsFailure({
+                error: res.message || 'Get harvest conversion logs failed',
+              });
+            }
+            if (res.data) {
+              return getHarvestConversionLogsSuccess(res.data);
+            }
+            return getHarvestConversionLogsFailure({
+              error: res.message || 'Get harvest conversion logs failed',
+            });
+          }),
+          catchError((error) => of(getHarvestConversionLogsFailure({ error }))),
         ),
       ),
     ),

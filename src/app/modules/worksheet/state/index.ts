@@ -53,3 +53,8 @@ export const getMonitoringCount = createSelector(
   getWorksheetFeatureState,
   (state: WorksheetState) => state.monitoringCount,
 );
+
+export const getHarvestConversionLogs = createSelector(
+  getWorksheetFeatureState,
+  (state: WorksheetState) => state.harvestConversionLogs,
+);

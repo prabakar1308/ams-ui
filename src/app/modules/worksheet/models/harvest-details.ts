@@ -12,6 +12,7 @@ export interface HarvestDetails {
   measuredBy?: { id: number; value: string };
   remarks?: string;
   status: string;
+  transferStatus?: string;
   createdAt: Date;
   updatedAt: Date;
   restockCount?: number;

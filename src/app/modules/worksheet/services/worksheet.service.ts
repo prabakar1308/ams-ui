@@ -16,6 +16,7 @@ import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest } from '../models/create-transit';
 import { MonitoringCount } from '../models/monitoring-count';
+import { HarvestConversionLog } from '../models/harvest-conversion-logs';
 
 @Injectable({
   providedIn: 'root',
@@ -109,5 +110,25 @@ export class WorksheetService {
 
   getMonitoringCount() {
     return this.http.get<Response<MonitoringCount>>(`${this.API_URL}/monitoring-count`);
+  }
+
+  movePendingMillionsToColdStorage() {
+    return this.http.post<Response<any>>(
+      `${this.API_URL}/move-pending-millions-to-cold-storage`,
+      undefined,
+    );
+  }
+
+  revertLatestAutoConversion() {
+    return this.http.post<Response<any>>(
+      `${this.API_URL}/revert-latest-auto-conversion`,
+      undefined,
+    );
+  }
+
+  getHarvestConversionLogs() {
+    return this.http.get<Response<HarvestConversionLog[]>>(
+      `${this.API_URL}/get-auto-conversion-logs`,
+    );
   }
 }

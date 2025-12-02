@@ -26,6 +26,7 @@ export const initialState: WorksheetState = {
     millionsTransited: 0,
     frozenCupsTransited: 0,
   },
+  harvestConversionLogs: [],
 };
 
 export const worksheetReducer = createReducer(
@@ -34,6 +35,10 @@ export const worksheetReducer = createReducer(
   on(WorksheetActions.getCurrentWorksheetSucess, (state, { payload }) => ({
     ...state,
     currentWorksheet: payload,
+  })),
+  on(WorksheetActions.resetCurrentWorksheet, (state) => ({
+    ...state,
+    currentWorksheet: null,
   })),
   on(WorksheetActions.getActiveWorksheetsSuccess, (state, { payload }) => ({
     ...state,
@@ -117,5 +122,10 @@ export const worksheetReducer = createReducer(
   on(WorksheetActions.getMonitoringCountSuccess, (state, { payload }) => ({
     ...state,
     monitoringCount: payload,
+  })),
+  // Harvest Conversion Logs
+  on(WorksheetActions.getHarvestConversionLogsSuccess, (state, { payload }) => ({
+    ...state,
+    harvestConversionLogs: payload,
   })),
 );

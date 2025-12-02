@@ -53,8 +53,9 @@ export class DashboardEffects {
       ofType(getProductionData.type),
       exhaustMap(() =>
         forkJoin([
-          this.dashboardService.getHarvestCount(1, ['A', 'P']),
-          this.dashboardService.getHarvestCount(2, ['A', 'P']),
+          // this.dashboardService.getHarvestCount(1, ['A', 'P']),
+          // this.dashboardService.getHarvestCount(2, ['A', 'P']),
+          this.dashboardService.getMonitoringCount(),
           this.dashboardService.getTransitsCount(1, 0),
           this.dashboardService.getTransitsCount(2, 0),
           this.dashboardService.getRestockCount('A'),
@@ -71,8 +72,7 @@ export class DashboardEffects {
             });
 
             const [
-              liveAvailableRes,
-              frozenAvailableRes,
+              monitoringCountRes,
               liveCompletedRes,
               frozenCompletedRes,
               activeRestockRes,
@@ -85,8 +85,8 @@ export class DashboardEffects {
                 error: 'Get Master Data failed1',
               });
             } else {
-              const liveAvailable = liveAvailableRes.data;
-              const frozenAvailable = frozenAvailableRes.data;
+              const mc = monitoringCountRes.data;
+              // const frozenAvailable = frozenAvailableRes.data;
               const liveCompleted = liveCompletedRes.data;
               const frozenCompleted = frozenCompletedRes.data;
               const activeRestock = activeRestockRes.data;
@@ -94,8 +94,8 @@ export class DashboardEffects {
               const instockMachinery = instockMachineryRes.data;
               const instockConventional = instockConventionalRes.data;
               return getProductionDataSuccess({
-                liveAvailable,
-                frozenAvailable,
+                liveAvailable: mc.millionsHarvested - mc.millionsTransited,
+                frozenAvailable: mc.frozenCupsHarvested - mc.frozenCupsTransited,
                 frozenCompleted,
                 liveCompleted,
                 activeRestock,

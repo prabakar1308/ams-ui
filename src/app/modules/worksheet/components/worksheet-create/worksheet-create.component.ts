@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { combineLatest, distinctUntilChanged, generate, Subject, takeUntil } from 'rxjs';
+import { combineLatest, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -87,7 +87,6 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
           this.canDelete = currentWorksheet?.statusId === WORKSHEET_STATUS.READY_FOR_STOCKING;
           this.currentWorksheetStatus =
             currentWorksheet?.statusId || WORKSHEET_STATUS.READY_FOR_STOCKING;
-          console.log(this.currentWorksheetStatus, 'status');
           const { tanks, tankType } = tankSelection;
 
           if (!tankType) {
@@ -106,8 +105,6 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
             currentWorksheet.restocks.length > 0
               ? currentWorksheet.restocks
               : [];
-
-          console.log(restocks, 'resto');
 
           // Update formConfigData based on tankSelection and activeWorksheets
           this.formConfigData = this.formConfigData.map((data) => {
@@ -297,6 +294,17 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  get validationRules() {
+    return {
+      [FORM_CONTROL_NAMES.HARVEST_TYPE]: {
+        validate: (value: number, dependentValue: number[]) =>
+          value === HARVEST_TYPES.RESTOCKING && dependentValue.length > 1,
+        message: 'Restocking can be created with only one tank',
+        dependentKey: FORM_CONTROL_NAMES.TANKS,
+      },
+    };
+  }
+
   goToHomePage() {
     this.router.navigate(['/worksheet']);
   }
@@ -359,6 +367,7 @@ export class WorksheetCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.worksheetFacadeService.resetCurrentWorksheet();
     this.unSubscribe.next();
     this.unSubscribe.complete();
   }
