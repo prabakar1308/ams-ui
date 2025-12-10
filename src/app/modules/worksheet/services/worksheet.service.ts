@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Response } from '@app/shared/models/response';
 
 import { environment } from '@environments/environment';
-import { WorksheetFilter } from '@app/shared/models/shared-state';
+import { HarvestFilter, WorksheetFilter } from '@app/shared/models/shared-state';
 import { WorksheetTank } from '../models/active-worksheet';
 import {
   CreateWorksheetRequest,
@@ -67,13 +67,10 @@ export class WorksheetService {
   }
 
   // harvest
-  getHarvests(unitId: number, statusIds: string[]) {
+  getHarvests(payload: HarvestFilter) {
     return this.http.post<Response<{ data: HarvestDetails[]; totalRecords: number }>>(
       `${this.API_URL}/get-harvests`,
-      {
-        unitId,
-        statusIds,
-      },
+      payload,
     );
   }
 

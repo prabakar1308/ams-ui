@@ -332,8 +332,8 @@ export class WorksheetEffects {
   getHarvestList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getHarvests.type),
-      exhaustMap(({ payload: { unitId, statusIds } }) =>
-        this.WorksheetService.getHarvests(unitId, statusIds).pipe(
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.getHarvests(payload).pipe(
           map((res: Response<{ data: HarvestDetails[]; totalRecords: number }>) => {
             console.log('Hervest data:', res);
             if (res.status !== 201) {

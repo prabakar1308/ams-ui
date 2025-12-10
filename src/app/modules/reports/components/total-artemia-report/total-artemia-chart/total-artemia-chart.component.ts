@@ -59,14 +59,15 @@ export class TotalArtemiaChartComponent {
 
   loadUserChart() {
     const screenWidth = window.innerWidth;
-    let axisFontSize = 14;
+    let axisFontSize = 10;
     if (screenWidth < 600) {
       axisFontSize = 8;
-    } else if (screenWidth < 900) {
-      axisFontSize = 10;
-    } else if (screenWidth < 1024) {
-      axisFontSize = 12;
     }
+    // else if (screenWidth < 900) {
+    //   axisFontSize = 10;
+    // } else if (screenWidth < 1024) {
+    //   axisFontSize = 12;
+    // }
 
     const labelOption = {
       show: true,
@@ -121,7 +122,7 @@ export class TotalArtemiaChartComponent {
             overflow: 'truncate', // or 'break'
             formatter: function (value: string) {
               // Optionally break long names into two lines
-              return value.length > 12 ? value.slice(0, 12) + '\n' + value.slice(12) : value;
+              return value.length > 15 ? value.slice(0, 12) + '\n' + value.slice(12) : value;
             },
           },
           nameTextStyle: {
@@ -157,6 +158,7 @@ export class TotalArtemiaChartComponent {
             focus: 'series',
           },
           data: this.data.map((item) => this.formatCount(item.day_shift_count)),
+          color: '#dd876d',
         },
         {
           name: 'Night Shift',
@@ -166,6 +168,7 @@ export class TotalArtemiaChartComponent {
             focus: 'series',
           },
           data: this.data.map((item) => this.formatCount(item.night_shift_count)),
+          color: '#cfa6c3',
         },
         {
           name: 'Total',
@@ -175,6 +178,7 @@ export class TotalArtemiaChartComponent {
             focus: 'series',
           },
           data: this.data.map((item) => this.formatCount(item.total_count)),
+          color: '#ccbb85',
         },
       ],
     };
@@ -182,7 +186,7 @@ export class TotalArtemiaChartComponent {
 
   formatCount(value: string): number {
     const count = parseFloat(value.toLowerCase().replace('tins', '').trim());
-    return isNaN(count) ? 0 : count;
+    return isNaN(count) ? 0 : parseInt(count.toString(), 10);
   }
 
   userChartClick(event: echarts.ECElementEvent) {

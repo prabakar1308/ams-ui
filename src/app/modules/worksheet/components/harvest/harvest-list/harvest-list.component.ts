@@ -94,7 +94,7 @@ export class HarvestListComponent {
         }));
         this.totalRecords = activeHarvestData.totalRecords;
         // this.totalHarvestCount = data.reduce((acc, item) => acc + (item.count || 0), 0);
-        this.dataSource.paginator = this.paginator;
+        // this.dataSource.paginator = this.paginator;
       });
 
     // this.worksheetFacadeService.activeHarvestData$
@@ -165,7 +165,7 @@ export class HarvestListComponent {
       return search(data);
     };
     this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
   }
 
   isSameDate(date1: Date, date2: Date): boolean {
