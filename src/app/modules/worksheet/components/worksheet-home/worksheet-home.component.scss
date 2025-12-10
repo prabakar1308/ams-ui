@@ -7,11 +7,8 @@
 
         max-width: 100%;
         overflow-y: auto;
-        height: calc(100vh - 350px);
-
-        .mat-mdc-row {
-            height: 60px;
-        }
+        height: calc(100vh - 420px);
+        min-height: 350px;
 
         .mat-mdc-header-row {
             background-color: #eaeded; // #dff1f1;

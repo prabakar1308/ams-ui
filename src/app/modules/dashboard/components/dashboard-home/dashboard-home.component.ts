@@ -19,7 +19,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { DashboardService } from '@app/dashboard/services/dashboard.service';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
-import { DEFAULT_TANK_TYPE } from '@app/shared/constants/shared.contants';
+import { DEFAULT_TANK_TYPE, WORKSHEET_STATUS } from '@app/shared/constants/shared.contants';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -81,7 +81,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           },
           series: [
             {
-              color: ['#faeb98', '#a2fa98', '#e9dff7', '#d0f3fc'],
+              color: ['#fff085', '#e9d4ff', '#b9f8cf', '#ebe6e7', '#b8e6fe'],
               name: '',
               type: 'pie',
               radius: ['30%', '70%'],
@@ -102,7 +102,14 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
               emphasis: {
                 focus: 'self',
               },
-              data: data,
+              data: data.map((item) => {
+                if (item.value === 0)
+                  return {
+                    ...item,
+                    value: '',
+                  };
+                return item;
+              }),
             },
           ],
         });
@@ -122,6 +129,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   }
 
   loadUserChart() {
+    const screenWidth = window.innerWidth;
     this.userChartOption$ = this.dashboardService.getUsersByTankWise(this.tankTypeId).pipe(
       switchMap((data: TankWiseStatus[]) => {
         return of({
@@ -141,9 +149,14 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
             data: data.map((item) => item.name),
             axisLabel: {
               show: true,
-              width: 100, //fixed number of pixels
-              overflow: 'truncate', // or 'break' to continue in a new line
               interval: 0,
+              rotate: screenWidth > 1024 ? 0 : 30, // or 45 for more tilt
+              width: 100,
+              overflow: 'truncate', // or 'break'
+              formatter: function (value: string) {
+                // Optionally break long names into two lines
+                return value.length > 12 ? value.slice(0, 12) + '\n' + value.slice(12) : value;
+              },
             },
           },
           yAxis: {
@@ -161,14 +174,14 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
                     id: item.id,
                     value: item.value,
                     itemStyle: {
-                      color: '#d0f3fc',
+                      color: '#ebe6e7',
                     },
                   };
                 return {
                   id: item.id,
                   value: item.value,
                   itemStyle: {
-                    color: '#a3e7de',
+                    color: '#e7e3a3',
                   },
                 };
               }),
@@ -196,7 +209,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
     const data = event.data as { id: number };
     this.sharedFacadeService.updateWorksheetFilter({
       tankTypeId: this.tankTypeId,
-      statusId: 0,
+      statusId: data?.id ? 0 : WORKSHEET_STATUS.FREE,
       userId: data?.id,
       harvestTypeId: 0,
     });

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, signal, ViewEncapsulation } from '@angular/core';
 import { Transit, TransitReport } from '../../models/transit-response';
 import { frozenCupsToOutputFormat, millionsToOutputFormat } from '../../utils';
 import { DatePipe } from '@angular/common';
@@ -10,6 +10,7 @@ import { UNIT_IDS } from '@app/shared/constants/shared.contants';
   templateUrl: './live-artemia-report.component.html',
   styleUrl: './live-artemia-report.component.scss',
   providers: [DatePipe],
+  encapsulation: ViewEncapsulation.None,
 })
 export class LiveArtemiaReportComponent {
   @Input() data: TransitReport[] = [];
@@ -18,7 +19,7 @@ export class LiveArtemiaReportComponent {
 
   expanded = signal(false);
   transitReports: TransitReport[] = [];
-  displayColumns = ['tank', 'date', 'transit_by', 'count', 'in_charge'];
+  displayColumns = ['date', 'transit_by', 'count', 'in_charge'];
   totalCountText = '';
   dataExists = true;
 
@@ -51,8 +52,8 @@ export class LiveArtemiaReportComponent {
 
   getShiftData(data: Transit[]) {
     return data.map((item) => ({
-      tank: item.worksheet ? `${item.worksheet.tankType} - #${item.worksheet.tankNumber}` : '-',
-      date: this.datePipe.transform(item.createdAt, 'MMM d, y h:mm a'),
+      // tank: item.worksheet ? `${item.worksheet.tankType} - #${item.worksheet.tankNumber}` : '-',
+      date: this.datePipe.transform(item.generatedAt, 'MMM d, y h:mm a'),
       transit_by: item.createdBy || '-',
       count: item.transitCount,
       in_charge: item.staffInCharge,

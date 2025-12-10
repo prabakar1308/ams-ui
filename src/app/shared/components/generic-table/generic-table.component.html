@@ -1,12 +1,26 @@
-<div class="generic-table-container mat-elevation-z8 table-responsive">
-  <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
+<div class="generic-table-container mat-elevation-z8 table-responsive" id="generic-table-container">
+  <table mat-table [dataSource]="dataSource" class="mat-table">
     <!-- Dynamic Column Definitions -->
-    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | underscoreTitlecase }}</th>
+    <ng-container
+      *ngFor="let column of displayedColumns"
+      [matColumnDef]="column"
+      [sticky]="sticky === column"
+    >
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        [ngClass]="{ 'sticky-border-right': sticky === column }"
+      >
+        {{ column | underscoreTitlecase }}
+      </th>
 
-      <td mat-cell *matCellDef="let element">
-        @if (column === 'actions') {
-          <div class="flex">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [ngClass]="{ 'sticky-border-right': sticky === column }"
+      >
+        @if (column === 'actions' && element.enableEdit) {
+          <div class="flex hide-in-pdf">
             <button
               mat-icon-button
               class="primary small"
@@ -17,13 +31,11 @@
             </button>
             <button
               mat-icon-button
-              class="primary small"
+              class="warning small"
               [matTooltip]="'Delete'"
               (click)="onDelete(element)"
             >
-              <div class="icon">
-                <mat-icon>delete</mat-icon>
-              </div>
+              <mat-icon>delete</mat-icon>
             </button>
           </div>
         } @else {
@@ -33,7 +45,7 @@
     </ng-container>
 
     <!-- Header Row -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: !!sticky"></tr>
 
     <!-- Data Rows -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
@@ -46,10 +58,15 @@
   </table>
 
   <!-- Pagination -->
-  <!-- <mat-paginator
-      [length]="totalLength"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="[5, 10, 25, 50]"
-      (page)="onPageChange($event)">
-    </mat-paginator> -->
+  @if (showPagination) {
+    <div class="hide-in-pdf">
+      <mat-paginator
+        [length]="data.length"
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  }
 </div>

@@ -36,4 +36,5 @@ export interface Meta {
   step?: number;
   unitLabel?: string;
   hint?: string;
+  disableFutureDates?: boolean; // for date time picker
 }

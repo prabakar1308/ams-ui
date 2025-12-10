@@ -58,14 +58,25 @@ export class TotalArtemiaChartComponent {
   }
 
   loadUserChart() {
+    const screenWidth = window.innerWidth;
+    let axisFontSize = 14;
+    if (screenWidth < 600) {
+      axisFontSize = 8;
+    } else if (screenWidth < 900) {
+      axisFontSize = 10;
+    } else if (screenWidth < 1024) {
+      axisFontSize = 12;
+    }
+
     const labelOption = {
       show: true,
-      fontSize: 14,
+      fontSize: axisFontSize,
       color: '#808080',
       fontStyle: 'italic',
       fontWeight: 'bold',
       formatter: '{c}',
       position: 'top',
+      rotate: screenWidth > 1024 ? 0 : 90,
     };
 
     this.liveChartOption = {
@@ -77,6 +88,10 @@ export class TotalArtemiaChartComponent {
       },
       legend: {
         data: ['Day Shift', 'Night Shift', 'Total'],
+        fontSize: axisFontSize,
+        textStyle: {
+          fontSize: axisFontSize,
+        },
       },
       toolbox: {
         show: true,
@@ -95,16 +110,22 @@ export class TotalArtemiaChartComponent {
         {
           type: 'category',
           axisTick: { show: false },
-          data: this.data.map((item) => item.unit_sector),
+          data: this.data.map((item) => item.unit_sector_name),
           axisLabel: {
             show: true,
-            fontSize: 14,
-            // color: '#808080',
-            // fontStyle: 'italic',
+            fontSize: axisFontSize,
             fontWeight: 'bold',
+            interval: 0,
+            rotate: screenWidth > 1024 ? 0 : 30, // or 45 for more tilt
+            width: 100,
+            overflow: 'truncate', // or 'break'
+            formatter: function (value: string) {
+              // Optionally break long names into two lines
+              return value.length > 12 ? value.slice(0, 12) + '\n' + value.slice(12) : value;
+            },
           },
           nameTextStyle: {
-            fontSize: 14,
+            fontSize: axisFontSize,
             fontWeight: 'bold',
           },
         },
@@ -118,7 +139,7 @@ export class TotalArtemiaChartComponent {
           nameLocation: 'middle',
           nameGap: 40,
           nameTextStyle: {
-            fontSize: 14,
+            fontSize: axisFontSize,
             fontWeight: 'bold',
           },
           axisLabel: {

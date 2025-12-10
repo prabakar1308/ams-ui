@@ -1,0 +1,21 @@
+<div>
+  @if (userAction === userActions.LIST) {
+    <app-generic-data
+      [title]="'Worksheet Inputs'"
+      [data]="tableData"
+      [displayColumns]="displayColumns"
+      (refreshPage)="getWorksheetUnitDetails()"
+      (addData)="addNew()"
+      (editData)="editDetails($event)"
+      (deleteData)="deleteDetails($event)"
+    ></app-generic-data>
+  } @else if (userAction === userActions.ADD || userAction === userActions.EDIT) {
+    <app-form-generator
+      [formStructure]="formWsConfigData"
+      [formDetails]="formWsDetails"
+      [getRawData]="true"
+      (moveBack)="moveBack()"
+      (formData)="submitFormData($event)"
+    />
+  }
+</div>

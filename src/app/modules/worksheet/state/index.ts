@@ -10,6 +10,11 @@ export interface AppState extends fromRoot.AppState {
 
 const getWorksheetFeatureState = createFeatureSelector<WorksheetState>('worksheet');
 
+export const getCurrentWorksheet = createSelector(
+  getWorksheetFeatureState,
+  (state: WorksheetState) => state.currentWorksheet,
+);
+
 export const getActiveWorksheets = createSelector(
   getWorksheetFeatureState,
   (state: WorksheetState) => state.activeWorksheets,
@@ -33,7 +38,23 @@ export const getTransits = createSelector(
 
 export const getMetaInfo = createSelector(getWorksheetFeatureState, (state) => state.meta);
 
-export const getHarvestList = createSelector(
+// Harvest
+export const getHarvestData = createSelector(
   getWorksheetFeatureState,
-  (state: WorksheetState) => state.harvestList,
+  (state: WorksheetState) => state.harvestData,
+);
+
+export const getCurrentHarvest = createSelector(
+  getWorksheetFeatureState,
+  (state: WorksheetState) => state.currentHarvest,
+);
+
+export const getMonitoringCount = createSelector(
+  getWorksheetFeatureState,
+  (state: WorksheetState) => state.monitoringCount,
+);
+
+export const getHarvestConversionLogs = createSelector(
+  getWorksheetFeatureState,
+  (state: WorksheetState) => state.harvestConversionLogs,
 );

@@ -1,8 +1,11 @@
 import { Component, Inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
+import { UnitSector } from '@app/shared/models/master';
 import { TransitDetail } from '@app/worksheet/models/create-transit';
+import { Transit } from '@app/worksheet/models/transit';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
 
 @Component({
@@ -15,8 +18,12 @@ export class HarvestListPopupComponent {
   countsRemining: number = 0;
   transitCount: number = 0;
   transitDetails: TransitDetail[] = [];
+  selectedUnitSectors: UnitSector[] = [];
+  allUnitSectors: any[] = [];
+  // exisingTransits: Transit[] = [];
   selectedSectorId: number = 0;
   showError: boolean = false;
+  generatedAt = new FormControl<Date | null>(null);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -24,19 +31,39 @@ export class HarvestListPopupComponent {
     private nsService: NotificationService,
     public dialogRef: MatDialogRef<HarvestListPopupComponent>,
   ) {
-    this.countsRemining = this.data.harvestData.countInStock;
+    this.countsRemining = this.data.countInStock;
+    this.allUnitSectors = this.data.unitSectors.map((sector: any) => ({
+      ...sector,
+      isSelected: false,
+    }));
+    // this.exisingTransits = this.data.exisingTransits;
+    this.selectedUnitSectors = [];
+    // if (this.exisingTransits && this.exisingTransits.length > 0) {
+    //   //need to add code for existing transits
+    // }
+
     this.addTransit();
   }
 
   addTransit() {
+    //Adding code for selected unit sector
+    this.resetUnitSectorSelection();
     let transit: TransitDetail = {
       count: 0,
-      harvestId: this.data.harvestData.id,
+      // harvestId: this.data.harvestData.id,
       staffInCharge: '',
-      unitId: this.data.harvestData.unit.id,
+      unitId: this.data.unit.id,
       unitSectorId: 0,
     };
     this.transitDetails.push(transit);
+  }
+
+  deleteTransit(index: number) {
+    if (this.transitDetails.length > 1) {
+      this.transitDetails.splice(index, 1);
+      this.calculateCount();
+      this.resetUnitSectorSelection();
+    }
   }
 
   calculateCount() {
@@ -44,13 +71,13 @@ export class HarvestListPopupComponent {
     this.transitDetails.forEach((x) => {
       totalCount = totalCount + parseInt(x.count.toString());
     });
-    this.countsRemining = this.data.harvestData.countInStock - totalCount;
+    this.countsRemining = this.data.countInStock - totalCount;
   }
 
   saveTransit() {
     // Validate transit details before saving
     const isValid = this.transitDetails.every(
-      (x) => x.count > 0 && x.staffInCharge && x.unitId && x.harvestId,
+      (x) => x.count > 0 && x.staffInCharge && x.unitSectorId,
     );
     if (!isValid) {
       this.showError = true;
@@ -63,7 +90,22 @@ export class HarvestListPopupComponent {
 
     this.dialogRef.close({
       transits: this.transitDetails,
-      harvestId: this.data.harvestData.id,
+      // harvestId: this.data.harvestData.id,
+      generatedAt: this.generatedAt.value || undefined,
     });
+  }
+  resetUnitSectorSelection() {
+    this.allUnitSectors.forEach((s: UnitSector) => {
+      s.isSelected = false; // Reset selection state for all sectors
+    });
+    if (this.transitDetails.length > 0) {
+      this.allUnitSectors.forEach((s: UnitSector) => {
+        this.transitDetails.forEach((x) => {
+          if (s.id === x.unitSectorId) {
+            s.isSelected = true;
+          }
+        });
+      });
+    }
   }
 }

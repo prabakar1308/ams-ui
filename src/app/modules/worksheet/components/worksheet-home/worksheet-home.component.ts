@@ -2,18 +2,22 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
 import { WorksheetTank } from '@app/worksheet/models/active-worksheet';
 import { WorksheetFacadeService } from '@app/worksheet/services/worksheet-facade.service';
-import { WORKSHEET_STATUS, WORKSHEET_UPDATE_ACTION } from '@app/shared/constants/shared.contants';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import {
+  HARVEST_TYPES,
+  WORKSHEET_STATUS,
+  WORKSHEET_UPDATE_ACTION,
+} from '@app/shared/constants/shared.contants';
 import { WorksheetUpdateDialogComponent } from '../worksheet-update-dialog/worksheet-update-dialog.component';
-import { Router } from '@angular/router';
 import { SharedFacadeService } from '@app/shared/service/shared-facade.service';
 import { WorksheetFilter } from '@app/shared/models/shared-state';
 import { UpdateWorksheetRequest } from '@app/worksheet/models/create-worksheet';
 import { AuthFacadeService } from '@app/auth/services/auth-facade.service';
-import { ADMIN } from '@app/core/core.contants';
+import { ADMIN, SUPER_ADMIN } from '@app/core/core.contants';
 
 @Component({
   selector: 'app-worksheet-home',
@@ -28,8 +32,10 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<WorksheetTank>();
   selection = new SelectionModel<WorksheetTank>(true, []);
   worksheetFilter: WorksheetFilter = {};
+  worksheetStatus = WORKSHEET_STATUS;
   disableCreate = true;
   isAdmin = false;
+  currentUserId: number = 0;
 
   constructor(
     private worksheetFacadeService: WorksheetFacadeService,
@@ -60,7 +66,8 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((userData) => {
         if (userData) {
-          this.isAdmin = userData.userRole === ADMIN;
+          this.isAdmin = userData.userRole === ADMIN || userData.userRole === SUPER_ADMIN;
+          this.currentUserId = parseInt(userData.userId);
         }
       });
   }
@@ -102,8 +109,25 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
-  canDelete(data: WorksheetTank): boolean {
-    return data && data.status?.id === WORKSHEET_STATUS.READY_FOR_STOCKING;
+  navigateToRestock(data: WorksheetTank) {
+    if (data && data.worksheetId) {
+      localStorage.setItem('restock-worksheet-id', JSON.stringify(data));
+      const restockType = data.status?.id === WORKSHEET_STATUS.WASHING ? 'D' : 'U';
+      this.router.navigate(['worksheet/restock'], { queryParams: { type: restockType } });
+    }
+  }
+
+  canEdit(data: WorksheetTank): boolean {
+    return (
+      data &&
+      (data.status?.id === WORKSHEET_STATUS.READY_FOR_STOCKING ||
+        data.status?.id === WORKSHEET_STATUS.IN_CULTURE ||
+        data.status?.id === WORKSHEET_STATUS.READY_FOR_HARVEST)
+    );
+  }
+
+  isRestockType(data: WorksheetTank): boolean {
+    return data && data.harvestType?.id === HARVEST_TYPES.RESTOCKING;
   }
 
   getIconName(data: WorksheetTank) {
@@ -120,11 +144,15 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  canAccessAction(data: WorksheetTank): boolean {
+    return this.isAdmin || data.assignedUser?.id === this.currentUserId;
+  }
+
   getTooltipValue(data: WorksheetTank) {
     const status = data && data.status ? data.status.id : WORKSHEET_STATUS.FREE;
     switch (status) {
       case WORKSHEET_STATUS.READY_FOR_STOCKING:
-        return 'Update';
+        return 'Move';
       case WORKSHEET_STATUS.READY_FOR_HARVEST:
         return 'Harvest';
       case WORKSHEET_STATUS.FREE:
@@ -135,16 +163,14 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
   }
 
   onAction(worksheet: WorksheetTank, action: string, userOnly: boolean = false) {
-    if (action === 'delete') {
-      const data = {
-        title: 'Delete Confirmation',
-        message: `Are you sure you want to delete the worksheet?`,
-      };
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
-      dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
-        if (isConfirmed) {
-          // this.deleteAccountType(accountType.value.accountTypeId);
-        }
+    if (action === 'edit') {
+      // this.deleteAccountType(accountType.value.accountTypeId);
+      this.worksheetFacadeService.updateWorksheetTankSelection({
+        tankType: this.worksheetFilter.tankTypeId,
+        tanks: [worksheet.tankNumber],
+      });
+      this.router.navigate(['worksheet/create'], {
+        queryParams: { id: worksheet.worksheetId },
       });
     } else if (action === 'next') {
       const status = worksheet && worksheet.status ? worksheet.status.id : WORKSHEET_STATUS.FREE;
@@ -176,19 +202,22 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
       title: `Tank ${worksheet.tankNumber}`,
       worksheet,
       userOnly,
+      isAdmin: this.isAdmin,
     };
     const dialogRef = this.dialog.open(WorksheetUpdateDialogComponent, { data });
-    dialogRef.afterClosed().subscribe((result: boolean | number) => {
+    dialogRef.afterClosed().subscribe((result: { userId?: number; generatedAt?: Date }) => {
       if (result) {
         let updatedData: UpdateWorksheetRequest = {
           worksheets: [
             {
               id: worksheet.worksheetId,
-              statusId: WORKSHEET_STATUS.IN_STOCKING,
+              statusId: WORKSHEET_STATUS.IN_CULTURE,
+              generatedAt: result.generatedAt,
             },
             {
               id: worksheet.worksheetId,
-              userId: result as number,
+              userId: result.userId as number,
+              generatedAt: result.generatedAt,
             },
           ],
           updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE_STATUS,
@@ -199,7 +228,7 @@ export class WorksheetHomeComponent implements OnInit, OnDestroy {
             worksheets: [
               {
                 id: worksheet.worksheetId,
-                userId: result as number,
+                userId: result.userId as number,
               },
             ],
             updateAction: WORKSHEET_UPDATE_ACTION.ASSIGNEE,

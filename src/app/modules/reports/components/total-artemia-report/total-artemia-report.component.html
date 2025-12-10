@@ -1,4 +1,9 @@
-<div class="total-artemia-report">
+<div class="total-artemia-report -m-2">
+  <span class="flex italic text-sm md:text-lg justify-center w-full text-wrap text-[#165d51]">
+    <span class="text-nowrap">Artemia report from</span>
+    <strong class="px-1 text-nowrap">{{ dateValue.startDate | date: 'mediumDate' }}</strong> to
+    <strong class="px-1 text-nowrap">{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+  >
   <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
     <div class="col-span-4">
       <div>
@@ -46,7 +51,7 @@
     </div> -->
   </div>
   <div>
-    <div class="flex flex-col md:flex-row justify-between items-center pb-3">
+    <div class="flex flex-col md:flex-row justify-between items-center py-3">
       @if (liveDataExists) {
         <span class="italic text-sm"
           >Total of
@@ -68,12 +73,7 @@
         <span class="text-md pl-4 font-semibold font-sans">Live Artemia</span>
       </div>
       <mat-card-content>
-        <app-generic-table
-          [data]="liveTableData"
-          [displayedColumns]="displayColumns"
-          [totalLength]="100"
-          [pageSize]="10"
-        >
+        <app-generic-table [data]="liveTableData" [displayedColumns]="displayColumns">
         </app-generic-table>
       </mat-card-content>
     </mat-card>
@@ -101,27 +101,51 @@
         <span class="text-md pl-4 font-semibold font-sans">Frozen Artemia</span>
       </div>
       <mat-card-content>
-        <app-generic-table
-          [data]="frozenTableData"
-          [displayedColumns]="displayColumns"
-          [totalLength]="100"
-          [pageSize]="10"
-        >
+        <app-generic-table [data]="frozenTableData" [displayedColumns]="displayColumns">
         </app-generic-table>
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="flex flex-col md:flex-row justify-start md:justify-between items-center pb-3 gap-4">
+  <div class="flex flex-col justify-start md:justify-between md:items-start pb-3 gap-6">
     <div class="flex flex-col items-start gap-2 mt-6">
       <span class="italic text-sm"
         >Overall Stocks used between
         <strong>{{ dateValue.startDate | date: 'mediumDate' }}</strong> and
-        <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong></span
+        <strong>{{ dateValue.endDate | date: 'mediumDate' }}</strong> (included completed worksheets
+        only)</span
       >
       <div
         class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-start w-full"
       >
         @for (item of overallStocks; track $index) {
+          <div class="min-w-40">
+            <mat-card appearance="outlined">
+              <mat-card-content>
+                <div class="flex flex-col gap-2 justify-start items-center font-semibold bg-white">
+                  <span class="text-gray-500">{{ getUnitName(item) }}</span>
+                  <span
+                    class="h-8 w-auto px-1 bg-gray-200 rounded-lg text-center pt-1 text-[#165d51]"
+                    >{{ item.count || '-' }}</span
+                  >
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        }
+      </div>
+    </div>
+    <!-- <div class="h-full flex items-center">
+      <mat-divider [vertical]="true" class="min-h-20"></mat-divider>
+    </div> -->
+    <div class="flex flex-col items-start gap-2 mt-6">
+      <span class="italic text-sm"
+        >Overall Stocks currently in status of <strong>In Culture</strong> &
+        <strong>Ready For Harvest</strong></span
+      >
+      <div
+        class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-start w-full"
+      >
+        @for (item of overallActiveStocks; track $index) {
           <div class="min-w-40">
             <mat-card appearance="outlined">
               <mat-card-content>
@@ -137,23 +161,22 @@
         }
       </div>
     </div>
-    <!-- <div class="h-full flex items-center">
-      <mat-divider [vertical]="true" class="min-h-20"></mat-divider>
-    </div> -->
+
     <div class="flex flex-col items-start gap-2 mt-6">
-      <span class="italic text-sm"
-        >Overall Stocks currently in status of <strong>In Stocking</strong></span
+      <span class="italic text-sm">Current Available Stocks</span>
+      <div
+        class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-start w-full"
       >
-      <div class="flex flex-col md:flex-row flex-wrap gap-1 md:gap-4 items-center justify-start">
-        @for (item of overallActiveStocks; track $index) {
+        @for (item of availableData; track $index) {
           <div class="min-w-40">
             <mat-card appearance="outlined">
               <mat-card-content>
                 <div class="flex flex-col gap-2 justify-start items-center font-semibold bg-white">
                   <span class="text-gray-500">{{ getUnitName(item) }}</span>
-                  <span class="h-8 w-8 bg-gray-200 rounded-lg text-center pt-1 text-[#165d51]">{{
-                    item.count || '-'
-                  }}</span>
+                  <span
+                    class="h-8 w-auto px-1 bg-gray-200 rounded-lg text-center pt-1 text-[#165d51]"
+                    >{{ item.count || '-' }}</span
+                  >
                 </div>
               </mat-card-content>
             </mat-card>

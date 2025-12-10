@@ -48,3 +48,22 @@ export const getMasterData = createSelector(getSharedFeatureState, (state: Share
 export const resetUserUpdated = createSelector(getSharedFeatureState, (state: SharedState) => {
   return state.meta.userUpdated || false;
 });
+
+export const resetWorksheetUnitUpdated = createSelector(
+  getSharedFeatureState,
+  (state: SharedState) => {
+    return state.meta.worksheetUnitUpdated || false;
+  },
+);
+
+export const getSourceTrackerList = createSelector(
+  getSharedFeatureState,
+  (state: SharedState) => state.sourceTrackerList,
+);
+
+export const resetSourceTrackerUpdated = createSelector(
+  getSharedFeatureState,
+  (state: SharedState) => {
+    return state.meta.sourceTrackerUpdated || false;
+  },
+);

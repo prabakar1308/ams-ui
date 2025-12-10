@@ -1,0 +1,12 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+  <app-tank-list
+    [tanks]="machineryTanks"
+    [title]="'Machinery Tanks'"
+    (tankSelected)="onTankSelection($event, tankTypes.MACHINERY)"
+  />
+  <app-tank-list
+    [tanks]="conventionalTanks"
+    [title]="'Conventional Tanks'"
+    (tankSelected)="onTankSelection($event, tankTypes.CONVENTIONAL)"
+  />
+</div>

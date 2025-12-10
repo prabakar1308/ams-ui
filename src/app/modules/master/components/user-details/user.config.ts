@@ -1,3 +1,4 @@
+import { ADMIN } from '@app/core/core.contants';
 import { INPUT_TYPES, LAYOUT_CLASSES, USER_ROLES } from '@app/shared/constants/shared.contants';
 import { FormStructure } from '@app/shared/models/form-structure';
 
@@ -94,7 +95,7 @@ export const formConfig: FormStructure[] = [
     type: INPUT_TYPES.SELECT,
     label: 'Role',
     name: FORM_CONTROL_NAMES.ROLE,
-    value: [], //[1],
+    value: ADMIN, // default as admin,
     isMultiple: false,
     options: USER_ROLES,
     validations: [
@@ -106,27 +107,20 @@ export const formConfig: FormStructure[] = [
     ],
   },
 
-  {
-    class: LAYOUT_CLASSES.NONE,
-    type: INPUT_TYPES.TEXT,
-    label: 'Password',
-    name: 'password',
-    value: '',
-    validations: [
-      {
-        name: 'required',
-        validator: 'required',
-        message: 'Password is required',
-      },
-    ],
-  },
-  {
-    class: LAYOUT_CLASSES.NONE,
-    type: INPUT_TYPES.TEXT,
-    label: 'Email',
-    name: 'email',
-    value: '',
-  },
+  // {
+  //   class: LAYOUT_CLASSES.NONE,
+  //   type: INPUT_TYPES.TEXT,
+  //   label: 'Password',
+  //   name: 'password',
+  //   value: '',
+  //   validations: [
+  //     {
+  //       name: 'required',
+  //       validator: 'required',
+  //       message: 'Password is required',
+  //     },
+  //   ],
+  // },
   {
     class: LAYOUT_CLASSES.NONE,
     type: INPUT_TYPES.TEXT,
@@ -143,20 +137,27 @@ export const formConfig: FormStructure[] = [
   },
   {
     class: LAYOUT_CLASSES.NONE,
-    type: INPUT_TYPES.SELECT,
-    label: 'Unit/Department',
-    name: FORM_CONTROL_NAMES.UNIT_SECTOR,
-    value: [], //[1],
-    isMultiple: false,
-    options: [],
-    validations: [
-      {
-        name: 'required',
-        validator: 'required',
-        message: 'Role selection is required',
-      },
-    ],
+    type: INPUT_TYPES.TEXT,
+    label: 'Email',
+    name: 'email',
+    value: '',
   },
+  // {
+  //   class: LAYOUT_CLASSES.NONE,
+  //   type: INPUT_TYPES.SELECT,
+  //   label: 'Unit/Department',
+  //   name: FORM_CONTROL_NAMES.UNIT_SECTOR,
+  //   value: [], //[1],
+  //   isMultiple: false,
+  //   options: [],
+  //   validations: [
+  //     {
+  //       name: 'required',
+  //       validator: 'required',
+  //       message: 'Role selection is required',
+  //     },
+  //   ],
+  // },
   {
     class: LAYOUT_CLASSES.NONE,
     type: INPUT_TYPES.DATE,
@@ -176,7 +177,7 @@ export const formConfig: FormStructure[] = [
     type: INPUT_TYPES.DATE,
     label: 'Date of Joining',
     name: 'dateOfJoining',
-    value: '',
+    value: new Date(),
     validations: [
       {
         name: 'required',

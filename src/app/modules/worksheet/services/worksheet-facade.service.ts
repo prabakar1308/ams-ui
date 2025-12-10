@@ -10,32 +10,51 @@ import { WorksheetTank } from '../models/active-worksheet';
 import {
   CreateWorksheetRequest,
   TankSelection,
+  UpdateWorksheet,
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
-import { CreateHarvestRequest } from '../models/create-harvest';
-import { Transit, TransitPayload } from '../models/transit';
+import { CreateHarvest, CreateHarvestRequest } from '../models/create-harvest';
+import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest } from '../models/create-transit';
+import { MonitoringCount } from '../models/monitoring-count';
+import { HarvestConversionLog } from '../models/harvest-conversion-logs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorksheetFacadeService {
+  currentWorksheet$: Observable<UpdateWorksheet | null>;
   activeWorksheets$: Observable<WorksheetTank[]>;
   activeRestocks$: Observable<ActiveRestock[]>;
   transits$: Observable<Transit[]>;
   tankSelection$: Observable<TankSelection>;
   meta$: Observable<MetaState>;
-  activeHarvestList$: Observable<HarvestDetails[]>;
+  activeHarvestData$: Observable<{ data: HarvestDetails[]; totalRecords: number }>;
+  currentHarvest$: Observable<HarvestDetails | null>;
+  monitoringCount$: Observable<MonitoringCount>;
+  harvestConversionLogs$: Observable<HarvestConversionLog[]>;
 
   constructor(private store: Store<fromStore.AppState>) {
+    this.currentWorksheet$ = this.store.select(fromStore.getCurrentWorksheet);
     this.activeWorksheets$ = this.store.select(fromStore.getActiveWorksheets);
     this.activeRestocks$ = this.store.select(fromStore.getActiveRestocks);
     this.transits$ = this.store.select(fromStore.getTransits);
     this.tankSelection$ = this.store.select(fromStore.getWorksheetTankDetails);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
-    this.activeHarvestList$ = this.store.select(fromStore.getHarvestList);
+    this.activeHarvestData$ = this.store.select(fromStore.getHarvestData);
+    this.currentHarvest$ = this.store.select(fromStore.getCurrentHarvest);
+    this.monitoringCount$ = this.store.select(fromStore.getMonitoringCount);
+    this.harvestConversionLogs$ = this.store.select(fromStore.getHarvestConversionLogs);
+  }
+
+  getCurrentWorksheet(id: number) {
+    this.store.dispatch(worksheetActions.getCurrentWorksheet(id));
+  }
+
+  resetCurrentWorksheet() {
+    this.store.dispatch(worksheetActions.resetCurrentWorksheet());
   }
 
   getActiveWorksheets(filterData: WorksheetFilter) {
@@ -51,11 +70,15 @@ export class WorksheetFacadeService {
   }
 
   updateWorksheets(request: UpdateWorksheetRequest) {
-    this.store.dispatch(worksheetActions.updateWorksheet(request));
+    this.store.dispatch(worksheetActions.updateWorksheets(request));
   }
 
   updateWorksheetTankSelection(data: TankSelection) {
     this.store.dispatch(worksheetActions.updateWorksheetTankDetails(data));
+  }
+
+  updateWorksheetParams(request: UpdateWorksheet) {
+    this.store.dispatch(worksheetActions.updateWorksheetParams(request));
   }
 
   //Restocks
@@ -68,12 +91,24 @@ export class WorksheetFacadeService {
     this.store.dispatch(worksheetActions.getHarvests(data));
   }
 
-  getHarvestsSuccess(response: HarvestDetails[]) {
+  getHarvestsSuccess(response: { data: HarvestDetails[]; totalRecords: number }) {
     this.store.dispatch(worksheetActions.getHarvestsSuccess(response));
+  }
+
+  getCurrentHarvest(id: number) {
+    this.store.dispatch(worksheetActions.getCurrentHarvest(id));
+  }
+
+  getCurrentHarvestSuccess(response: HarvestDetails) {
+    this.store.dispatch(worksheetActions.getCurrentHarvestSuccess(response));
   }
 
   createHarvest(request: CreateHarvestRequest) {
     this.store.dispatch(worksheetActions.createHarvest(request));
+  }
+
+  updateHarvest(request: CreateHarvest) {
+    this.store.dispatch(worksheetActions.updateHarvest(request));
   }
 
   // get transits
@@ -83,5 +118,17 @@ export class WorksheetFacadeService {
 
   createTransit(request: CreateTransitRequest) {
     this.store.dispatch(worksheetActions.createTransit(request));
+  }
+
+  updateTransit(request: { payload: TransitUpdate; days: number }) {
+    this.store.dispatch(worksheetActions.updateTransit(request));
+  }
+
+  getMonitoringCount() {
+    this.store.dispatch(worksheetActions.getMonitoringCount());
+  }
+
+  getHarvestConversionLogs() {
+    this.store.dispatch(worksheetActions.getHarvestConversionLogs());
   }
 }

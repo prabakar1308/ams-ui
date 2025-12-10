@@ -17,6 +17,7 @@ export const FORM_CONTROL_NAMES = {
   PH: 'ph',
   SALNITY: 'salnity',
   TEMPERATURE: 'temperature',
+  GENERATED_AT: 'generatedAt',
 };
 
 export const formDetails = {
@@ -112,7 +113,7 @@ export const formConfig: FormStructure[] = [
     class: LAYOUT_CLASSES.NONE,
     type: INPUT_TYPES.SELECT,
     label: 'Harvest Type',
-    name: 'harvestTypeId',
+    name: FORM_CONTROL_NAMES.HARVEST_TYPE,
     value: 0,
     validations: [
       {
@@ -164,6 +165,7 @@ export const formConfig: FormStructure[] = [
         message: 'Input count is required',
       },
     ],
+    hide: true,
   },
 
   // Input Unit
@@ -180,6 +182,7 @@ export const formConfig: FormStructure[] = [
         message: 'Input specs is required',
       },
     ],
+    hide: true,
   },
   // Restock
   {
@@ -198,6 +201,14 @@ export const formConfig: FormStructure[] = [
       },
     ],
     hide: true,
+    disabled: true,
+  },
+  {
+    class: LAYOUT_CLASSES.DEFAULT,
+    type: INPUT_TYPES.DATETIME,
+    label: 'Created At',
+    name: 'generatedAt',
+    value: null,
   },
   // Assigned User
   {

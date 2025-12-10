@@ -13,7 +13,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 import { SEVERITY } from '@app/core/core.contants';
 import { NotificationService } from '@app/core/services/notification.service';
-import { Depedent, GenericForm, GenericOption } from '@app/shared/models/generic-form';
+import { Depedent, FormDetails, GenericForm, GenericOption } from '@app/shared/models/generic-form';
 import { FormStructure, FormValidation } from '@app/shared/models/form-structure';
 import { INPUT_TYPES, TEXT_INPUT_TYPES } from '@app/shared/constants/shared.contants';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
@@ -29,9 +29,13 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 })
 export class FormGeneratorComponent implements OnInit, OnDestroy {
   @Input() formStructure: FormStructure[] = [];
+  @Input() showDelete = false;
   @Input() formDetails!: GenericForm;
   @Input() getRawData: boolean = false;
+  @Input() additionalDetails: FormDetails[] = [];
+  @Input() validationRules: Record<string, any> = {};
   @Output() moveBack = new EventEmitter<void>();
+  @Output() deleteItem = new EventEmitter<void>();
   @Output() formData = new EventEmitter<unknown>();
   @Output() formValueChange = new EventEmitter<unknown>();
 
@@ -78,7 +82,7 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
       }
 
       formGroup[control.name] = [
-        { value: control.value || '', disabled: control.hide || control.disabled },
+        { value: control.value || '', disabled: control.disabled },
         controlValidators,
       ];
       // }
@@ -99,7 +103,7 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
   }
 
   isFormControlDisabled(name: string) {
-    return this.dynamicForm.get(name)?.disabled;
+    return this.dynamicForm.get(name)?.disabled || false;
   }
 
   getErrorMessage(control: any): string {
@@ -213,11 +217,34 @@ export class FormGeneratorComponent implements OnInit, OnDestroy {
     this.moveBack.emit();
   }
 
+  onDelete() {
+    this.deleteItem.emit();
+  }
+
   onSubmit() {
     if (!this.dynamicForm.valid) {
       this.dynamicForm.markAllAsTouched();
       this.notificationService.showMessage(SEVERITY.ERROR, 'The form is not valid, please check!');
       return;
+    }
+    if (this.validationRules && Object.keys(this.validationRules).length) {
+      for (let ruleKey in this.validationRules) {
+        if (this.dynamicForm.controls[ruleKey]) {
+          const rule = this.validationRules[ruleKey];
+          if (
+            rule.validate(
+              this.dynamicForm.controls[ruleKey].value,
+              this.dynamicForm.controls[rule.dependentKey]?.value,
+            )
+          ) {
+            this.notificationService.showMessage(
+              SEVERITY.ERROR,
+              rule.message || `The form is not valid due to ${ruleKey} field, please check!`,
+            );
+            return;
+          }
+        }
+      }
     }
     if (this.getRawData) {
       this.formData.emit(this.dynamicForm.getRawValue());

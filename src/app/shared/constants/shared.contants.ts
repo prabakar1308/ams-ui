@@ -6,6 +6,7 @@ export const INPUT_TYPES = {
   CHECKBOX: 'checkbox',
   SELECT: 'select',
   DATE: 'date',
+  DATETIME: 'date_time',
   TIME: 'time',
   FILE: 'file',
   BUTTON_TOGGLE: 'button_toggle',
@@ -31,6 +32,8 @@ export const TEXT_INPUT_TYPES = [
   INPUT_TYPES.TIME,
   INPUT_TYPES.FILE,
 ];
+
+export const SUPER_ADMIN_ROLE = 'super_admin';
 
 export const USER_ROLES = [
   {
@@ -82,15 +85,24 @@ export const UNIT_IDS = {
 
 export const WORKSHEET_STATUS = {
   READY_FOR_STOCKING: 1,
-  IN_STOCKING: 2,
+  IN_CULTURE: 2,
   READY_FOR_HARVEST: 3,
   COMPLETED: 4,
   FREE: 5,
+  WASHING: 6,
+};
+
+export const HARVEST_TYPES = {
+  INSTAR1: 1,
+  INSTAR2: 2,
+  MANUAL: 3,
+  RESTOCKING: 4,
 };
 
 export const WORKSHEET_TABLE_STATUS = {
   ACTIVE: 'A',
   COMPLETED: 'D',
+  PARTIALLY_COMPLETED: 'P',
   IN_USE: 'U',
 };
 

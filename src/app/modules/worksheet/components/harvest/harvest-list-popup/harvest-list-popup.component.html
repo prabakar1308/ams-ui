@@ -2,84 +2,146 @@
   <h2 mat-dialog-title>Live Transit</h2>
   <div class="grid grid-cols-1 gap-4">
     <mat-dialog-content>
-      <mat-chip-set>
-        <div class="count-stock">
+      <mat-chip-set class="flex align-center justify-center">
+        <div class="count-stock flex justify-center">
+          <mat-chip>Overall Count: {{ data.count }} {{ data.unit.value }} </mat-chip>
+        </div>
+        <div class="count-stock flex justify-center">
+          <mat-chip>
+            Count In Stock: {{ data.countInStock }}
+            {{ data.unit.value }}
+          </mat-chip>
+        </div>
+      </mat-chip-set>
+      <!-- <mat-chip-set class="flex align-center justify-center">
+        <div class="count-stock flex justify-center">
           <mat-chip
             >Overall Count: {{ data.harvestData.count }} {{ data.harvestData.unit.value }}
           </mat-chip>
         </div>
-        <div class="count-stock">
+        <div class="count-stock flex justify-center">
           <mat-chip>
             Count In Stock: {{ data.harvestData.countInStock }}
             {{ data.harvestData.unit.value }}
           </mat-chip>
         </div>
-      </mat-chip-set>
+      </mat-chip-set> -->
+      <!-- @if (exisingTransits.length) {
+        <mat-chip-set>
+          <div class="flex flex-col">
+            <div class="font-bold p-2 pt-0">Existing Transits</div>
+            <div class="flex flex-col px-0 gap-2 pl-2 md:gap-2 w-full">
+              @for (item of exisingTransits; track $index) {
+                <div class="flex flex-row text-gray-500 text-sm gap-1">
+                  <div>{{ item.unitSector.name }} ({{ item.unitSector.location }}) :</div>
+
+                  <div class="font-bold">
+                    {{ item.transitCount }}
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </mat-chip-set>
+      } -->
     </mat-dialog-content>
   </div>
   <mat-dialog-content>
-    @for (transit of transitDetails; track transit) {
+    @for (transit of transitDetails; track transit; let idx = $index) {
       <mat-card class="example-card" appearance="outlined">
         <mat-card-content>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <mat-form-field appearance="outline" class="ams-small">
-              <mat-label>Unit Sector</mat-label>
-              <mat-select
-                [value]="transit.unitSectorId"
-                (selectionChange)="transit.unitSectorId = $event.value"
-              >
-                @for (sector of data.unitSectors; track sector) {
-                  <mat-option [value]="sector.id">{{ sector.name }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
+          <div class="flex flex-row">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <mat-form-field appearance="outline" class="ams-small">
+                <mat-label>Unit Sector</mat-label>
+                <mat-select
+                  [value]="transit.unitSectorId"
+                  (selectionChange)="
+                    transit.unitSectorId = $event.value; resetUnitSectorSelection()
+                  "
+                  [(ngModel)]="transit.unitSectorId"
+                  required
+                >
+                  @for (sector of allUnitSectors; track sector) {
+                    <mat-option [value]="sector.id" [disabled]="sector.isSelected">{{
+                      sector.name
+                    }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field appearance="outline" class="ams-small">
-              <mat-label>Staff In Charge</mat-label>
-              <input
-                matInput
-                [(ngModel)]="transit.staffInCharge"
-                [pattern]="'^[a-zA-Z ]*$'"
-                [required]="true"
-              />
-            </mat-form-field>
-            <!-- <mat-error class="ams-small" *ngIf="showError && !transit.staffInCharge">
+              <mat-form-field appearance="outline" class="ams-small">
+                <mat-label>Staff In Charge</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="transit.staffInCharge"
+                  [pattern]="'^[a-zA-Z ]*$'"
+                  [required]="true"
+                />
+              </mat-form-field>
+              <!-- <mat-error class="ams-small" *ngIf="showError && !transit.staffInCharge">
               Staff In Charge is required
             </mat-error> -->
-            <mat-form-field appearance="outline" class="ams-small">
-              <mat-label>Transit Count</mat-label>
-              <input
-                matInput
-                placeholder="Count"
-                [(ngModel)]="transit.count"
-                (change)="calculateCount()"
-                [required]="true"
-              />
-            </mat-form-field>
-            <!-- <mat-error class="ams-small" *ngIf="showError && !transit.staffInCharge">
+              <mat-form-field appearance="outline" class="ams-small">
+                <mat-label>Transit Count</mat-label>
+                <input
+                  matInput
+                  placeholder="Count"
+                  [(ngModel)]="transit.count"
+                  (input)="calculateCount()"
+                  [required]="true"
+                  [min]="1"
+                  type="number"
+                />
+              </mat-form-field>
+              <!-- <mat-error class="ams-small" *ngIf="showError && !transit.staffInCharge">
               Transit count is required
             </mat-error> -->
+            </div>
+            @if (idx !== 0) {
+              <div class="flex justify-end mt-2 warning">
+                <button
+                  mat-icon-button
+                  color="warning -mt-2"
+                  (click)="deleteTransit(idx)"
+                  matTooltip="Delete"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            }
           </div>
         </mat-card-content>
       </mat-card>
     }
-    <button mat-button matTooltip="Add another" class="secondary" (click)="addTransit()">
-      Add unit Sector
-      <mat-icon>add_circle</mat-icon>
-    </button>
-    <div class="mt-5 count-stock">
-      <mat-chip class="count">
-        Counts Remaining: {{ countsRemining >= 0 ? countsRemining : '-' }}
-        {{ data.harvestData.unit.value }}
-      </mat-chip>
-      @if (countsRemining < 0) {
-        <div
-          class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-          role="alert"
-        >
-          Given count is greater that current count in stock.
-        </div>
-      }
+    <div class="flex flex-col md:flex-row justify-between gap-4 py-4">
+      <button mat-button matTooltip="Add another" class="secondary" (click)="addTransit()">
+        Add unit Sector
+        <mat-icon>add_circle</mat-icon>
+      </button>
+
+      <div class="count-stock flex justify-center">
+        <mat-chip>
+          Counts Remaining: {{ countsRemining >= 0 ? countsRemining : '-' }}
+          {{ data.unit.value }}
+        </mat-chip>
+      </div>
+    </div>
+
+    @if (countsRemining < 0) {
+      <div
+        class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        role="alert"
+      >
+        Given count is greater that current count in stock.
+      </div>
+    }
+    <div class="pt-4">
+      <app-date-time-picker
+        [label]="'Created Date'"
+        [formControl]="generatedAt"
+        [disableFutureDates]="true"
+      />
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>

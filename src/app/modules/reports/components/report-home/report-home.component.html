@@ -1,11 +1,27 @@
 <div>
   <div class="flex flex-col md:flex-row justify-between pt-8 px-4">
-    <app-date-range-picker
-      [value]="dateValue"
-      (selectionChange)="dateChange($event)"
-    ></app-date-range-picker>
+    <div class="flex flex-col md:flex-row items-center gap-3">
+      <app-date-range-picker
+        [value]="dateValue"
+        (selectionChange)="dateChange($event)"
+      ></app-date-range-picker>
+      <mat-form-field appearance="outline" class="ams-small w-64">
+        <mat-label>Unit Sectors</mat-label>
+        <mat-select
+          name="unit sector"
+          (selectionChange)="onUnitSectorChange($event.value)"
+          [(value)]="selectedUnitSector"
+        >
+          @for (unit of unitSectors; track unit) {
+            <mat-option [value]="unit.id">{{ unit.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
     @if (selectedIndex === 0) {
-      <button mat-flat-button (click)="generatePDF()" class="primary">Generate PDF</button>
+      <button mat-flat-button (click)="generatePDF()" class="primary mx-10 my-3 md:mx-0 md:my-0">
+        Generate PDF
+      </button>
     }
   </div>
 
@@ -13,8 +29,8 @@
     <mat-tab label="Total Artemia">
       <div class="mat-elevation-z4 m-4 p-4" id="contentToConvert">
         <app-total-artemia-report
-          [liveTransits]="liveTransits"
-          [frozenTransits]="frozenTransits"
+          [liveTransits]="filteredLiveTransits"
+          [frozenTransits]="filteredFrozenTransits"
           [dateValue]="dateValue"
         />
       </div>
@@ -25,7 +41,7 @@
         <app-live-artemia-report
           [unitId]="unitIds.MILLIONS"
           [dateValue]="dateValue"
-          [data]="liveTransits"
+          [data]="filteredLiveTransits"
         ></app-live-artemia-report>
         <!-- } -->
       </div>
@@ -36,7 +52,7 @@
         <app-live-artemia-report
           [unitId]="unitIds.FROZEN_CUPS"
           [dateValue]="dateValue"
-          [data]="frozenTransits"
+          [data]="filteredFrozenTransits"
         ></app-live-artemia-report>
         <!-- } -->
       </div>

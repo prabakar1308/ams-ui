@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Clipboard } from '@angular/cdk/clipboard';
+// import { Clipboard } from '@angular/cdk/clipboard';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 import { USER_ACTIONS, USER_ROLES } from '@app/shared/constants/shared.contants';
@@ -9,8 +9,8 @@ import { UserDetails } from '@app/shared/models/user-details';
 import { UnitSector } from '@app/shared/models/master';
 import { CreateUserRequest } from '@app/shared/models/create-user';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
-import { SEVERITY } from '@app/core/core.contants';
-import { NotificationService } from '@app/core/services/notification.service';
+// import { SEVERITY } from '@app/core/core.contants';
+// import { NotificationService } from '@app/core/services/notification.service';
 import { MasterService } from '@master/services/master.service';
 import { FORM_CONTROL_NAMES, formConfig, formDetails } from './user.config';
 
@@ -19,23 +19,24 @@ import { FORM_CONTROL_NAMES, formConfig, formDetails } from './user.config';
   standalone: false,
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class UserDetailsComponent {
   private unSubscribe = new Subject<void>();
-  formConfigData = formConfig;
+  formConfigData = [...formConfig];
   formDetails = formDetails;
   userActions = USER_ACTIONS;
   editId: number | null = null;
   tableData: unknown[] = [];
   unitSectors: UnitSector[] = [];
   userAction = USER_ACTIONS.LIST;
-  displayColumns = ['user_code', 'name', 'user_role', 'mobile_number', 'address', 'actions'];
+  displayColumns = ['name', 'user_code', 'user_role', 'mobile_number', 'address', 'actions'];
 
   constructor(
     public sharedService: SharedFacadeService,
     private masterService: MasterService,
-    private clipboard: Clipboard,
-    private notificationService: NotificationService,
+    // private clipboard: Clipboard,
+    // private notificationService: NotificationService,
     private dialog: MatDialog,
   ) {}
 
@@ -45,20 +46,7 @@ export class UserDetailsComponent {
       .pipe(takeUntil(this.unSubscribe), distinctUntilChanged())
       .subscribe((data) => {
         this.unitSectors = data?.unitSectors || [];
-        this.formConfigData = this.formConfigData.map((data) => {
-          switch (data.name) {
-            case FORM_CONTROL_NAMES.UNIT_SECTOR:
-              return {
-                ...data,
-                options: this.unitSectors.map((type) => ({
-                  label: `${type.name} (${type.location})`,
-                  value: type.id,
-                })),
-              };
-            default:
-              return data;
-          }
-        });
+        this.initializeFormConfig();
       });
 
     // Update user details when user is created or updated
@@ -74,6 +62,10 @@ export class UserDetailsComponent {
       });
   }
 
+  initializeFormConfig() {
+    this.formConfigData = [...formConfig];
+  }
+
   getUsers() {
     this.masterService.getUsers().subscribe((res: any) => {
       this.tableData = res?.data?.data.map((user: UserDetails) => {
@@ -81,8 +73,10 @@ export class UserDetailsComponent {
           ...user,
           user_code: user.userCode,
           name: `${user.firstName} ${user.lastName}`,
-          user_role: USER_ROLES.filter((role) => role.value === user.role)[0]?.label || 'N/A',
+          user_role:
+            USER_ROLES.filter((role) => role.value === user.role)[0]?.label || 'Super Admin',
           mobile_number: user.mobileNumber,
+          enableEdit: user.role !== 'super_admin',
         };
       });
     });
@@ -110,9 +104,10 @@ export class UserDetailsComponent {
     } else {
       this.sharedService.createUser({
         ...payload,
+        password: 'welcome123', // Default password for new users
       });
-      this.clipboard.copy(payload.password || '');
-      this.notificationService.showMessage(SEVERITY.SUCCESS, 'Password copied to clipboard');
+      // this.clipboard.copy(payload.password || '');
+      // this.notificationService.showMessage(SEVERITY.SUCCESS, 'Password copied to clipboard');
     }
   }
 
@@ -144,6 +139,7 @@ export class UserDetailsComponent {
         ...data,
         value: userDetails[data.name as keyof UserDetails] || '',
         hide: data.name === FORM_CONTROL_NAMES.PASSWORD ? true : data.hide,
+        disabled: data.name === FORM_CONTROL_NAMES.PASSWORD ? true : data.disabled,
       };
     });
     this.userAction = USER_ACTIONS.EDIT;

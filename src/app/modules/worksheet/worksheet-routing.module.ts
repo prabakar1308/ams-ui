@@ -5,7 +5,7 @@ import { WorksheetCreateComponent } from './components/worksheet-create/workshee
 import { HarvestHomeComponent } from './components/harvest/harvest-home/harvest-home.component';
 import { HarvestCreateComponent } from './components/harvest/harvest-create/harvest-create.component';
 import { RestockListComponent } from './components/restock-list/restock-list.component';
-import { TransitListComponent } from './components/transit-list/transit-list.component';
+import { TransitListComponent } from './components/transit/transit-list/transit-list.component';
 
 const routes: Routes = [
   { path: '', component: WorksheetHomeComponent },

@@ -17,7 +17,8 @@ export interface ProductionCount {
   frozenAvailable: number;
   liveCompleted: number;
   frozenCompleted: number;
-  restock: number;
+  activeRestock: number;
+  inUseRestock: number;
   instockMachinery: InStockResponse[];
   instockConventional: InStockResponse[];
 }

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, catchError, tap, exhaustMap } from 'rxjs/operators';
+import { map, catchError, tap, exhaustMap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import {
   getActiveWorksheetsFailure,
   createWorksheet,
   createWorksheetFailure,
-  updateWorksheet,
+  updateWorksheets,
   updateWorksheetFailure,
   getActiveRestocks,
   getActiveRestocksFailure,
@@ -28,6 +28,25 @@ import {
   createTransit,
   createTransitFailure,
   createTransitSuccess,
+  getCurrentWorksheet,
+  getCurrentWorksheetSucess,
+  getCurrentWorksheetFailure,
+  updateWorksheetParams,
+  updateWorksheetParamsFailure,
+  getCurrentHarvest,
+  getCurrentHarvestFailure,
+  getCurrentHarvestSuccess,
+  updateHarvest,
+  updateHarvestSuccess,
+  updateHarvestFailure,
+  updateTransit,
+  updateTransitFailure,
+  getMonitoringCount,
+  getMonitoringCountFailure,
+  getMonitoringCountSuccess,
+  getHarvestConversionLogsSuccess,
+  getHarvestConversionLogs,
+  getHarvestConversionLogsFailure,
 } from './worksheet.actions';
 import { Response } from '@app/shared/models/response';
 import { WorksheetTank } from '../models/active-worksheet';
@@ -36,6 +55,7 @@ import { NotificationService } from '@app/core/services/notification.service';
 import { SEVERITY } from '@app/core/core.contants';
 import { Transit } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
+import { UpdateWorksheet } from '../models/create-worksheet';
 
 @Injectable()
 export class WorksheetEffects {
@@ -63,6 +83,30 @@ export class WorksheetEffects {
             });
           }),
           catchError((error) => of(getActiveWorksheetsFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getCurrentWorksheet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getCurrentWorksheet.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.getWorksheetById(payload).pipe(
+          map((res: Response<UpdateWorksheet>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return getCurrentWorksheetFailure({
+                error: res.message || 'Get worksheet by id failed',
+              });
+            }
+            if (res.data) {
+              return getCurrentWorksheetSucess(res.data);
+            }
+            return getCurrentWorksheetFailure({
+              error: res.message || 'Get worksheet by id failed',
+            });
+          }),
+          catchError((error) => of(getCurrentWorksheetFailure({ error }))),
         ),
       ),
     ),
@@ -99,7 +143,7 @@ export class WorksheetEffects {
 
   updateWorksheets$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateWorksheet.type),
+      ofType(updateWorksheets.type),
       exhaustMap(({ payload }) =>
         this.WorksheetService.updateWorksheets(payload).pipe(
           map((res: Response<WorksheetTank[]>) => {
@@ -116,6 +160,35 @@ export class WorksheetEffects {
             });
           }),
           catchError((error) => of(updateWorksheetFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  updateWorksheetParams$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateWorksheetParams.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.updateWorksheetParams(payload).pipe(
+          map((res: Response<WorksheetTank[]>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return updateWorksheetParamsFailure({
+                error: res.message || 'Update Worksheet Params failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Worksheet is updated successfully!',
+              );
+              return getActiveWorksheetsSuccess(res.data);
+            }
+            return updateWorksheetParamsFailure({
+              error: res.message || 'Update Worksheet Params failed',
+            });
+          }),
+          tap(() => this.router.navigate(['/worksheet'])),
+          catchError((error) => of(updateWorksheetParamsFailure({ error }))),
         ),
       ),
     ),
@@ -170,8 +243,61 @@ export class WorksheetEffects {
               error: res.message || 'Create harvest failed',
             });
           }),
-          tap(() => this.router.navigate(['/worksheet/harvest'])),
+          tap(() => this.router.navigate(['/worksheet'])),
           catchError((error) => of(createHarvestFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  updateHarvest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateHarvest.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.updateHarvest(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201) {
+              return updateHarvestFailure({
+                error: res.message || 'Update harvest failed',
+              });
+            }
+            if (res.data) {
+              this.notificationService.showMessage(
+                SEVERITY.SUCCESS,
+                'Harvest is updated successfully!',
+              );
+              return updateHarvestSuccess();
+            }
+            return updateHarvestFailure({
+              error: res.message || 'Update harvest failed',
+            });
+          }),
+          tap(() => this.router.navigate(['/worksheet/harvest'])),
+          catchError((error) => of(updateHarvestFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getCurrentHarvest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getCurrentHarvest.type),
+      exhaustMap(({ payload }) =>
+        this.WorksheetService.getCurrentHarvest(payload).pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return getCurrentHarvestFailure({
+                error: res.message || 'Get Current harvest failed',
+              });
+            }
+            if (res.data) {
+              return getCurrentHarvestSuccess(res.data);
+            }
+            return getCurrentHarvestFailure({
+              error: res.message || 'Get Current harvest failed',
+            });
+          }),
+          catchError((error) => of(getCurrentHarvestFailure({ error }))),
         ),
       ),
     ),
@@ -208,7 +334,7 @@ export class WorksheetEffects {
       ofType(getHarvests.type),
       exhaustMap(({ payload: { unitId, statusIds } }) =>
         this.WorksheetService.getHarvests(unitId, statusIds).pipe(
-          map((res: Response<HarvestDetails[]>) => {
+          map((res: Response<{ data: HarvestDetails[]; totalRecords: number }>) => {
             console.log('Hervest data:', res);
             if (res.status !== 201) {
               return getHarvestsFailure({
@@ -233,25 +359,127 @@ export class WorksheetEffects {
       ofType(createTransit.type),
       exhaustMap(({ payload: { filter, ...transit } }) =>
         this.WorksheetService.createTransit(transit).pipe(
-          map((res: Response<any>) => {
+          mergeMap((res: Response<any>) => {
             if (res.status !== 201) {
-              return createTransitFailure({
-                error: res.message || 'Create Transit failed',
-              });
+              return of(
+                createTransitFailure({
+                  error: res.message || 'Create Transit failed',
+                }),
+              );
             }
             if (res.data) {
               this.notificationService.showMessage(
                 SEVERITY.SUCCESS,
                 'Transits created successfully!',
               );
-              return getHarvests(filter);
+              // Dispatch both getHarvests and getMonitoringCount actions
+              return [getHarvests(filter), getMonitoringCount()];
             }
-            return createTransitFailure({
-              error: res.message || 'Create Transit failed',
+            return of(
+              createTransitFailure({
+                error: res.message || 'Create Transit failed',
+              }),
+            );
+          }),
+          catchError((error) => of(createTransitFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  updateTransit$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateTransit.type),
+      exhaustMap(({ request: { payload, days } }) =>
+        this.WorksheetService.updateTransit(payload).pipe(
+          mergeMap((res: Response<any>) => {
+            if (res.status !== 201) {
+              return of(
+                updateTransitFailure({
+                  error: res.message || 'Update transit failed',
+                }),
+              );
+            }
+            if (res.data) {
+              if (payload.isDelete) {
+                this.notificationService.showMessage(
+                  SEVERITY.WARN,
+                  'Transit is deleted successfully!',
+                );
+              } else {
+                this.notificationService.showMessage(
+                  SEVERITY.SUCCESS,
+                  'Transit is updated successfully!',
+                );
+              }
+              return [getTransits({ days }), getMonitoringCount()];
+            }
+            return of(
+              updateTransitFailure({
+                error: res.message || 'Update harvest failed',
+              }),
+            );
+          }),
+          // tap(() => this.router.navigate(['/worksheet/transit'])),
+          catchError((error) => {
+            this.notificationService.showMessage(
+              SEVERITY.ERROR,
+              error.message || 'Update transit failed',
+              undefined,
+              5000,
+            );
+            return of(updateTransitFailure({ error }));
+          }),
+        ),
+      ),
+    ),
+  );
+
+  // Monitoring Count
+  getMonitoringCount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getMonitoringCount.type),
+      exhaustMap(() =>
+        this.WorksheetService.getMonitoringCount().pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 200) {
+              return getMonitoringCountFailure({
+                error: res.message || 'Get monitoring count failed',
+              });
+            }
+            if (res.data) {
+              return getMonitoringCountSuccess(res.data);
+            }
+            return getMonitoringCountFailure({
+              error: res.message || 'Get monitoring count failed',
             });
           }),
-          tap(() => of(getHarvests(filter))),
-          catchError((error) => of(createTransitFailure({ error }))),
+          catchError((error) => of(getMonitoringCountFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  // Harvest Conversion Logs
+  getHarvestConversionLogs$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getHarvestConversionLogs.type),
+      exhaustMap(() =>
+        this.WorksheetService.getHarvestConversionLogs().pipe(
+          map((res: Response<any>) => {
+            if (res.status !== 200) {
+              return getHarvestConversionLogsFailure({
+                error: res.message || 'Get harvest conversion logs failed',
+              });
+            }
+            if (res.data) {
+              return getHarvestConversionLogsSuccess(res.data);
+            }
+            return getHarvestConversionLogsFailure({
+              error: res.message || 'Get harvest conversion logs failed',
+            });
+          }),
+          catchError((error) => of(getHarvestConversionLogsFailure({ error }))),
         ),
       ),
     ),

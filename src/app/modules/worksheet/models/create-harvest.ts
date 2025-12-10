@@ -1,4 +1,5 @@
 export interface CreateHarvest {
+  id?: number;
   worksheetId: number;
   count: number | string;
   countInStock?: number;
@@ -10,6 +11,7 @@ export interface CreateHarvest {
   unitSectorId?: number;
   transitCount?: number | string;
   divider?: string;
+  generatedAt?: Date;
 }
 
 export interface CreateHarvestRequest {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PRODUCTION_ITEMS, PRODUCTION_ITEMS_ID } from '@app/dashboard/constants/dashboard';
 import { ProductionItem } from '@app/dashboard/models/dashboard';
@@ -13,7 +13,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
   templateUrl: './dashboard-status.component.html',
   styleUrl: './dashboard-status.component.scss',
 })
-export class DashboardStatusComponent implements OnInit {
+export class DashboardStatusComponent implements OnInit, OnDestroy {
   private unSubscribe = new Subject<void>();
   productionItems: ProductionItem[] = PRODUCTION_ITEMS;
   dateValue: string = '';
@@ -43,6 +43,7 @@ export class DashboardStatusComponent implements OnInit {
                 count: res.liveCompleted,
                 unit: 'Millions',
                 link: '/worksheet/transit',
+                queryParams: { id: '1' },
                 class: 'text-green-600',
               });
               break;
@@ -58,14 +59,23 @@ export class DashboardStatusComponent implements OnInit {
                 count: res.frozenCompleted,
                 unit: 'Frozen Cups',
                 link: '/worksheet/transit',
+                queryParams: { id: '2' },
                 class: 'text-green-600',
               });
               break;
             case PRODUCTION_ITEMS_ID.RESTOCK:
               item.values.push({
-                count: res.restock,
+                count: res.activeRestock,
                 unit: 'Millions',
                 link: '/worksheet/restock',
+                queryParams: { type: 'A' },
+                class: 'text-teal-600',
+              });
+              item.values.push({
+                count: res.inUseRestock,
+                unit: 'Millions',
+                link: '/worksheet/restock',
+                queryParams: { type: 'U' },
                 class: 'text-teal-600',
               });
               break;
@@ -100,7 +110,7 @@ export class DashboardStatusComponent implements OnInit {
   navigateItem(id: number): void {
     this.sharedFacadeService.updateWorksheetFilter({
       tankTypeId: id,
-      statusId: WORKSHEET_STATUS.IN_STOCKING,
+      statusId: WORKSHEET_STATUS.IN_CULTURE,
       userId: 0,
       harvestTypeId: 0,
     });
@@ -109,10 +119,14 @@ export class DashboardStatusComponent implements OnInit {
 
   dateChange(event: unknown): void {
     const date: { start: string; end: string } = event as { start: string; end: string };
-    console.log(date);
     if (date) {
       const { start, end } = date;
       this.dateValue = start;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 }

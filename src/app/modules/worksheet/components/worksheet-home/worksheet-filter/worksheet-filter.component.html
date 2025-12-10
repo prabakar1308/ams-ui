@@ -124,8 +124,8 @@
   <div class="mt-4 mb-6">
     <mat-card appearance="outlined">
       <mat-card-content>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-5">
-          <div class="w-full">
+        <div class="flex flex-row flex-wrap justify-evenly gap-3 pt-5">
+          <div class="min-w-68">
             <mat-button-toggle-group
               [value]="worksheetFilter.tankTypeId"
               (change)="onTankTypeChange($event)"
@@ -137,7 +137,7 @@
               <mat-button-toggle class="w-1/2" [value]="2">Conventional</mat-button-toggle>
             </mat-button-toggle-group>
           </div>
-          <div class="w-full">
+          <div class="min-w-68">
             <mat-form-field appearance="outline" class="ams-small w-full">
               <mat-label>Harvest Type</mat-label>
               <mat-select
@@ -150,7 +150,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="w-full">
+          <div class="min-w-68">
             <mat-form-field appearance="outline" class="ams-small w-full">
               <mat-label>User</mat-label>
               <mat-select
@@ -165,7 +165,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="w-full">
+          <div class="min-w-68">
             <mat-form-field appearance="outline" class="ams-small w-full">
               <mat-label>Status</mat-label>
 

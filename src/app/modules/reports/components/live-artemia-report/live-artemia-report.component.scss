@@ -1,0 +1,17 @@
+.artemia-report-container {
+
+    .generic-table-container {
+        // min-width: 700px !important;
+
+        table {
+            min-width: 500px !important;
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .mat-mdc-standard-chip .mdc-evolution-chip__text-label {
+            font-size: 12px;
+        }
+    }
+}

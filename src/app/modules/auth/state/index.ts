@@ -15,6 +15,7 @@ export const getUserData = createSelector(getAuthFeatureState, (state: AuthState
   userName: state.userName,
   accessToken: state.accessToken,
   refreshToken: state.refreshToken,
+  userCode: state.userCode,
 }));
 
 export const getMetaInfo = createSelector(getAuthFeatureState, (state) => state.meta);

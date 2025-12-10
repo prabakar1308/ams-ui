@@ -7,9 +7,11 @@ import { WorksheetStatus } from '@app/shared/models/worksheet-status';
 import * as fromStore from '../state';
 import * as sharedAction from '../state/shared-actions';
 import { MasterData, WorksheetFilter } from '../models/shared-state';
-import { HarvestType } from '../models/master';
-import { UserDetails } from '../models/user-details';
+import { HarvestType, SourceTracker } from '../models/master';
+import { ResetUserPassword, UserDetails } from '../models/user-details';
 import { CreateUserRequest } from '../models/create-user';
+import { CreateWorksheetUnitRequest } from '../models/create-worksheet-unit';
+import { CreateSourceTrackerRequest } from '../models/create-source-tracker';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +24,9 @@ export class SharedFacadeService {
   worksheetFilter$: Observable<WorksheetFilter>;
   meta$: Observable<MetaState>;
   resetUserUpdated$: Observable<boolean>;
+  resetWorksheetUnitUpdated$: Observable<boolean>;
+  sourceTracker$: Observable<SourceTracker>;
+  resetSourceTrackerUpdated$: Observable<boolean>;
 
   constructor(private store: Store<fromStore.AppState>) {
     this.masterData$ = this.store.select(fromStore.getMasterData);
@@ -31,6 +36,9 @@ export class SharedFacadeService {
     this.worksheetFilter$ = this.store.select(fromStore.getWorksheetFilter);
     this.meta$ = this.store.select(fromStore.getMetaInfo);
     this.resetUserUpdated$ = this.store.select(fromStore.resetUserUpdated);
+    this.resetWorksheetUnitUpdated$ = this.store.select(fromStore.resetWorksheetUnitUpdated);
+    this.sourceTracker$ = this.store.select(fromStore.getSourceTrackerList);
+    this.resetSourceTrackerUpdated$ = this.store.select(fromStore.resetSourceTrackerUpdated);
   }
 
   getWorksheetStatus() {
@@ -76,5 +84,39 @@ export class SharedFacadeService {
 
   resetUserUpdateStatus() {
     this.store.dispatch(sharedAction.resetUserUpdateStatus());
+  }
+  createWorksheetUnit(request: CreateWorksheetUnitRequest) {
+    this.store.dispatch(sharedAction.createWorksheetUnit(request));
+  }
+  createWorksheetUnitSuccess(response: any[]) {
+    this.store.dispatch(sharedAction.createWorksheetUnitSuccess(response));
+  }
+  updateWorksheetUnit(request: any) {
+    this.store.dispatch(sharedAction.updateWorksheetUnit(request));
+  }
+  resetWorksheetUnitUpdateStatus() {
+    this.store.dispatch(sharedAction.resetWorksheetUnitUpdateStatus());
+  }
+  resetUserPassword(request: ResetUserPassword) {
+    this.store.dispatch(sharedAction.resetUserPassword(request));
+  }
+  getSourceTrackerList(request: any) {
+    this.store.dispatch(sharedAction.getSourceTrackerList(request));
+  }
+  createSourceTracker(request: CreateSourceTrackerRequest) {
+    this.store.dispatch(sharedAction.createSourceTracker(request));
+  }
+  createSourceTrackerSuccess(response: any[]) {
+    this.store.dispatch(sharedAction.createSourceTrackerSuccess(response));
+  }
+  resetSourceTrackerUpdatedStatus() {
+    this.store.dispatch(sharedAction.resetSourceTrackerUpdatedStatus());
+  }
+  updateSourceTracker(request: any) {
+    this.store.dispatch(sharedAction.updateSourceTracker(request));
+  }
+
+  deleteSourceTracker(id: number) {
+    this.store.dispatch(sharedAction.deleteSourceTracker(id));
   }
 }

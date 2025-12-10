@@ -1,0 +1,92 @@
+<div class="edit-transit-dialog">
+  <h2 mat-dialog-title>Update Transit</h2>
+  <div class="grid grid-cols-1 gap-4">
+    <mat-dialog-content>
+      <mat-chip-set>
+        <div class="count-stock">
+          <mat-chip>Overall Count: {{ data.count }} </mat-chip>
+        </div>
+        <div class="count-stock">
+          <mat-chip>
+            Count In Stock: {{ overallCountInStock }}
+            {{ data.transit.unitName }}
+          </mat-chip>
+        </div>
+      </mat-chip-set>
+    </mat-dialog-content>
+  </div>
+  <mat-dialog-content>
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <mat-form-field appearance="outline" class="ams-small">
+            <mat-label>Unit Sector</mat-label>
+            <mat-select
+              [value]="transitDetails.unitSectorId"
+              (selectionChange)="transitDetails.unitSectorId = $event.value"
+            >
+              @for (sector of data.unitSectors; track sector) {
+                <mat-option [value]="sector.id">{{ sector.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="ams-small">
+            <mat-label>Staff In Charge</mat-label>
+            <input
+              matInput
+              [(ngModel)]="transitDetails.staffInCharge"
+              [pattern]="'^[a-zA-Z ]*$'"
+              [required]="true"
+            />
+          </mat-form-field>
+          <!-- <mat-error class="ams-small" *ngIf="showError && !transit.staffInCharge">
+                Staff In Charge is required
+              </mat-error> -->
+          <mat-form-field appearance="outline" class="ams-small">
+            <mat-label>Transit Count</mat-label>
+            <input
+              type="number"
+              matInput
+              placeholder="Count"
+              [(ngModel)]="transitDetails.count"
+              (input)="calculateCount()"
+              [required]="true"
+              [min]="1"
+            />
+          </mat-form-field>
+          <!-- <mat-error class="ams-small" *ngIf="showError && !transit.staffInCharge">
+                Transit count is required
+              </mat-error> -->
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <!-- } -->
+    <div class="mt-5 count-stock">
+      <mat-chip class="count">
+        Counts Remaining: {{ countsRemaining >= 0 ? countsRemaining : '-' }}
+        {{ data.transit.unitName }}
+      </mat-chip>
+      @if (countsRemaining < 0) {
+        <div
+          class="p-4 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+          role="alert"
+        >
+          Given count is greater that current count in stock.
+        </div>
+      }
+    </div>
+
+    <div class="pt-8">
+      <app-date-time-picker
+        [label]="'Created Date'"
+        [formControl]="generatedAt"
+        [disableFutureDates]="true"
+      />
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-flat-button (click)="saveTransit()" [disabled]="countsRemaining < 0">Update</button>
+  </mat-dialog-actions>
+</div>

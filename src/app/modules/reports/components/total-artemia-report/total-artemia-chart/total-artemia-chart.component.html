@@ -1,12 +1,12 @@
 <div>
   <div>
-    <h4 class="text-md pl-4 font-bold text-[#165d51] underline">{{ title }}</h4>
+    <h4 class="text-md py-4 font-bold text-[#165d51] underline">{{ title }}</h4>
     <div
       echarts
       [options]="liveChartOption"
       [autoResize]="true"
       (chartClick)="userChartClick($event)"
-      class="chart-container-cl w-1/1 md:1/2"
+      class="chart-container-cl w-1/1 md:1/2 bg-[#ebf1ef] rounded-lg"
       id="user-chart-container"
     ></div>
   </div>

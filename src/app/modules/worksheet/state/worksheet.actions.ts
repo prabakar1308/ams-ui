@@ -4,17 +4,36 @@ import { HarvestFilter, WorksheetFilter } from '@app/shared/models/shared-state'
 import {
   CreateWorksheetRequest,
   TankSelection,
+  UpdateWorksheet,
   UpdateWorksheetRequest,
 } from '../models/create-worksheet';
 import { ActiveRestock } from '../models/restock';
-import { CreateHarvestRequest } from '../models/create-harvest';
-import { Transit, TransitPayload } from '../models/transit';
+import { CreateHarvest, CreateHarvestRequest } from '../models/create-harvest';
+import { Transit, TransitPayload, TransitUpdate } from '../models/transit';
 import { HarvestDetails } from '../models/harvest-details';
 import { CreateTransitRequest, CreateTransitResponse } from '../models/create-transit';
+import { MonitoringCount } from '../models/monitoring-count';
 
 export const getActiveWorksheets = createAction(
   '[Worksheet] Get Active Worksheets',
   (payload: WorksheetFilter) => ({ payload }),
+);
+
+export const getCurrentWorksheet = createAction(
+  '[Worksheet] Get Current Worksheet',
+  (payload: number) => ({ payload }),
+);
+
+export const getCurrentWorksheetSucess = createAction(
+  '[Worksheet] Get Current Worksheet Success',
+  (payload: UpdateWorksheet) => ({ payload }),
+);
+
+export const resetCurrentWorksheet = createAction('[Worksheet] Reset Current Worksheet');
+
+export const getCurrentWorksheetFailure = createAction(
+  '[Worksheet] Get Current Worksheet Failure',
+  (payload: { error: string }) => ({ payload }),
 );
 
 export const getActiveWorksheetsSuccess = createAction(
@@ -44,8 +63,8 @@ export const createWorksheetFailure = createAction(
   (payload: { error: string }) => ({ payload }),
 );
 
-export const updateWorksheet = createAction(
-  '[Worksheet] Update Worksheet',
+export const updateWorksheets = createAction(
+  '[Worksheet] Update Worksheets',
   (payload: UpdateWorksheetRequest) => ({
     payload,
   }),
@@ -59,6 +78,18 @@ export const updateWorksheetFailure = createAction(
 export const updateWorksheetTankDetails = createAction(
   '[Worksheet] Update Worksheet Tank Details',
   (payload: TankSelection) => ({ payload }),
+);
+
+export const updateWorksheetParams = createAction(
+  '[Worksheet] Update Worksheet Params',
+  (payload: UpdateWorksheet) => ({
+    payload,
+  }),
+);
+
+export const updateWorksheetParamsFailure = createAction(
+  '[Worksheet] Update Worksheet Params Failure',
+  (payload: { error: string }) => ({ payload }),
 );
 
 // Restock
@@ -84,11 +115,28 @@ export const getHarvests = createAction('[Harvest] Get Harvests', (payload: Harv
 
 export const getHarvestsSuccess = createAction(
   '[Harvest] Get Harvests Success',
-  (payload: HarvestDetails[]) => ({ payload }),
+  (payload: { data: HarvestDetails[]; totalRecords: number }) => ({ payload }),
 );
 
 export const getHarvestsFailure = createAction(
   '[Harvest] Get Harvests Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const getCurrentHarvest = createAction(
+  '[Harvest] Get Current Harvests',
+  (payload: number) => ({
+    payload,
+  }),
+);
+
+export const getCurrentHarvestSuccess = createAction(
+  '[Harvest] Get Current Harvest Success',
+  (payload: HarvestDetails) => ({ payload }),
+);
+
+export const getCurrentHarvestFailure = createAction(
+  '[Harvest] Get Current Harvest Failure',
   (payload: { error: string }) => ({ payload }),
 );
 
@@ -109,6 +157,20 @@ export const createHarvestFailure = createAction(
   (payload: { error: string }) => ({ payload }),
 );
 
+export const updateHarvest = createAction('[Harvest] Update Harvest', (payload: CreateHarvest) => ({
+  payload,
+}));
+
+export const updateHarvestSuccess = createAction(
+  '[Harvest] Update Harvest Success',
+  // (payload: WorksheetTank[]) => ({ payload }),
+);
+
+export const updateHarvestFailure = createAction(
+  '[Harvest] Update Harvest Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
 // transits
 
 export const getTransits = createAction('[Harvest] Get Transits', (payload: TransitPayload) => ({
@@ -126,18 +188,59 @@ export const getTransitsFailure = createAction(
 );
 
 export const createTransit = createAction(
-  '[Harvest] Create Transit',
+  '[Transit] Create Transit',
   (payload: CreateTransitRequest) => ({
     payload,
   }),
 );
 
 export const createTransitSuccess = createAction(
-  '[Harvest] Create Transit Success',
+  '[Transit] Create Transit Success',
   (payload: CreateTransitResponse[]) => ({ payload }),
 );
 
 export const createTransitFailure = createAction(
-  '[Harvest] Create Transit Failure',
+  '[Transit] Create Transit Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const updateTransit = createAction(
+  '[Transit] Update Transit',
+  (request: { payload: TransitUpdate; days: number }) => ({
+    request,
+  }),
+);
+
+export const updateTransitSuccess = createAction(
+  '[Transit] Update Transit Success',
+  // (payload: WorksheetTank[]) => ({ payload }),
+);
+
+export const updateTransitFailure = createAction(
+  '[Transit] Update Transit Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const getMonitoringCount = createAction('[Monitoring] Get Monitoring Count');
+
+export const getMonitoringCountSuccess = createAction(
+  '[Monitoring] Get Monitoring Count Success',
+  (payload: MonitoringCount) => ({ payload }),
+);
+
+export const getMonitoringCountFailure = createAction(
+  '[Monitoring] Get Monitoring Count Failure',
+  (payload: { error: string }) => ({ payload }),
+);
+
+export const getHarvestConversionLogs = createAction('[Harvest] Get Harvest Conversion Logs');
+
+export const getHarvestConversionLogsSuccess = createAction(
+  '[Harvest] Get Harvest Conversion Logs Success',
+  (payload: any[]) => ({ payload }),
+);
+
+export const getHarvestConversionLogsFailure = createAction(
+  '[Harvest] Get Harvest Conversion Logs Failure',
   (payload: { error: string }) => ({ payload }),
 );

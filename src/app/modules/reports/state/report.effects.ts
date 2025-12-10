@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import {
   getActiveStockInputReportFailure,
   getActiveStockInputReportSuccess,
+  getAvailableStockInputReport,
+  getAvailableStockInputReportFailure,
+  getAvailableStockInputReportSuccess,
   getFrozenTransitReport,
   getLiveTransitReport,
   getStockInputReport,
@@ -20,7 +23,7 @@ import { Response } from '@app/shared/models/response';
 import { NotificationService } from '@app/core/services/notification.service';
 import { ReportService } from '../services/report.service';
 import { TransitReport } from '../models/transit-response';
-import { StockInput } from '../models/stock-input';
+import { StockInput, StockInputUnit } from '../models/stock-input';
 import { UNIT_IDS } from '@app/shared/constants/shared.contants';
 
 @Injectable()
@@ -128,6 +131,30 @@ export class ReportEffects {
             });
           }),
           catchError((error) => of(getActiveStockInputReportFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getAvailableStockInputReport$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getAvailableStockInputReport.type),
+      exhaustMap(() =>
+        this.reportService.getAvailableStockInputReport().pipe(
+          map((res: Response<StockInputUnit[]>) => {
+            if (res.status !== 201 && res.status !== 200) {
+              return getAvailableStockInputReportFailure({
+                error: res.message || 'Get available stock input report failed',
+              });
+            }
+            if (res.data) {
+              return getAvailableStockInputReportSuccess(res.data);
+            }
+            return getAvailableStockInputReportFailure({
+              error: res.message || 'Get available stock input report failed',
+            });
+          }),
+          catchError((error) => of(getAvailableStockInputReportFailure({ error }))),
         ),
       ),
     ),

@@ -1,0 +1,191 @@
+<div class="transit-list-container">
+  <div class="flex flex-col w-full pt-4">
+    <div class="flex flex-col md:flex-row gap-2 justify-between items-center">
+      <h4 class="text-xl pl-2 font-serif font-bold text-[#165d51]">Live Transit</h4>
+
+      <div class="flex flex-row gap-2">
+        <button
+          aria-label="Go to harvest list"
+          [routerLink]="['/worksheet/harvest']"
+          mat-mini-fab
+          matTooltip="Harvest"
+          class="secondary"
+        >
+          <mat-icon>agriculture</mat-icon>
+        </button>
+        <button
+          aria-label="Go to Restock Page"
+          [routerLink]="['/worksheet/restock']"
+          mat-mini-fab
+          matTooltip="Restock"
+          class="secondary"
+        >
+          <mat-icon>warehouse</mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          aria-label="worksheet refresh"
+          (click)="onClickBack()"
+          matTooltip="Worksheets"
+          class="secondary"
+        >
+          <mat-icon>home</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col xl:flex-row justify-between mt-2 pr-3 items-center gap-1">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-1 pl-2">
+        <div class="text-[#177b1f]">
+          Overall Count - <span class="font-bold">{{ totalMillionsCount }}</span> Millions
+        </div>
+        <mat-divider vertical class="mx-2 h-0 md:h-6 w-3"></mat-divider>
+        <div class="text-[#177b1f] pl-2">
+          <span class="font-bold">{{ totalFrozenCupsCount }}</span> Frozen Cups
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row flex-wrap items-center gap-2">
+        <mat-form-field appearance="outline" class="ams-small ml-2 mt-5">
+          <mat-label>Categories</mat-label>
+          <mat-select
+            name="units"
+            (selectionChange)="onUnitChange($event.value)"
+            [(value)]="selectedUnit"
+          >
+            @for (unit of worksheetUnits; track unit) {
+              <mat-option [value]="unit.id">{{ unit.value }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="ams-small ml-2 mt-0 md:mt-5">
+          <mat-label>Unit Sectors</mat-label>
+          <mat-select
+            name="unit sector"
+            (selectionChange)="onUnitSectorChange($event.value)"
+            [(value)]="selectedUnitSector"
+          >
+            @for (unit of unitSectors; track unit) {
+              <mat-option [value]="unit.id">{{ unit.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="ams-small ml-2 mt-0 md:mt-5">
+          <mat-label>Duration</mat-label>
+          <mat-select
+            [(ngModel)]="selectedValue"
+            (ngModelChange)="periodChange($event)"
+            name="period"
+          >
+            @for (period of periods; track period) {
+              <mat-option [value]="period.value">{{ period.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-card appearance="outlined" class="-mt-4">
+      <mat-card-content>
+        <section class="table-container mat-elevation-z8" tabindex="0">
+          <table mat-table [dataSource]="dataSource">
+            <!-- unitSector Column -->
+            <ng-container matColumnDef="unitSector" sticky>
+              <th mat-header-cell *matHeaderCellDef class="min-w-40 sticky-border-right">
+                Unit Sector
+              </th>
+              <td mat-cell *matCellDef="let element" class="min-w-40 sticky-border-right">
+                <span class="font-bold">{{ element.unitSector?.name }}</span>
+                <span class="pl-1 text-xs">({{ element.unitSector?.location }})</span>
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <ng-container matColumnDef="staffInCharge">
+              <th mat-header-cell *matHeaderCellDef class="min-w-32">Staff In-Charge</th>
+              <td mat-cell *matCellDef="let element" class="min-w-32">
+                {{ element.staffInCharge }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- Restock created on Column -->
+            <ng-container matColumnDef="createdAt">
+              <th mat-header-cell *matHeaderCellDef class="min-w-32">Created On</th>
+              <td mat-cell *matCellDef="let element" class="min-w-32">
+                {{ element.generatedAt | date: 'short' }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- Restock created By Column -->
+            <ng-container matColumnDef="createdBy">
+              <th mat-header-cell *matHeaderCellDef class="min-w-32">Created By</th>
+              <td mat-cell *matCellDef="let element" class="min-w-32">
+                {{ element.createdBy }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- Restock count Column -->
+            <ng-container matColumnDef="transitCount">
+              <th mat-header-cell *matHeaderCellDef class="min-w-32">Count</th>
+              <td mat-cell *matCellDef="let element" class="min-w-32 text-[#177b1f] font-bold">
+                {{ element.transitCount }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef colspan="3">
+                @if (dataSource.data.length) {
+                  <div class="flex flex-row">
+                    <span>{{ getTotalMillionsCount() }} Millions</span
+                    ><mat-divider vertical class="mx-2 md:h-4 w-3"></mat-divider
+                    ><span class="pl-2">{{ getTotalFrozenCupsCount() }} Frozen Cups</span>
+                  </div>
+                }
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                aria-label="row actions"
+                class="min-w-22 text-center"
+              >
+                <div class="pr-2">Actions</div>
+              </th>
+              <td mat-cell *matCellDef="let element" class="min-w-22">
+                @if (canAccessAction(element)) {
+                  <button
+                    class="primary small"
+                    mat-icon-button
+                    (click)="openDialog(element)"
+                    matTooltip="Edit"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button
+                    mat-icon-button
+                    class="warning small"
+                    [matTooltip]="'Delete'"
+                    (click)="onDelete(element)"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" class="pl-1 pr-1"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td [attr.colspan]="displayedColumns.length" class="p-4 text-center font-bold">
+                No records available!
+              </td>
+            </tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns" class="footer-row"></tr>
+          </table>
+        </section>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -26,3 +26,8 @@ export interface Depedent {
     message?: string;
   }[];
 }
+
+export interface FormDetails {
+  label: string;
+  value: string;
+}

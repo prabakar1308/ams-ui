@@ -24,7 +24,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ams-ui",
+            "outputPath": "dist/ams-ui", 
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -75,6 +75,28 @@
                   "maximumError": "8kB"
                 }
               ],
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json"
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
               "outputHashing": "all"
             },
             "development": {
@@ -96,6 +118,9 @@
           "configurations": {
             "production": {
               "buildTarget": "ams-ui:build:production"
+            },
+            "staging": {
+              "buildTarget": "ams-ui:build:staging"
             },
             "development": {
               "buildTarget": "ams-ui:build:development"

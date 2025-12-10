@@ -5,6 +5,7 @@ import { Response } from '@app/shared/models/response';
 import { DashboardResponse, InStockResponse, TankWiseStatus } from '../models/dashboard-response';
 import { map, Observable } from 'rxjs';
 import { environment } from '@environments/environment';
+import { DashboardTank } from '../models/dashboard-tank';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +51,12 @@ export class DashboardService {
     );
   }
 
+  getTankListWithStatus(tankTypeId: number) {
+    return this.http.get<Response<DashboardTank[]>>(
+      `${this.API_URL}/tank-list-with-status/${tankTypeId}`,
+    );
+  }
+
   getTankWiseStatus(tankTypeId: number): Observable<TankWiseStatus[]> {
     return this.http
       .get<Response<TankWiseStatus[]>>(`${this.API_URL}/tank-wise-statuses/${tankTypeId}`)
@@ -60,5 +67,9 @@ export class DashboardService {
     return this.http
       .get<Response<TankWiseStatus[]>>(`${this.API_URL}/tank-wise-users/${tankTypeId}`)
       .pipe(map((resp) => resp.data));
+  }
+
+  getMonitoringCount() {
+    return this.http.get<Response<any>>(`${this.WS_API_URL}/monitoring-count`);
   }
 }

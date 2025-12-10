@@ -12,11 +12,12 @@ import { APP_DEFAULT_ROUTE } from 'app/app.constants';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string | null = null;
+  hidePassword = true;
 
   constructor(
     private fb: FormBuilder,
     private authfacade: AuthFacadeService,
-    private router: Router
+    private router: Router,
   ) {
     this.loginForm = this.fb.group({
       userId: ['', [Validators.required]],

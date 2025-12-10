@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { SharedState } from '@app/shared/models/shared-state';
 import * as SharedActions from './shared-actions';
 import { DEFAULT_TANK_TYPE } from '../constants/shared.contants';
+import { FM_USER } from '@app/core/core.contants';
 
 const defaultRangeValues = {
   id: 0,
@@ -29,6 +30,7 @@ export const initialState: SharedState = {
   salnity: defaultRangeValues,
   temperature: defaultRangeValues,
   unitSectors: [],
+  sourceTrackerList: { list: [], count: [] },
   meta: {
     isLoading: false,
     error: '',
@@ -56,7 +58,7 @@ export const sharedReducer = createReducer(
   })),
   on(SharedActions.getUsersListSuccess, (state, { payload }) => ({
     ...state,
-    userDetails: payload,
+    userDetails: payload.filter((user) => user.role !== FM_USER),
     meta: {
       ...state.meta,
       isLoading: true,
@@ -97,6 +99,13 @@ export const sharedReducer = createReducer(
       userUpdated: true,
     },
   })),
+  on(SharedActions.deleteUserSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      userUpdated: true,
+    },
+  })),
   on(SharedActions.getMasterDataSuccess, (state, { payload }) => ({
     ...state,
     harvestTypes: payload.harvestTypes,
@@ -110,6 +119,77 @@ export const sharedReducer = createReducer(
     meta: {
       ...state.meta,
       isLoading: true,
+    },
+  })),
+  on(SharedActions.resetWorksheetUnitUpdateStatus, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      worksheetUnitUpdated: false,
+    },
+  })),
+  on(SharedActions.updateWorksheetUnitSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      worksheetUnitUpdated: true,
+    },
+  })),
+  on(SharedActions.createWorksheetUnitSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      worksheetUnitUpdated: true,
+    },
+  })),
+  on(SharedActions.resetUserPasswordSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      resetPassword: true,
+    },
+  })),
+  on(SharedActions.getSourceTrackerSuccess, (state, { payload }) => ({
+    ...state,
+    sourceTrackerList: payload,
+    meta: {
+      ...state.meta,
+      isLoading: true,
+    },
+  })),
+  on(SharedActions.getSourceTrackerList, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      isLoading: false,
+    },
+  })),
+  on(SharedActions.createSourceTrackerSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: true,
+    },
+  })),
+  on(SharedActions.resetSourceTrackerUpdatedStatus, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: false,
+    },
+  })),
+  on(SharedActions.updateSourceTrackerSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: true,
+    },
+  })),
+  on(SharedActions.deleteSourceTrackerSuccess, (state) => ({
+    ...state,
+    meta: {
+      ...state.meta,
+      sourceTrackerUpdated: true,
     },
   })),
 );

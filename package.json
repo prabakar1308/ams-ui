@@ -1,10 +1,14 @@
 {
   "name": "ams-ui",
-  "version": "0.0.0",
+  "version": "2.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "start:dev": "ng serve --configuration=development",
+    "build:dev": "ng build --configuration=development",
+    "start:qa": "ng serve --configuration=staging",
+    "build:qa": "ng build --configuration=staging",
     "start:prod": "ng serve --configuration=production",
     "build:prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
@@ -22,6 +26,7 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@angular/service-worker": "^19.2.6",
     "@ngrx/effects": "^19.1.0",
     "@ngrx/store": "^19.1.0",
     "@ngrx/store-devtools": "^19.1.0",
